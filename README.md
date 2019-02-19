@@ -1,4 +1,17 @@
 # Introduction
+## The structure of this documentation
+###### This section was last checked in the 1.0.0. version of the engine
+This documentation will have three main parts and a table of contents:
+* [The first](introduction) is the introduction (the part you are reading right now)
+* The second is an overview of how the engine works and how can you operate it and its different editors
+* The third will go over every last detail about the structures variables and functions the engine uses
+
+In the [introduction](introduction) I will cover [my motivation](who-the-hell-am-I-and-what-the-hecky-heck-is-this?) for this engine, [the idea, the end product and plans about the future of the project](so-what-is-the-project?).
+
+The second part will have two segments. The first detailing the architecture of the system, what it does. The second will be the guide to operate it. Hopefully theese two segments will provide you with sufficent information to make a game with this engine.
+
+The last part will (as mentioned above) go over the hows of the systems in place. It will be broken down into different subsections, each dealing with a header or cpp file and its structres, variables, or functions.
+
 ## Who the hell am I and what the hecky heck is this?
 ###### This section was last checked in the 1.0.0. version of the engine
 I am a highschool student, who is interested in computer science and more specifically, creating video games. This project was a challange I gave myself. The aim was to find out if I am able to create something rather complex with my basic understanding of programming, whilst not looking up solutions to my problems. I have already tried my hands at [a project similar to this](https://github.com/mmmuscus/Snake), but this was way more abitious so it was also a test in planning and creating coexsiting systems.
