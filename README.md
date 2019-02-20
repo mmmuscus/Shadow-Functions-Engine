@@ -1,4 +1,5 @@
 # Introduction
+**Note:** I was using Dev C++ as the IDE with TMD-GCC 4.9.2. as the compiler, I have seen the project not functioning as intended with other IDEs and compilers.
 ## The structure of this documentation
 ###### This section was last checked in the 1.0.0. version of the engine
 This documentation will have three main parts and a table of contents:
