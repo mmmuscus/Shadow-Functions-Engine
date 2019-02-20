@@ -4,8 +4,8 @@
 ###### This section was last checked in the 1.0.0. version of the engine
 This documentation will have three main parts and a table of contents:
 * [The first](#1-introduction) is the introduction (the part you are reading right now)
-* [The second](#2-how-to-use-the-engine) is an overview of [how the engine works](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) and how you can operate it and it's different editors
-* The third will go over every last detail about the structures variables and functions the engine uses
+* [The second](#2-how-to-use-the-engine) is an overview of [how the engine works](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) and [how you can operate it and it's different editors](#22-how-to-use-the-editors-and-other-further-details)
+* The third will go over every last detail about the structures, variables and functions the engine uses
 
 In the [introduction](#1-introduction) I will cover [my motivation](#12-who-the-hell-am-i-and-what-the-hecky-heck-is-this) for this engine, [the idea, the end product and plans about the future of the project](#13-so-what-is-the-project).
 
@@ -155,7 +155,7 @@ renderMenu(oldMenu, newMenu);
 ```
 Finally the last part of the game loop is repalcing the player character from the last frame with a ' ' and then re placing the player character into the correct position in the world. Then the newMenu is filled up with the line that divides it from the newScreen (more about theese arrays in [the part which is discussing the FOV editors](#221-the-fov-editors)). Lastly both the newScreen and newMenu are rendered in the console window. 
 
-And with this the cycle repeats, if there is anything that needs clearing up the exact workings of the engine will be detailed in the 3. part of the documentation.
+And thus the cycle continues, if there is anything that needs clearing up the exact workings of the engine will be detailed in the third part of the documentation, and some details which I omited here will be covered in the next half of the second part.
 
 ## 2.2. How to use the editors, and other further details
 ### 2.2.1. The FOV editors
