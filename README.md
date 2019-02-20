@@ -4,12 +4,12 @@
 ###### This section was last checked in the 1.0.0. version of the engine
 This documentation will have three main parts and a table of contents:
 * [The first](#1-introduction) is the introduction (the part you are reading right now)
-* [The second](#2-how-to-use-the-engine) is an overview of [how the engine works](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) and how can you operate it and it's different editors
+* [The second](#2-how-to-use-the-engine) is an overview of [how the engine works](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) and how you can operate it and it's different editors
 * The third will go over every last detail about the structures variables and functions the engine uses
 
 In the [introduction](#1-introduction) I will cover [my motivation](#12-who-the-hell-am-i-and-what-the-hecky-heck-is-this) for this engine, [the idea, the end product and plans about the future of the project](#13-so-what-is-the-project).
 
-[The second part](#2-how-to-use-the-engine) will have two segments. [The first](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) detailing the architecture of the system, what it does. The second will be the guide to operate it. Hopefully theese two segments will provide you with sufficent information to make a game with this engine.
+[The second part](#2-how-to-use-the-engine) will have two segments. [The first](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) detailing the architecture of the system, what it does. [The second](#22-how-to-use-the-editors-and-other-further-details) will be the guide to operate it. Hopefully theese two segments will provide you with sufficent information to make a game with this engine.
 
 The last part will (as mentioned above) go over the hows of the systems in place. It will be broken down into different subsections, each dealing with a header or cpp file and it's structres, variables, or functions.
 
@@ -29,13 +29,13 @@ Features as of now:
 * Map and field of view editors
 * Character attribute editors (can this character block light? can it block player movement?)
 
-The next main goal of the project is to make an animation pipeline. The plan for it is to have every frame drawn in a textfile under each other, with a general function that can read any animation text file into a 3 dimensional array, and another general function that could play said animation in a set position on the screen. Beside this main goal I plan to make several quality of life changes to the different text based editors.
+The next main goal of the project is to make an animation pipeline. The plan for it is to have every frame drawn in a textfile under each other, with a general function that can read any animation text file into a 3 dimensional array, and another general function that could play said animation in a set position on the screen. Beside this main goal I plan to make several quality of life changes to the different text based editors and to the structure and efficency of the code in general.
 
 # 2. How to use the engine
 ## 2.1. How the engine works: a breakdown of the main .cpp file
 ### 2.1.1. Initialization
 ###### This section was last checked in the 1.0.0. version of the engine
-First things first. The system adds all variables, most of theese are vital for the engine and should not be altered. All of theese will be explained in bigger detail in the next big segement of the documentation, but here are some examples:
+First things first. The system adds all variables, most of theese are vital for the engine and should not be altered (unless you understand how theese systems work, in that case go nuts!). All of theese will be explained in bigger detail in the next big segement of the documentation, but here are some examples:
 ```cpp
 bool isWPressed;
 ```
@@ -58,4 +58,105 @@ This is the starting position of the player. The row runs along the x axis and t
 ```cpp
 int sleepTime = 30;
 ```
-This variable is the number of miliseconds that pass between every iteration of the game loop. 
+This variable is the number of miliseconds that pass between every iteration of the game loop.
+
+The last variables that need initialization are all arrays. Theese variables are all stored in the text files that you can (and are meant to) edit. Theese variables will also be explored in a later section of the docmentaton. Some examples:
+```cpp
+fov right[FOVROWS][FOVCOLS];
+```
+This is a 2 dimensional array with information about the shape of the field of view when the player is facing the right side of the screen. Both FOVROWS and FOVCOLS are defined in the system.h header.
+```cpp
+map newWorld[WORLDROWS][WORLDCOLS];
+```
+This array contains information about the texture of the map, different parts that are blocking player movement and different parts that are blocking light thus producing shadows. Both WORLDROWS and WORLDCOLS are defined in the system.h header.
+
+For more information about theese arrays please refer to [the part concerned with the editors](#22-how-to-use-the-editors-and-other-further-details).
+
+### 2.1.2. The game loop
+###### This section was last checked in the 1.0.0. version of the engine
+After the initialization, the game loop is started:
+```cpp
+Sleep(sleepTime);
+```
+The first thing it does is to wait for the set amount of time before doing anything.
+```cpp
+isWPressed = false;
+isAPressed = false;
+isSPressed = false;
+isDPressed = false;
+isEscPressed = false;
+
+isWPressed = wPressed();
+isAPressed = aPressed();
+isSPressed = sPressed();
+isDPressed = dPressed();
+isEscPressed = escPressed();
+
+if (isEscPressed)
+{
+	isNotExit = false;
+}
+
+cancelOut(isWPressed, isSPressed);
+cancelOut(isAPressed, isDPressed);
+```
+Next it deals with incoming input. Setting back all the bools to false that store the input from the 5 different keys, then getting the button information from the keyboard for each and acting accordingly. The escape key is set up to be the one that exits out of the game, so if its pressed the gameloop terminates. If however the escape key is not pressed, we cancel out any input that would be contradictody, such as moving right and left at the same time.
+```cpp
+saveLastScreenArray(oldScreen, newScreen);
+saveLastMenuArray(oldMenu, newMenu);
+		
+lastPlayer.row = player.row;
+lastPlayer.col = player.col;
+```
+With information from the last frame we can make the game run much faster and the graphics look much smoother, so we save the last position of our player character and the last frame of the screen (the screen of the console is segmented into two seperate arrays newScreen and newMenu, with their respective counterparts from the frame before being oldScreen and oldMenu)
+```cpp
+player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
+player = keepInBounds(player, lastPlayer, newWorld);
+player = setDirections(player, isWPressed, isSPressed, isAPressed, isDPressed);
+```
+With all of our existing input and information from the last frame, we can finally start to move the player! The first two functions are making sure the player moves according (if he can!) to the input. The final function sets up the direction in which the player is facing, this is also done with the input, if the D key is pressed the player wil face right, if the W key is also pressed the player will face top AND right. Basically the player will face in whichever direction the inputs dictate in every frame.
+```cpp
+whereToCamera = camMovement(whereToCamera, player);
+camera = cameraPan(camera, whereToCamera);
+camera = keepCamInBounds(camera, newWorld);
+```
+We need the camera to follow our character, so our next we are dealing with this problem. The first function detects where the camera should be, next we pan the camera in that direction (it should be noted that panning the camera is not done instantly and needs time to be in the desired position), lastly we make sure that the camera is not going out of bounds.
+```cpp
+setCurrentFov(player, currentFov, right, left, up, down, rightUp, rightDown, leftUp, leftDown);
+playerInFov = getPlayerPosInFov(player, playerInFov);
+addFovInfoToMap(newWorld, player, playerInFov, currentFov);
+
+playerPov = getPov(playerPov, player);
+```
+Next we start preparing for the shading of the correct places. Firstly we find out which of the 8 possible field of views are we currently applying. Then we find out where is the player situated in the selected field of view, this will act as an anchor point between the world and the FOV array. With the help of this anchor we add the FOV to the map, with this we will know which cells of the map are currently in the field of view of the player. The last thing we will need before we can start the shading is the point from which the player "sees", or from where we can cast lines to the correct places on the map.
+```cpp
+shadowFunction(newWorld, camera.col, camera.row, playerPov, edges);
+		
+mapIsEdgeCalculation(newWorld, camera.row, camera.col);
+	
+calculateScreen(newWorld, newScreen, camera.row, camera.col);
+```
+Theese three functions are the main focus of this engine. The first one is responsible for casting lines from the player's point of view to different walls in the enviroment, and calculating which cells are fully encapsualted in shadow. The second one makes everything a little bit prettier, it draws a line that is less shadow-y, inbetween the cells that are in the light and the ones that are in the dark. Whilst theese first two functions are concerned with calculating which cells are in view, or which are at the edge of light and darkness, the third function translates all this information into textures and hands it over to the newScreen array for rendering.
+```cpp
+if (newScreen[lastPlayer.row - camera.row][lastPlayer.col - camera.col] == playerTexture)
+{		
+	newScreen[lastPlayer.row - camera.row][lastPlayer.col - camera.col] = ' ';
+}
+newScreen[player.row - camera.row][player.col - camera.col] = playerTexture;
+
+for (int i = 0; i < SCREENROWS; i++)
+{
+	newMenu[i][0] = screenDivisionTexture;
+}
+
+renderScreen(oldScreen, newScreen);
+
+renderMenu(oldMenu, newMenu);
+```
+Finally the last part of the game loop is repalcing the player character from the last frame with a ' ' and then re placing the player character into the correct position in the world. Then the newMenu is filled up with the line that divides it from the newScreen (more about theese arrays in [the part which is discussing the FOV editors](#221-the-fov-editors)). Lastly both the newScreen and newMenu are rendered in the console window. 
+
+And with this the cycle repeats, if there is anything that needs clearing up the exact workings of the engine will be detailed in the 3. part of the documentation.
+
+## 2.2. How to use the editors, and other further details
+### 2.2.1. The FOV editors
+###### This section was last checked in the 1.0.0. version of the engine
