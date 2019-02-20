@@ -113,18 +113,17 @@ int main()
 		isSPressed = sPressed();
 		isDPressed = dPressed();
 		isEscPressed = escPressed();
-
-		cancelOut(isWPressed, isSPressed);
-		cancelOut(isAPressed, isDPressed);
-		
-
-		saveLastScreenArray(oldScreen, newScreen);
-		saveLastMenuArray(oldMenu, newMenu);
 		
 		if (isEscPressed)
 		{
 			isNotExit = false;
 		}
+		
+		cancelOut(isWPressed, isSPressed);
+		cancelOut(isAPressed, isDPressed);
+		
+		saveLastScreenArray(oldScreen, newScreen);
+		saveLastMenuArray(oldMenu, newMenu);
 		
 		lastPlayer.row = player.row;
 		lastPlayer.col = player.col;
