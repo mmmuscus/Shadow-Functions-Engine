@@ -4,12 +4,12 @@
 ###### This section was last checked in the 1.0.0. version of the engine
 This documentation will have three main parts and a table of contents:
 * [The first](#introduction) is the introduction (the part you are reading right now)
-* The second is an overview of how the engine works and how can you operate it and it's different editors
+* [The second](#how-to-use-the-engine) is an overview of [how the engine works](#how-the-engine-works-a-breakdown-of-the-main-cpp-file) and how can you operate it and it's different editors
 * The third will go over every last detail about the structures variables and functions the engine uses
 
 In the [introduction](#introduction) I will cover [my motivation](#who-the-hell-am-i-and-what-the-hecky-heck-is-this) for this engine, [the idea, the end product and plans about the future of the project](#so-what-is-the-project).
 
-The second part will have two segments. The first detailing the architecture of the system, what it does. The second will be the guide to operate it. Hopefully theese two segments will provide you with sufficent information to make a game with this engine.
+[The second part](#how-to-use-the-engine) will have two segments. [The first](#how-the-engine-works-a-breakdown-of-the-main-cpp-file) detailing the architecture of the system, what it does. The second will be the guide to operate it. Hopefully theese two segments will provide you with sufficent information to make a game with this engine.
 
 The last part will (as mentioned above) go over the hows of the systems in place. It will be broken down into different subsections, each dealing with a header or cpp file and it's structres, variables, or functions.
 
@@ -48,7 +48,7 @@ bool isNotExit = true;
 ```
 While this variable is true the game loop keeps being called every x miliseconds.
 
-The next category of variables are ones that are hardcoded, but can be freely altered to anyone's desire. Again I will provide some examples but every variable will be explained indetail in the next segment of the documentation:
+The next category of variables are ones that are hardcoded, but can be freely altered to anyone's desire. Again I will provide some examples but every variable will be explained in detail in the next segment of the documentation:
 ```cpp
 player.row = 31;
 player.col = 45;
