@@ -55,7 +55,7 @@ int main()
 	
 	bool isNotExit = true;
 	
-	char oldScreen[SCREENROWS][SCREENCOLS];                       //dont ask why this is the way it is but it is the way it is and the way it is it works so... IDK IDC IDGAF            pOSTsCRIPT: pHUCKtHISbUGtOhELL
+	char oldScreen[SCREENROWS][SCREENCOLS];
 	char newScreen[SCREENROWS][SCREENCOLS];
 	
 	char oldMenu[SCREENROWS][MENUCOLS];
