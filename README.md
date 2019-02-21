@@ -172,7 +172,7 @@ And thus the cycle continues, if there is anything that needs clearing up the ex
 ### 2.2.1. The FOV editors
 #### 2.2.1.1. How to use the FOV editors
 ###### This section was last checked in the 1.0.0. version of the engine
-The FOV "editors" are the textfiles located in the FOVs folders. There is a file for each of the eight directions the player can look. For exaple, this is the rightUp.txt:
+The FOV "editors" are the textfiles located in the FOVs folder. There is a file for each of the eight directions the player can look. For exaple, this is the rightUp.txt:
 ```
 0000000000000000____________0000000  
 00000000000_____________________000  
@@ -209,5 +209,6 @@ All of theese .txt files have a set height (21) and width (35). I wanted to make
 
 Since the dimansions of the field of view are this small there is plenty of space on the screen for other stuff to be displayed. Thus the console window was separated to the newScreen and newMenu arrays. As of now the newMenu array is not in use, I plan to add basic functions and/or editors that could produce a menu or an inventory system on that half of the console window. If you want to expand the dimensions of the FOV files you'll need to change the value of FOVROWS and FOVCOLS which are defined in the system.h header file, but be prepared, if you change it to anything that is bigger than the dimensions of the newScreen array (which is 24 by 39) you will run into complications.
 
-### 2.2.2. The material editors
+### 2.2.2. How to use the material editors
 ###### This section was last checked in the 1.0.0. version of the engine
+The material "editors" are the .txt files located in the materials folder. One of them (walkable.txt) contains characters that don't block player movement, and the other (solid.txt) contains characters that block light, thus creating shadows. Both of them function exactly the same, so I am only going to discuss the workings of the one concerned with the characters that are blocking light. Characters in the editor should be seperated by an enter. When you are updating this file, make sure that the value of SOLIDCOUNT equals that of the characters in this file, otherwise the function that loads theese characters would go over too few or too many of them.
