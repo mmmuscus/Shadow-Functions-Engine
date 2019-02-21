@@ -5,13 +5,13 @@
 This documentation will have three main parts and a table of contents:
 * [The first](#1-introduction) is the introduction (the part you are reading right now)
 * [The second](#2-how-to-use-the-engine) is an overview of [how the engine works](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) and [how you can operate it and it's different editors](#22-how-to-use-the-editors-and-other-further-details)
-* The third will go over every last detail about the structures, variables and functions the engine uses
+* [The third](#3-detailed-description-of-everything) will go over every last detail about the [defines](#31-defines), [structures](#32-structures), [variables](#33-variables-in-the-main-cpp-file) and functions the engine uses
 
 In the [introduction](#1-introduction) I will cover [my motivation](#12-who-the-hell-am-i-and-what-the-hecky-heck-is-this) for this engine, [the idea, the end product and plans about the future of the project](#13-so-what-is-the-project).
 
 [The second part](#2-how-to-use-the-engine) will have two segments. [The first](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) detailing the architecture of the system, what it does. [The second](#22-how-to-use-the-editors-and-other-further-details) will be the guide to operate it. Hopefully theese two segments will provide you with sufficent information to make a game with this engine.
 
-The last part will (as mentioned above) go over the hows of the systems in place. It will be broken down into different subsections, each dealing with a header or cpp file and it's structres, variables, or functions.
+[The last part](#3-detailed-description-of-everything) will (as mentioned above) go over the hows of the systems in place. It will be broken down into different subsections, each dealing with a header or cpp file and it's [defines](#31-defines), [structures](#32-structures), [variables](#33-variables-in-the-main-cpp-file), or functions.
 
 ## 1.2. Who the hell am I and what the hecky heck is this?
 ###### This section was last checked in the 1.0.0. version of the engine
@@ -218,7 +218,7 @@ The material "editors" are the .txt files located in the materials folder. One o
 ###### This section was last checked in the 1.0.0. version of the engine
 The map "editor" is the text file located in the maps folder. It is a huge 231 by 63 .txt file, as with the other editors if you want to alter its size you should alter the value of WORLDROWS and WORLDROWS in the system.h file as well. You might wonder why it's filled with 'i' characters, thats because I didn't figure out a way to read spaces, so any 'i' you see in any of the editors will be parsed by the engine as a ' ' character. You can write anything into this .txt (except for spaces I guess) and it will be visible in the map of the game. Any character that you write here and also into at least one of the material editors will have the properties associated with said editor.
 
-**Note:** As of now it is recommended that you leave out 19 cells on the top and bottom and 35 cells at the sides of any map you create. Make sure the player can't pass into any of theese left out cells (there is an example of how you can do this in the default world.txt file). The reason for this is that if the player would be in any of theese cells, looking in the wrong direction, the engine would make calculations with variables in the newWorld array that simply do not exist, leading to all sorts of problems. If you alter the FOV files this recommended 19 and 35 cells might be too little to avoid any such catastrophe (or they might be too much, which can be a problem if you want to make bigger walkable maps). Hopefully the 2.0.0. update will solve this issue and we can finally use the map editor in its intended way.
+**Note:** As of now it is recommended that you leave out 19 cells on the top and bottom and 35 cells at the sides of any map you create. Make sure the player can't pass into any of theese left out cells (there is an example of how you can do this in the default world.txt file). The reason for this is that if the player would be in any of theese cells, looking in the wrong direction, the engine would make calculations with variables in the newWorld array that simply do not exist, leading to all sorts of problems. If you [alter the dimensions of the FOV files](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays) this recommended 19 and 35 cells might be too little to avoid any such catastrophe (or they might be too much, which can be a problem if you want to make bigger walkable maps). Hopefully the 2.0.0. update will solve this issue and we can finally use the map editor in its intended way.
 
 #### 2.2.3.2. Further ramblings about the coordinate system
 ###### This section was last checked in the 1.0.0. version of the engine
@@ -241,3 +241,89 @@ Coordinate of the bottom left point: |___________________________|  Coordinate o
                           (a; b + 1)                                (a + 1; b + 1)
 ```
 Each cell has four point coordinates associated with it. If the cell's coordinates are (a; b) then the point on the upper left is (a; b) the point on the upper right is (a + 1; b) the point on the bottom left is (a; b + 1) and the point on the bottom right is (a + 1; b + 1), as the figure above represents.
+
+# 3. Detailed description of EVERYTHING
+## 3.1. Defines
+### 3.1.1. SCREENROWS, SCREENCOLS and MENUCOLS
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+#define SCREENROWS 24
+#define SCREENCOLS 39
+
+#define MENUCOLS 41
+```
+**Usage:** Theese define the dimensions of the two main segments of the console window
+
+**Notes:** There is no need for a MENUROWS define, as it would be the same value as the SCREENROWS define. Altering theese defines is not recommended, but if doing so make sure that theese two segment's dimensions side by side do not exceed the dimension of the console window, which is 24 by 80.
+### 3.1.2. FOVROWS and FOVCOLS
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+#define FOVROWS 21
+#define FOVCOLS 35
+```
+**Usage:** Theese define the dimensions of the FOV editors, and also the arrays that hold the information parsed from thoose editors.
+
+**Notes:** Theese defines can be altered if someone wishes, but I dont think that is necessary. If however you are altering theese please be wary, you can accidentaly set their values to numbers that [could mess with the rendering of the newScreen array](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays), or theese values [could indirectly negatively affect the map of the world](#2231-how-to-use-the-map-editor).
+### 3.1.3. WORLDCOLS and WORLDROWS
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+#define WORLDROWS 63
+#define WORLDCOLS 231
+```
+**Usage:** Theese define the dimensions of the map editor, and also the newWorld array which holds the information parsed from said editor.
+
+**Notes:** Theese values can be altered freely, just make sure they are equal to the dimensions of the map editor file, if you want to parse the whole of that file. Also leave 19 cells on the top and bottom and 35 cells on each side of the map unenterable, the reason for this was explained in a note [here](#2231-how-to-use-the-map-editor).
+### 3.1.4. SOLIDCOUNT and WALKABLECOUNT
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+#define SOLIDCOUNT 1
+#define WALKABLECOUNT 1
+```
+**Usage:** Theese defines are equal to the number of characters that will be parsed in their respective material editor.
+
+**Notes:** Theese values should be changed if you want to add more "materials" (or characters) that have one or both of the possible attributes.
+## 3.2. Structures
+### 3.2.1. mob
+###### This section was last checked in the 1.0.0. version of the engine
+**Usage:**
+
+**Sub variables:**
+
+**Notes:**
+### 3.2.2. map
+###### This section was last checked in the 1.0.0. version of the engine
+**Usage:**
+
+**Sub variables:**
+
+**Notes:**
+### 3.2.3. fov
+###### This section was last checked in the 1.0.0. version of the engine
+**Usage:**
+
+**Sub variables:**
+
+**Notes:**
+### 3.2.4. line
+###### This section was last checked in the 1.0.0. version of the engine
+**Usage:**
+
+**Sub variables:**
+
+**Notes:**
+### 3.2.5. edgeLines
+###### This section was last checked in the 1.0.0. version of the engine
+**Usage:**
+
+**Sub variables:**
+
+**Notes:**
+### 3.2.6. koordinate
+###### This section was last checked in the 1.0.0. version of the engine
+**Usage:**
+
+**Sub variables:**
+
+**Notes:**
+## 3.3. Variables in the main .cpp file
+###### This section was last checked in the 1.0.0. version of the engine
