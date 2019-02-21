@@ -197,7 +197,7 @@ ___________________________________
 000000000000000_______0000000000000  
 ```
 The description of each character:
-* The '@' character represents the player, there should be exactly 1 of theese characters per FOV file because it acts as the anchor point between this .txt and the map on which the information about the field of view is pasted onto. (As of version 1.0.0. the position of this character does not get automatically parsed by the engine, so if you want to change it in this file you'll need to hardcode that change into the correct function as well. Fixing this issue is a planned goal for version 2.0.0.)
+* The '@' character represents the player, there should be exactly 1 of theese characters per FOV file because it acts as the anchor point between the .txt and the map on which the information about the field of view is pasted onto. (As of version 1.0.0. the position of this character does not get automatically parsed by the engine, so if you want to change it in this file you'll need to hardcode that change into the correct function as well. Fixing this issue is a planned goal for version 2.0.0.)
 * The '_' characters represent cells that are in the player's field of view.
 * The '0' characters represent cells that are not in the player's field of view.
 
