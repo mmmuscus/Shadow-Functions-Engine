@@ -57,7 +57,7 @@ The next category of variables are ones that are hardcoded, but can be freely al
 player.row = 31;
 player.col = 45;
 ```
-This is the starting position of the player. The row runs along the x axis and the col runs along the y axis. It should be noted that theese are different from the coordinates that are mentioned above. Theese refer to a set cell's row and column on the map. Each cell's four points have different coordinates. The cell that is defined by row = a and col = b has the following four coordinates associated with it's points: (a; b), (a + 1; b), (a; b + 1) and (a + 1; b + 1). It should also be noted that the coordinate system is only dealing with positive coordinates, and it's flipped, meaning that the (0; 0) point is in the top left, and the (infinity; infinity) point would be in the bottom right.
+This is the starting position of the player. The row runs along the x axis and the col runs along the y axis. It should be noted that theese are different from the coordinates that are mentioned above. Theese refer to a set cell's row and column on the map. Each cell's four points have different coordinates. The cell that is defined by row = a and col = b has the following four coordinates associated with it's points: (a; b), (a + 1; b), (a; b + 1) and (a + 1; b + 1). It should also be noted that the coordinate system is only dealing with positive coordinates, and it's flipped, meaning that the (0; 0) point is in the top left, and the (infinity; infinity) point would be in the bottom right. For further information check out [the correct subsection](#2232-further-ramblings-about-the-coordinate-system) of [the part concerned with the map editor](#223-the-map-editor).
 ```cpp
 int sleepTime = 30;
 ```
@@ -207,8 +207,37 @@ You can freely redraw any part of theese .txt files, with the '@', '_' and '0' c
 ###### This section was last checked in the 1.0.0. version of the engine
 All of theese .txt files have a set height (21) and width (35). I wanted to make FOVs that are symmetrical, because it doesn't make sense if for example the player has a bigger field of view when he is looking right than when he is looking up. Since the console window is 24 cells by 80 cells the maximum width of the field of view can only be roughly equal to the height of 24 cells. That comes to about 39 cells in width. I also wanted to make a margin around all of the field of views. The reasoning behind this decision was that I think it looks wierd if there is a cell that is in the field of view and also on the edge of the screen. Any such cell could mistakenly communicate that the field of view stretches beyond the screen which is (in my opinion) not something we want. As a result of all of this the field of view files shrunk to 21 by 35 (however upon further thinking for an easier time interpreting the editors I plan to expand their dimensions to 24 by 39 for the 2.0.0. version of the engine).
 
-Since the dimansions of the field of view are this small there is plenty of space on the screen for other stuff to be displayed. Thus the console window was separated to the newScreen and newMenu arrays. As of now the newMenu array is not in use, I plan to add basic functions and/or editors that could produce a menu or an inventory system on that half of the console window. If you want to expand the dimensions of the FOV files you'll need to change the value of FOVROWS and FOVCOLS which are defined in the system.h header file, but be prepared, if you change it to anything that is bigger than the dimensions of the newScreen array (which is 24 by 39) you will run into complications.
+Since the dimensions of the field of view are this small there is plenty of space on the screen for other stuff to be displayed. Thus the console window was separated to the newScreen and newMenu arrays. As of now the newMenu array is not in use, I plan to add basic functions and/or editors that could produce a menu or an inventory system on that half of the console window. If you want to expand the dimensions of the FOV files you'll need to change the value of FOVROWS and FOVCOLS which are defined in the system.h header file, but be prepared, if you change it to anything that is bigger than the dimensions of the newScreen array (which is 24 by 39) you will run into complications. But before you do anything with any of theese values or the files please read [the part about using the map editors](#2231-how-to-use-the-map-editor), there is a note reffering to possible problems that might surface.
 
 ### 2.2.2. How to use the material editors
 ###### This section was last checked in the 1.0.0. version of the engine
 The material "editors" are the .txt files located in the materials folder. One of them (walkable.txt) contains characters that don't block player movement, and the other (solid.txt) contains characters that block light, thus creating shadows. Both of them function exactly the same, so I am only going to discuss the workings of the one concerned with the characters that are blocking light. Characters in the editor should be seperated by an enter. When you are updating this file, make sure that the value of SOLIDCOUNT equals that of the characters in this file, otherwise the function that loads theese characters would go over too few or too many of them.
+
+### 2.2.3. The map editor
+#### 2.2.3.1. How to use the map editor
+###### This section was last checked in the 1.0.0. version of the engine
+The map "editor" is the text file located in the maps folder. It is a huge 231 by 63 .txt file, as with the other editors if you want to alter its size you should alter the value of WORLDROWS and WORLDROWS in the system.h file as well. You might wonder why it's filled with 'i' characters, thats because I didn't figure out a way to read spaces, so any 'i' you see in any of the editors will be parsed by the engine as a ' ' character. You can write anything into this .txt (except for spaces I guess) and it will be visible in the map of the game. Any character that you write here and also into at least one of the material editors will have the properties associated with said editor.
+
+**Note:** As of now it is recommended that you leave out 19 cells on the top and bottom and 35 cells at the sides of any map you create. Make sure the player can't pass into any of theese left out cells (there is an example of how you can do this in the default world.txt file). The reason for this is that if the player would be in any of theese cells, looking in the wrong direction, the engine would make calculations with variables in the newWorld array that simply do not exist, leading to all sorts of problems. If you alter the FOV files this recommended 19 and 35 cells might be too little to avoid any such catastrophe (or they might be too much, which can be a problem if you want to make bigger walkable maps). Hopefully the 2.0.0. update will solve this issue and we can finally use the map editor in its intended way.
+
+#### 2.2.3.2. Further ramblings about the coordinate system
+###### This section was last checked in the 1.0.0. version of the engine
+I have explained the coordinate system once before, but just to be sure I will reiterate here. The coordinate system only deals with positive coordinates, and it is flipped, meaning that the (0; 0) cell is on the top left, and the (231; 63) cell is at the botom right of (in this case) the editor. Columns run along the x axis and rows run along the y axis, the conversion between theese names is often needed to understand the code of this engine.
+
+**Cells and points should NOT be confused!** Cells coordinates refer to the coordinate of a character in for example the map editor, or in the newWorld array, and they are often used with col and row variables instead of the x and the y of a normal coordinate system. Points on the other hand refer to actual coordinates. Theese point coordinates are used in casting the lines from the player to the differnet obstacles in the enviroment, to produce shadows. 
+```
+Coordinate of the upper left point:                                 Coordinate of the upper right point:
+                             (a; b)  _____________________________  (a + 1; b)
+                                     |                           |
+                                     |                           |
+                                     |                           |
+                                     |                           |
+                                     |  Coordinate of the cell:  |
+                                     |           (a; b)          |
+                                     |                           |
+                                     |                           |
+                                     |                           |
+Coordinate of the bottom left point: |___________________________|  Coordinate of the bottom right point:
+                          (a; b + 1)                                (a + 1; b + 1)
+```
+Each cell has four point coordinates associated with it. If the cell's coordinates are (a; b) then the point on the upper left is (a; b) the point on the upper right is (a + 1; b) the point on the bottom left is (a; b + 1) and the point on the bottom right is (a + 1; b + 1), as the figure above represents.
