@@ -285,44 +285,116 @@ Each cell has four point coordinates associated with it. If the cell's coordinat
 ## 3.2. Structures
 ### 3.2.1. mob
 ###### This section was last checked in the 1.0.0. version of the engine
-**Usage:**
+```cpp
+struct mob
+{
+	int row;
+	int col;
+	bool up;
+	bool down;
+	bool right;
+	bool left;
+};
+```
+**Usage:** Any entity that can move is stored as a mob, right now theese entities are the player character and the camera.
 
 **Sub variables:**
+* **row:** This variable stores the row of the newWorld array the mob is currently in.
+* **col:** This variable stores the column of the newWorld array the mob is curently in.
+* **up:** This is true if the player is looking up.
+* **down:** This is true if the player is looking down.
+* **right:** This is true if the player is looking right.
+* **left:** This is true if the player is looking left.
 
-**Notes:**
+**Notes:** Out of the four last bools one is always true, and up to two can be true at once, however theese two can not be contradictory for example: up and down. This structure is not recommended to be altered. 
 ### 3.2.2. map
 ###### This section was last checked in the 1.0.0. version of the engine
-**Usage:**
+```cpp
+struct map
+{
+	char texture;
+	bool solid;
+	bool walkable;
+	bool mapInView;
+	bool mapIsEdge;
+};
+```
+**Usage:** This structure alone can hold every needed information about a cell of any map. In the engine it is used as a base for the newWorld array, that array holds every parsed information from the map editor.
 
 **Sub variables:**
+* **texture:** This is the ASCII character that is displayed in game.
+* **solid:** This is true if this cell blocks light and thus creates shadows.
+* **walkable:** This is true if this cell does not block player movement. 
+* **mapInView:** This is true if the texture of the cell should be displayed.
+* **mapIsEdge:** This is true if the texture of the cell should be replaced with '▒'.
 
-**Notes:**
+**Notes:** Throughout the gameloop mapInView is changed, firstly it is true for every cell that is in the field of view of the player, after that the shadows are calculated and mapInView is actually only true for cells that are in fact in view.
 ### 3.2.3. fov
 ###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+struct fov
+{
+	bool inView;
+	bool isEdge;
+	bool isPlayer;
+};
+```
 **Usage:**
 
 **Sub variables:**
+* **inView:**
+* **isEdge:**
+* **isPlayer:**
 
 **Notes:**
 ### 3.2.4. line
 ###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+struct line
+{
+	double mSlope;
+	double bIntercept;
+	bool isItUnderLine;
+};
+```
 **Usage:**
 
 **Sub variables:**
+* **mSlope:**
+* **bIntercept:**
+* **isItUnderLine:**
 
 **Notes:**
 ### 3.2.5. edgeLines
 ###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+struct edgeLines
+{
+	line first;
+	line second;
+};
+```
 **Usage:**
 
 **Sub variables:**
+* **first:**
+* **second:**
 
 **Notes:**
 ### 3.2.6. koordinate
 ###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+struct koordinate
+{
+	double x;
+	double y;
+};
+```
 **Usage:**
 
 **Sub variables:**
+* **x:**
+* **y:**
 
 **Notes:**
 ## 3.3. Variables in the main .cpp file
