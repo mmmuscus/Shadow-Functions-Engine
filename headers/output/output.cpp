@@ -60,7 +60,7 @@ void initWorld(map world[WORLDROWS][WORLDCOLS], char solide[SOLIDCOUNT], char wa
 		{
 			cin>>cahr;
 			
-			if (cahr == 'i' || cahr == '0')
+			if (cahr == 'i')
 			{
 				world[i][j].texture = ' ';
 			}
