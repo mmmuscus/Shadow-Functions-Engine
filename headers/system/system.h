@@ -50,7 +50,6 @@ struct map
 struct fov
 {
 	bool inView;
-	bool isEdge;
 	bool isPlayer;
 };
 

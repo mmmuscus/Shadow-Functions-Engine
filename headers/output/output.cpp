@@ -109,12 +109,10 @@ void initFOV(fov dir[FOVROWS][FOVCOLS], string fileName)
 			if (cahr == '_')
 			{
 				dir[i][j].inView = true;
-				dir[i][j].isEdge = false;
 			}
 			else
 			{
 				dir[i][j].inView = false;
-				dir[i][j].isEdge = false;
 			}
 			
 			if (cahr == '@')
