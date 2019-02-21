@@ -306,7 +306,7 @@ struct mob
 * **right:** This is true if the player is looking right.
 * **left:** This is true if the player is looking left.
 
-**Notes:** Out of the four last bools one is always true, and up to two can be true at once, however theese two can not be contradictory for example: up and down. This structure is not recommended to be altered. 
+**Notes:** Out of the four last bools one is always true, and up to two can be true at once, however theese two can not be contradictory for example: up and down. The col and row coordinates are coordinates of cells, this should not be confued with coordinates of points! Details about the difference between cell and point coordinates can be found [here](#2232-further-ramblings-about-the-coordinate-system).
 ### 3.2.2. map
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -335,18 +335,16 @@ struct map
 struct fov
 {
 	bool inView;
-	bool isEdge;
 	bool isPlayer;
 };
 ```
-**Usage:**
+**Usage:** This structure alone can hold every needed information about a cell in the FOV arrays or the FOV text files. In the engine it is used as the base for every FOV array.
 
 **Sub variables:**
-* **inView:**
-* **isEdge:**
-* **isPlayer:**
+* **inView:** This is true if this cell of the FOV is in view.
+* **isPlayer:** This is true if this cell of the FOV is the player.
 
-**Notes:**
+**Notes:** In version 1.0.0. isPlayer is not dinamically used by the engine, further information can be found [here](#2211-how-to-use-the-fov-editors).
 ### 3.2.4. line
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -357,14 +355,14 @@ struct line
 	bool isItUnderLine;
 };
 ```
-**Usage:**
+**Usage:** This is the structure that holds every needed information about the lines that are cast from the player to the correct objects.
 
 **Sub variables:**
-* **mSlope:**
-* **bIntercept:**
-* **isItUnderLine:**
+* **mSlope:** The slope of the line.
+* **bIntercept:** The value where the line intercepts the y axis.
+* **isItUnderLine:** This is true if the line is under the object which we are trying to shade.
 
-**Notes:**
+**Notes:** The line equation I am using for this project is the following: `y = (mSlope * x) + bIntercept`. This equation can't describe lines that are vertical, but I prevented that from happening, no lines that are cast are cast vertically (or horizontally for that matter). The isItUnderLine sub variable is only used when detarmining what is and what isn't in shade, when the lines are not for that purpose this sub variable can be left untouched.
 ### 3.2.5. edgeLines
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -374,13 +372,13 @@ struct edgeLines
 	line second;
 };
 ```
-**Usage:**
+**Usage:** This structure holds two lines at once.
 
 **Sub variables:**
-* **first:**
-* **second:**
+* **first:** The first line.
+* **second:** The second line. 
 
-**Notes:**
+**Notes:** This structure makes accesing the two lines that are cast to a rectangle (binary shading is produced by casting lines to only rectangles) from a player easier.
 ### 3.2.6. koordinate
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -390,12 +388,12 @@ struct koordinate
 	double y;
 };
 ```
-**Usage:**
+**Usage:** This struct holds the values of a coordinate.
 
 **Sub variables:**
-* **x:**
-* **y:**
+* **x:** The x value.
+* **y:** The y value.
 
-**Notes:**
+**Notes:** This should not be confused with the coordinates of cells. This is the coordinate of points, this structure is used when casting lines from the player to objects. Details about the difference between cell and point coordinates can be found [here](#2232-further-ramblings-about-the-coordinate-system).
 ## 3.3. Variables in the main .cpp file
 ###### This section was last checked in the 1.0.0. version of the engine
