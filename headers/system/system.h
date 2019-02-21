@@ -20,8 +20,8 @@ using namespace std;
 #define WORLDROWS 63
 #define WORLDCOLS 231
 
-#define SOLIDCOUNT 2
-#define WALKABLECOUNT 2
+#define SOLIDCOUNT 1
+#define WALKABLECOUNT 1
 
 #endif //DEFINE_INIT
 
