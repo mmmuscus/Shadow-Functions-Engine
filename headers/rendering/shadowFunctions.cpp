@@ -1,17 +1,5 @@
 #include "shadowFunctions.h"
 
-void makeCurrentFov(fov presetDir[FOVROWS][FOVCOLS], fov toBeDir[FOVROWS][FOVCOLS])
-{
-	for (int i = 0; i < FOVROWS; i++)
-	{
-		for (int j = 0; j < FOVCOLS; j++)
-		{
-			toBeDir[i][j].inView = presetDir[i][j].inView;
-			toBeDir[i][j].isPlayer = presetDir[i][j].isPlayer;
-		}
-	}
-}
-
 void setCurrentFov(mob playr, fov toBecomeCurrentFov[FOVROWS][FOVCOLS], fov r[FOVROWS][FOVCOLS], fov l[FOVROWS][FOVCOLS], fov u[FOVROWS][FOVCOLS], fov d[FOVROWS][FOVCOLS], fov ru[FOVROWS][FOVCOLS], fov rd[FOVROWS][FOVCOLS], fov lu[FOVROWS][FOVCOLS], fov ld[FOVROWS][FOVCOLS])
 {
 	if (playr.right && !playr.up && !playr.down)

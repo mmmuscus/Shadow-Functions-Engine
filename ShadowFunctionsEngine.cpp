@@ -81,7 +81,7 @@ int main()
 	initFOV(leftDown, "FOVs/leftDown.txt");
 	initFOV(leftUp, "FOVs/leftUp.txt");
 	
-	makeCurrentFov(right, currentFov);
+	setCurrentFov(player, currentFov, right, left, up, down, rightUp, rightDown, leftUp, leftDown);
 	
 	playerInFov = getPlayerPosInFov(player, playerInFov);
 	
