@@ -1,4 +1,5 @@
 # 1. Introduction
+###### This section was last checked in the 1.0.0. version of the engine
 **Note:** I was using Dev C++ as the IDE with TMD-GCC 4.9.2. as the compiler, I have seen the project not functioning as intended with other IDEs and compilers.
 ## 1.1. The structure of this documentation
 ###### This section was last checked in the 1.0.0. version of the engine
@@ -122,7 +123,7 @@ player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
 player = keepInBounds(player, lastPlayer, newWorld);
 player = setDirections(player, isWPressed, isSPressed, isAPressed, isDPressed);
 ```
-We need the camera to follow our character, so our next we are dealing with this problem. The first function detects where the camera should be, next we pan the camera in that direction (it should be noted that panning the camera is not done instantly and needs time to be in the desired position), lastly we make sure that the camera is not going out of bounds:
+We need the camera to follow our character, so next we are dealing with this problem. The first function detects where the camera should be, next we pan the camera in that direction (it should be noted that panning the camera is not done instantly and needs time to be in the desired position), lastly we make sure that the camera is not going out of bounds:
 ```cpp
 whereToCamera = camMovement(whereToCamera, player);
 camera = cameraPan(camera, whereToCamera);
@@ -224,7 +225,7 @@ The map "editor" is the text file located in the maps folder. It is a huge 231 b
 ###### This section was last checked in the 1.0.0. version of the engine
 I have explained the coordinate system once before, but just to be sure I will reiterate here. The coordinate system only deals with positive coordinates, and it is flipped, meaning that the (0; 0) cell is on the top left, and the (231; 63) cell is at the botom right of (in this case) the editor. Columns run along the x axis and rows run along the y axis, the conversion between theese names is often needed to understand the code of this engine.
 
-**Cells and points should NOT be confused!** Cells coordinates refer to the coordinate of a character in for example the map editor, or in the newWorld array, and they are often used with col and row variables instead of the x and the y of a normal coordinate system. Points on the other hand refer to actual coordinates. Theese point coordinates are used in casting the lines from the player to the differnet obstacles in the enviroment, to produce shadows. 
+**Cells and points should NOT be confused!** Cell's coordinates refer to the coordinate of a character in for example the map editor, or in the newWorld array, and they are often used with col and row variables instead of the x and the y of a normal coordinate system. Points on the other hand refer to actual coordinates. Theese point coordinates are used in casting the lines from the player to the differnet obstacles in the enviroment, to produce shadows. 
 ```
 Coordinate of the upper left point:                                 Coordinate of the upper right point:
                              (a; b)  _____________________________  (a + 1; b)
@@ -362,7 +363,7 @@ struct line
 * **bIntercept:** The value where the line intercepts the y axis.
 * **isItUnderLine:** This is true if the line is under the object which we are trying to shade.
 
-**Notes:** The line equation I am using for this project is the following: `y = (mSlope * x) + bIntercept`. This equation can't describe lines that are vertical, but I prevented that from happening, no lines that are cast are cast vertically (or horizontally for that matter). The isItUnderLine sub variable is only used when detarmining what is and what isn't in shade, when the lines are not for that purpose this sub variable can be left untouched.
+**Notes:** The line equation I am using for this project is the following: `y = (mSlope * x) + bIntercept`. This equation can't describe lines that are vertical, but I prevented that from happening, no lines that are cast are cast vertically (or horizontally for that matter). The isItUnderLine sub variable is only used when determining what is and what isn't in shade, when the lines are not for that purpose this sub variable can be left untouched.
 ### 3.2.5. edgeLines
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
