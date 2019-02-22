@@ -1,6 +1,6 @@
 # 1. Introduction
 ###### This section was last checked in the 1.0.0. version of the engine
-**Note:** I was using Dev C++ as the IDE with TMD-GCC 4.9.2. as the compiler, I have seen the project not functioning as intended with other IDEs and compilers.
+**Note:** I was using [Dev C++](https://en.wikipedia.org/wiki/Dev-C%2B%2B) as the IDE with TMD-GCC 4.9.2. as the compiler, I have seen the project not functioning as intended with other IDEs and compilers.
 ## 1.1. The structure of this documentation
 ###### This section was last checked in the 1.0.0. version of the engine
 This documentation will have three main parts and a table of contents:
@@ -33,11 +33,11 @@ Features as of now:
 The next main goal of the project is to make an animation pipeline. The plan for it is to have every frame drawn in a textfile under each other, with a general function that can read any animation text file into a 3 dimensional array, and another general function that could play said animation in a set position on the screen. Beside this main goal I plan to make several quality of life changes to the different text based editors and to the structure and efficency of the code in general.
 
 # 2. How to use the engine
-## 2.1. How the engine works: a breakdown of the main .cpp file
+## 2.1. How the engine works: a breakdown of [the main .cpp file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/ShadowFunctionsEngine.cpp)
 ### 2.1.1. Initialization
 #### 2.1.1.1. System variables
 ###### This section was last checked in the 1.0.0. version of the engine
-First things first. The system adds all variables, most of theese are vital for the engine and should not be altered (unless you understand how theese systems work, in that case go nuts!). All of theese will be explained in bigger detail in the next big segement of the documentation, but here are some examples:
+First things first. The system adds all variables, most of theese are vital for the engine and should not be altered (unless you understand how theese systems work, in that case go nuts!). All of theese will be explained in bigger detail in [the next big segement of the documentation](#3-detailed-description-of-everything), but here are some examples:
 ```cpp
 bool isWPressed;
 ```
@@ -45,7 +45,7 @@ This variable is true on any frame on which the W button is pressed.
 ```cpp
 koordinate playerPov;
 ```
-The koordinate structure has two sub variables: one for the x and another for the y axis. This koordinate variable stores the coordinate from which the player "sees" things. Algorythmically speaking it stores the coordinate from which lines are cast that will determine whether something is in the shadows or not.
+[The koordinate structure](#326-koordinate) has two sub variables: one for the x and another for the y axis. This koordinate variable stores the coordinate from which the player "sees" things. Algorythmically speaking it stores the coordinate from which lines are cast that will determine whether something is in the shadows or not.
 ```cpp
 bool isNotExit = true;
 ```
@@ -53,7 +53,7 @@ While this variable is true the game loop keeps being called every x miliseconds
 
 #### 2.1.1.2. Alterable variables
 ###### This section was last checked in the 1.0.0. version of the engine
-The next category of variables are ones that are hardcoded, but can be freely altered to anyone's desire. Again I will provide some examples but every variable will be explained in detail in the next segment of the documentation:
+The next category of variables are ones that are hardcoded, but can be freely altered to anyone's desire. Again I will provide some examples but every variable will be explained in detail in [the next segment of the documentation](#3-detailed-description-of-everything):
 ```cpp
 player.row = 31;
 player.col = 45;
@@ -66,22 +66,22 @@ This variable is the number of miliseconds that pass between every iteration of 
 
 #### 2.1.1.3. Variables that hold information parsed from the editors
 ###### This section was last checked in the 1.0.0. version of the engine
-The last variables that need initialization are all arrays. The values for theese variables are all stored in the text files that you can (and are meant to) edit. Theese variables will also be explored in a later section of the docmentaton. Some examples:
+The last variables that need initialization are all arrays. The values for theese variables are all stored in the text files that you can (and are meant to) edit. Theese variables will also be explored in a [later section of the docmentaton](#3-detailed-description-of-everything). Some examples:
 ```cpp
 fov right[FOVROWS][FOVCOLS];
 ```
-This is a 2 dimensional array with information about the shape of the field of view when the player is facing the right side of the screen. Both FOVROWS and FOVCOLS are defined in the system.h header.
+This is a 2 dimensional array with information about the shape of the field of view when the player is facing the right side of the screen. Both [FOVROWS and FOVCOLS](#312-fovrows-and-fovcols) are defined in the [system.h header](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/system/system.h). [The description of the fov structure](#323-fov) will bes discussed later down the line.
 ```cpp
 map newWorld[WORLDROWS][WORLDCOLS];
 ```
-This array contains information about the texture of the map, different parts that are blocking player movement and different parts that are blocking light thus producing shadows. Both WORLDROWS and WORLDCOLS are defined in the system.h header.
+This array contains information about the texture of the map, different parts that are blocking player movement and different parts that are blocking light thus producing shadows. Both [WORLDROWS and WORLDCOLS](#313-worldrows-and-worldcols) are defined in the [system.h header](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/system/system.h). [The workings of the map structure](#322-map) will be discussed in a later part.
 
 For more information about theese arrays please refer to [the part concerned with the editors](#22-how-to-use-the-editors-and-other-further-details).
 
 ### 2.1.2. The game loop
 #### 2.1.2.1. Keeping the loop going, storing input and information from the last frame
 ###### This section was last checked in the 1.0.0. version of the engine
-After the initialization, the game loop is started. The first thing it does is to wait for the set amount of time before doing anything:
+After the [initialization](#211-initialization), the game loop is started. The first thing it does is to wait for the set amount of time before doing anything:
 ```cpp
 Sleep(sleepTime);
 ```
@@ -107,7 +107,7 @@ if (isEscPressed)
 cancelOut(isWPressed, isSPressed);
 cancelOut(isAPressed, isDPressed);
 ```
-With information from the last frame we can make the game run much faster and the graphics look much smoother, so we save the last position of our player character and the last frame of the screen (the screen of the console is segmented into two seperate arrays newScreen and newMenu, with their respective counterparts from the frame before being oldScreen and oldMenu):
+With information from the last frame we can make the game run much faster and the graphics look much smoother, so we save the last position of our player character and the last frame of the screen (the screen of the console is segmented into two seperate arrays newScreen and newMenu, with their respective counterparts from the frame before being oldScreen and oldMenu, the explanation for this can be found [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays)):
 ```cpp
 saveLastScreenArray(oldScreen, newScreen);
 saveLastMenuArray(oldMenu, newMenu);
@@ -167,13 +167,13 @@ renderScreen(oldScreen, newScreen);
 renderMenu(oldMenu, newMenu);
 ```
 
-And thus the cycle continues, if there is anything that needs clearing up the exact workings of the engine will be detailed in the third part of the documentation, and some details which I omited here will be covered in [the next half of the second part](#22-how-to-use-the-editors-and-other-further-details).
+And thus the cycle continues, if there is anything that needs clearing up the exact workings of the engine will be detailed in [the third part of the documentation](#3-detailed-description-of-everything), and some details which I omited here will be covered in [the next half of the second part](#22-how-to-use-the-editors-and-other-further-details).
 
 ## 2.2. How to use the editors, and other further details
 ### 2.2.1. The FOV editors
 #### 2.2.1.1. How to use the FOV editors
 ###### This section was last checked in the 1.0.0. version of the engine
-The FOV "editors" are the textfiles located in the FOVs folder. There is a file for each of the eight directions the player can look. For exaple, this is the rightUp.txt:
+The FOV "editors" are the textfiles located in [the FOVs folder](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs). There is a file for each of the eight directions the player can look. For exaple, this is the [rightUp.txt](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/FOVs/rightUp.txt):
 ```
 0000000000000000____________0000000  
 00000000000_____________________000  
@@ -208,24 +208,24 @@ You can freely redraw any part of theese .txt files, with the '@', '_' and '0' c
 ###### This section was last checked in the 1.0.0. version of the engine
 All of theese .txt files have a set height (21) and width (35). I wanted to make FOVs that are symmetrical, because it doesn't make sense if for example the player has a bigger field of view when he is looking right than when he is looking up. Since the console window is 24 cells by 80 cells the maximum width of the field of view can only be roughly equal to the height of 24 cells. That comes to about 39 cells in width. I also wanted to make a margin around all of the field of views. The reasoning behind this decision was that I think it looks wierd if there is a cell that is in the field of view and also on the edge of the screen. Any such cell could mistakenly communicate that the field of view stretches beyond the screen which is (in my opinion) not something we want. As a result of all of this the field of view files shrunk to 21 by 35 (however upon further thinking for an easier time interpreting the editors I plan to expand their dimensions to 24 by 39 for the 2.0.0. version of the engine).
 
-Since the dimensions of the field of view are this small there is plenty of space on the screen for other stuff to be displayed. Thus the console window was separated to the newScreen and newMenu arrays. As of now the newMenu array is not in use, I plan to add basic functions and/or editors that could produce a menu or an inventory system on that half of the console window. If you want to expand the dimensions of the FOV files you'll need to change the value of FOVROWS and FOVCOLS which are defined in the system.h header file, but be prepared, if you change it to anything that is bigger than the dimensions of the newScreen array (which is 24 by 39) you will run into complications. But before you do anything with any of theese values or the files please read [the part about using the map editors](#2231-how-to-use-the-map-editor), there is a note reffering to possible problems that might surface.
+Since the dimensions of the field of view are this small there is plenty of space on the screen for other stuff to be displayed. Thus the console window was separated to the newScreen and newMenu arrays. As of now the newMenu array is not in use, I plan to add basic functions and/or editors that could produce a menu or an inventory system on that half of the console window. If you want to expand the dimensions of the FOV files you'll need to change the value of [FOVROWS and FOVCOLS](#312-fovrows-and-fovcols) which are defined in the [system.h header file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/system/system.h), but be prepared, if you change it to anything that is bigger than the dimensions of the newScreen array (which is 24 by 39) you will run into complications. But before you do anything with any of theese values or the files please read [the part about using the map editors](#2231-how-to-use-the-map-editor), there is a note reffering to possible problems that might surface.
 
 ### 2.2.2. How to use the material editors
 ###### This section was last checked in the 1.0.0. version of the engine
-The material "editors" are the .txt files located in the materials folder. One of them (walkable.txt) contains characters that don't block player movement, and the other (solid.txt) contains characters that block light, thus creating shadows. Both of them function exactly the same, so I am only going to discuss the workings of the one concerned with the characters that are blocking light. Characters in the editor should be seperated by an enter. When you are updating this file, make sure that the value of SOLIDCOUNT equals that of the characters in this file, otherwise the function that loads theese characters would go over too few or too many of them.
+The material "editors" are the .txt files located in [the materials folder](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/materials). One of them ([walkable.txt](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/materials/walkable.txt)) contains characters that don't block player movement, and the other ([solid.txt](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/materials/solid.txt)) contains characters that block light, thus creating shadows. Both of them function exactly the same, so I am only going to discuss the workings of the one concerned with the characters that are blocking light. Characters in the editor should be seperated by an enter. When you are updating this file, make sure that the value of [SOLIDCOUNT](#314-solidcount-and-walkablecount) equals that of the characters in this file, otherwise the function that loads theese characters would go over too few or too many of them.
 
 ### 2.2.3. The map editor
 #### 2.2.3.1. How to use the map editor
 ###### This section was last checked in the 1.0.0. version of the engine
-The map "editor" is the text file located in the maps folder. It is a huge 231 by 63 .txt file, as with the other editors if you want to alter its size you should alter the value of WORLDROWS and WORLDROWS in the system.h file as well. You might wonder why it's filled with 'i' characters, thats because I didn't figure out a way to read spaces, so any 'i' you see in any of the editors will be parsed by the engine as a ' ' character. You can write anything into this .txt (except for spaces I guess) and it will be visible in the map of the game. Any character that you write here and also into at least one of the material editors will have the properties associated with said editor.
+The map "editor" is [the text file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt) located in [the maps folder](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/maps). It is a huge 231 by 63 .txt file, as with the other editors if you want to alter its size you should alter the value of [WORLDROWS and WORLDROWS](#313-worldrows-and-worldcols) in [the system.h file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/system/system.h) as well. You might wonder why it's filled with 'i' characters, thats because I didn't figure out a way to read spaces, so any 'i' you see in any of the editors will be parsed by the engine as a ' ' character. You can write anything into [this .txt](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt) (except for spaces I guess) and it will be visible in the map of the game. Any character that you write here and also into at least one of [the material editors](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/materials) will have the properties associated with said editor.
 
-**Note:** As of now it is recommended that you leave out 19 cells on the top and bottom and 35 cells at the sides of any map you create. Make sure the player can't pass into any of theese left out cells (there is an example of how you can do this in the default world.txt file). The reason for this is that if the player would be in any of theese cells, looking in the wrong direction, the engine would make calculations with variables in the newWorld array that simply do not exist, leading to all sorts of problems. If you [alter the dimensions of the FOV files](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays) this recommended 19 and 35 cells might be too little to avoid any such catastrophe (or they might be too much, which can be a problem if you want to make bigger walkable maps). Hopefully the 2.0.0. update will solve this issue and we can finally use the map editor in its intended way.
+**Note:** As of now it is recommended that you leave out 19 cells on the top and bottom and 35 cells at the sides of any map you create. Make sure the player can't pass into any of theese left out cells (there is an example of how you can do this in [the default world.txt file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt)). The reason for this is that if the player would be in any of theese cells, looking in the wrong direction, the engine would make calculations with variables in the newWorld array that simply do not exist, leading to all sorts of problems. If you [alter the dimensions of the FOV files](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays) this recommended 19 and 35 cells might be too little to avoid any such catastrophe (or they might be too much, which can be a problem if you want to make bigger walkable maps). Hopefully the 2.0.0. update will solve this issue and we can finally use the map editor in its intended way.
 
 #### 2.2.3.2. Further ramblings about the coordinate system
 ###### This section was last checked in the 1.0.0. version of the engine
-I have explained the coordinate system once before, but just to be sure I will reiterate here. The coordinate system only deals with positive coordinates, and it is flipped, meaning that the (0; 0) cell is on the top left, and the (231; 63) cell is at the botom right of (in this case) the editor. Columns run along the x axis and rows run along the y axis, the conversion between theese names is often needed to understand the code of this engine.
+I have explained the coordinate system once before, but just to be sure I will reiterate here. The coordinate system only deals with positive coordinates, and it is flipped, meaning that the (0; 0) cell is on the top left, and the (231; 63) cell is at the botom right of (in this case) [the editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt). Columns run along the x axis and rows run along the y axis, the conversion between theese names is often needed to understand the code of this engine.
 
-**Cells and points should NOT be confused!** Cell's coordinates refer to the coordinate of a character in for example the map editor, or in the newWorld array, and they are often used with col and row variables instead of the x and the y of a normal coordinate system. Points on the other hand refer to actual coordinates. Theese point coordinates are used in casting the lines from the player to the differnet obstacles in the enviroment, to produce shadows. 
+**Cells and points should NOT be confused!** Cell's coordinates refer to the coordinate of a character in for example [the map editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt), or in the newWorld array, and they are often used with col and row variables instead of the x and the y of a normal coordinate system. Points on the other hand refer to actual coordinates. Theese point coordinates are used in casting the lines from the player to the differnet obstacles in the enviroment, to produce shadows. 
 ```
 Coordinate of the upper left point:                                 Coordinate of the upper right point:
                              (a; b)  _____________________________  (a + 1; b)
@@ -244,6 +244,12 @@ Coordinate of the bottom left point: |___________________________|  Coordinate o
 Each cell has four point coordinates associated with it. If the cell's coordinates are (a; b) then the point on the upper left is (a; b) the point on the upper right is (a + 1; b) the point on the bottom left is (a; b + 1) and the point on the bottom right is (a + 1; b + 1), as the figure above represents.
 
 # 3. Detailed description of EVERYTHING
+###### This section was last checked in the 1.0.0. version of the engine
+This segment of the documentation will have four main subsections:
+* [Defines](#31-defines)
+* [Structures](#32-structures)
+* [Variables](#33-variables-in-the-main-cpp-file)
+* Functions
 ## 3.1. Defines
 ### 3.1.1. SCREENROWS, SCREENCOLS and MENUCOLS
 ###### This section was last checked in the 1.0.0. version of the engine
@@ -262,18 +268,18 @@ Each cell has four point coordinates associated with it. If the cell's coordinat
 #define FOVROWS 21
 #define FOVCOLS 35
 ```
-**Usage:** Theese define the dimensions of the FOV editors, and also the arrays that hold the information parsed from thoose editors.
+**Usage:** Theese define the dimensions of the [FOV editors](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs), and also the arrays that hold the information parsed from thoose editors.
 
 **Notes:** Theese defines can be altered if someone wishes, but I dont think that is necessary. If however you are altering theese please be wary, you can accidentaly set their values to numbers that [could mess with the rendering of the newScreen array](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays), or theese values [could indirectly negatively affect the map of the world](#2231-how-to-use-the-map-editor).
-### 3.1.3. WORLDCOLS and WORLDROWS
+### 3.1.3. WORLDROWS and WORLDCOLS
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
 #define WORLDROWS 63
 #define WORLDCOLS 231
 ```
-**Usage:** Theese define the dimensions of the map editor, and also the newWorld array which holds the information parsed from said editor.
+**Usage:** Theese define the dimensions of the [map editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt), and also the newWorld array which holds the information parsed from said editor.
 
-**Notes:** Theese values can be altered freely, just make sure they are equal to the dimensions of the map editor file, if you want to parse the whole of that file. Also leave 19 cells on the top and bottom and 35 cells on each side of the map unenterable, the reason for this was explained in a note [here](#2231-how-to-use-the-map-editor).
+**Notes:** Theese values can be altered freely, just make sure they are equal to the dimensions of [the map editor file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt), if you want to parse the whole of that file. Also leave 19 cells on the top and bottom and 35 cells on each side of the map unenterable, the reason for this was explained in a note [here](#2231-how-to-use-the-map-editor).
 ### 3.1.4. SOLIDCOUNT and WALKABLECOUNT
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -339,7 +345,7 @@ struct fov
 	bool isPlayer;
 };
 ```
-**Usage:** This structure alone can hold every needed information about a cell in the FOV arrays or the FOV text files. In the engine it is used as the base for every FOV array.
+**Usage:** This structure alone can hold every needed information about a cell in the FOV arrays or the [FOV text files](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs). In the engine it is used as the base for every FOV array.
 
 **Sub variables:**
 * **inView:** This is true if this cell of the FOV is in view.
@@ -373,7 +379,7 @@ struct edgeLines
 	line second;
 };
 ```
-**Usage:** This structure holds two lines at once.
+**Usage:** This structure holds two [lines](#324-line) at once.
 
 **Sub variables:**
 * **first:** The first line.
@@ -396,5 +402,5 @@ struct koordinate
 * **y:** The y value.
 
 **Notes:** This should not be confused with the coordinates of cells. This is the coordinate of points, this structure is used when casting lines from the player to objects. Details about the difference between cell and point coordinates can be found [here](#2232-further-ramblings-about-the-coordinate-system).
-## 3.3. Variables in the main .cpp file
+## 3.3. Variables in [the main .cpp file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/ShadowFunctionsEngine.cpp)
 ###### This section was last checked in the 1.0.0. version of the engine
