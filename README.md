@@ -251,7 +251,7 @@ This segment of the documentation will have four main subsections:
 * [Defines](#31-defines)
 * [Structures](#32-structures)
 * [Variables](#33-variables-in-the-main-cpp-file)
-* Functions
+* [Functions](#34-functions)
 ## 3.1. Defines
 ### 3.1.1. SCREENROWS, SCREENCOLS and MENUCOLS
 ###### This section was last checked in the 1.0.0. version of the engine
@@ -595,4 +595,12 @@ map newWorld[WORLDROWS][WORLDCOLS];
 
 **Notes:** This array gets initalized from the [map editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt), for details about this editor click [here](#223-the-map-editor). For details about the map structure click [here](#322-map).
 ## 3.4. Functions
+###### This section was last checked in the 1.0.0. version of the engine
+This section of the third chapter of the documentation will not gover the functions in order of apperance (as opposed to the previous sections) but in the order that they are in their header files. Thus this section will have the following parts:
+* [input.h](#341-inputh)
+* movement.h
+* output.h
+* render.h
+* shadowFunctions.h
+### 3.4.1. [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h)
 ###### This section was last checked in the 1.0.0. version of the engine
