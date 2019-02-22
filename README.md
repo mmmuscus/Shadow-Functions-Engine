@@ -116,7 +116,7 @@ saveLastMenuArray(oldMenu, newMenu);
 lastPlayer.row = player.row;
 lastPlayer.col = player.col;
 ```
-With information from the last frame we can make the game run much faster and the graphics look much smoother, so we save the last position of our player character and the last frame of the screen (the screen of the console is segmented into two seperate arrays newScreen and newMenu, with their respective counterparts from the frame before being oldScreen and oldMenu, the explanation for this can be found [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays)).
+With information from the last frame we can make the game run much faster and the graphics look much smoother, so we save the last position of our player character and the last frame of the screen (the screen of the console is segmented into two seperate arrays [newScreen](#3314-newscreen) and [newMenu](#3316-newmenu), with their respective counterparts from the frame before being [oldScreen](#3313-oldscreen) and [oldMenu](#3315-oldmenu), the explanation for this can be found [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays)).
 #### 2.1.2.2. Player and camera movement
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
