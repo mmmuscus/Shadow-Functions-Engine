@@ -81,11 +81,12 @@ For more information about theese arrays please refer to [the part concerned wit
 ### 2.1.2. The game loop
 #### 2.1.2.1. Keeping the loop going, storing input and information from the last frame
 ###### This section was last checked in the 1.0.0. version of the engine
-After the [initialization](#211-initialization), the game loop is started. The first thing it does is to wait for the set amount of time before doing anything:
+After the [initialization](#211-initialization), the game loop is started:
 ```cpp
 Sleep(sleepTime);
 ```
-Next it deals with incoming input. Setting back all the bools to false that store the input from the 5 different keys, then getting the button information from the keyboard for each and acting accordingly. The escape key is set up to be the one that exits out of the game, so if its pressed the gameloop terminates. If however the escape key is not pressed, we cancel out any input that would be contradictody, such as moving right and left at the same time:
+The first thing it does is to wait for the set amount of time before doing anything.
+Next it deals with incoming input. Setting back all the bools to false that store the input from the 5 different keys, then getting the button information from the keyboard for each and acting accordingly. The escape key is set up to be the one that exits out of the game, so if its pressed the gameloop terminates. If however the escape key is not pressed, we cancel out any input that would be contradictody, such as moving right and left at the same time.
 ```cpp
 isWPressed = false;
 isAPressed = false;
@@ -107,7 +108,7 @@ if (isEscPressed)
 cancelOut(isWPressed, isSPressed);
 cancelOut(isAPressed, isDPressed);
 ```
-With information from the last frame we can make the game run much faster and the graphics look much smoother, so we save the last position of our player character and the last frame of the screen (the screen of the console is segmented into two seperate arrays newScreen and newMenu, with their respective counterparts from the frame before being oldScreen and oldMenu, the explanation for this can be found [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays)):
+Next it deals with incoming input. Setting back all the bools to false that store the input from the 5 different keys, then getting the button information from the keyboard for each and acting accordingly. The escape key is set up to be the one that exits out of the game, so if its pressed the gameloop terminates. If however the escape key is not pressed, we cancel out any input that would be contradictody, such as moving right and left at the same time.
 ```cpp
 saveLastScreenArray(oldScreen, newScreen);
 saveLastMenuArray(oldMenu, newMenu);
@@ -115,23 +116,23 @@ saveLastMenuArray(oldMenu, newMenu);
 lastPlayer.row = player.row;
 lastPlayer.col = player.col;
 ```
+With information from the last frame we can make the game run much faster and the graphics look much smoother, so we save the last position of our player character and the last frame of the screen (the screen of the console is segmented into two seperate arrays newScreen and newMenu, with their respective counterparts from the frame before being oldScreen and oldMenu, the explanation for this can be found [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays)).
 #### 2.1.2.2. Player and camera movement
 ###### This section was last checked in the 1.0.0. version of the engine
-With all of our existing input and information from the last frame, we can finally start to move the player! The first two functions are making sure the player moves according (if he can!) to the input. The final function sets up the direction in which the player is facing, this is also done with the input, if the D key is pressed the player will face right, if the W key is also pressed the player will face top AND right. Basically the player will face in whichever direction the inputs dictate in every frame:
 ```cpp
 player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
 player = keepInBounds(player, lastPlayer, newWorld);
 player = setDirections(player, isWPressed, isSPressed, isAPressed, isDPressed);
 ```
-We need the camera to follow our character, so next we are dealing with this problem. The first function detects where the camera should be, next we pan the camera in that direction (it should be noted that panning the camera is not done instantly and needs time to be in the desired position), lastly we make sure that the camera is not going out of bounds:
+With all of our existing input and information from the last frame, we can finally start to move the player! The first two functions are making sure the player moves according (if he can!) to the input. The final function sets up the direction in which the player is facing, this is also done with the input, if the D key is pressed the player will face right, if the W key is also pressed the player will face top AND right. Basically the player will face in whichever direction the inputs dictate in every frame.
 ```cpp
 whereToCamera = camMovement(whereToCamera, player);
 camera = cameraPan(camera, whereToCamera);
 camera = keepCamInBounds(camera, newWorld);
 ```
+We need the camera to follow our character, so next we are dealing with this problem. The first function detects where the camera should be, next we pan the camera in that direction (it should be noted that panning the camera is not done instantly and needs time to be in the desired position), lastly we make sure that the camera is not going out of bounds.
 #### 2.1.2.3. Producing the binary shading
 ###### This section was last checked in the 1.0.0. version of the engine
-Next we start preparing for the shading of the correct places. Firstly we apply the correct field of view. Then we find out where is the player situated in the selected field of view, this will act as an anchor point between the world and the FOV array. With the help of this anchor we add the FOV to the map, after this we will know which cells of the map are currently in the field of view of the player. The last thing we will need before we can start the shading is the point from which the player "sees", or from where we can cast lines to the correct places on the map:
 ```cpp
 setCurrentFov(player, currentFov, right, left, up, down, rightUp, rightDown, leftUp, leftDown);
 playerInFov = getPlayerPosInFov(player, playerInFov);
@@ -139,7 +140,7 @@ addFovInfoToMap(newWorld, player, playerInFov, currentFov);
 
 playerPov = getPov(playerPov, player);
 ```
-Theese three functions are the main focus of this engine. The first one is responsible for casting lines from the player's point of view to different walls in the enviroment, and calculating which cells are fully encapsualted in shadow. The second one makes everything a little bit prettier, it draws a line that is less shadow-y, inbetween the cells that are in the light and the ones that are in the dark. Whilst theese first two functions are concerned with calculating which cells are in view, or which are at the edge of light and darkness, the third function translates all this information into textures and hands it over to the newScreen array for rendering:
+Next we start preparing for the shading of the correct places. Firstly we apply the correct field of view. Then we find out where is the player situated in the selected field of view, this will act as an anchor point between the world and the FOV array. With the help of this anchor we add the FOV to the map, after this we will know which cells of the map are currently in the field of view of the player. The last thing we will need before we can start the shading is the point from which the player "sees", or from where we can cast lines to the correct places on the map.
 ```cpp
 shadowFunction(newWorld, camera.col, camera.row, playerPov, edges);
 		
@@ -147,9 +148,9 @@ mapIsEdgeCalculation(newWorld, camera.row, camera.col);
 	
 calculateScreen(newWorld, newScreen, camera.row, camera.col);
 ```
+Theese three functions are the main focus of this engine. The first one is responsible for casting lines from the player's point of view to different walls in the enviroment, and calculating which cells are fully encapsualted in shadow. The second one makes everything a little bit prettier, it draws a line that is less shadow-y, inbetween the cells that are in the light and the ones that are in the dark. Whilst theese first two functions are concerned with calculating which cells are in view, or which are at the edge of light and darkness, the third function translates all this information into textures and hands it over to the newScreen array for rendering.
 #### 2.1.2.4. Rendering
 ###### This section was last checked in the 1.0.0. version of the engine
-Finally the last part of the game loop is repalcing the player character from the last frame with a ' ' and then re placing the player character into the correct position in the world. Then the newMenu is filled up with the line that divides it from the newScreen (more about theese arrays in [the part which is discussing the FOV editors](#221-the-fov-editors)). Lastly both the newScreen and newMenu are rendered in the console window:
 ```cpp
 if (newScreen[lastPlayer.row - camera.row][lastPlayer.col - camera.col] == playerTexture)
 {		
@@ -166,6 +167,7 @@ renderScreen(oldScreen, newScreen);
 
 renderMenu(oldMenu, newMenu);
 ```
+Finally the last part of the game loop is repalcing the player character from the last frame with a ' ' and then re placing the player character into the correct position in the world. Then the newMenu is filled up with the line that divides it from the newScreen (more about theese arrays in [the part which is discussing the FOV editors](#221-the-fov-editors)). Lastly both the newScreen and newMenu are rendered in the console window.
 
 And thus the cycle continues, if there is anything that needs clearing up the exact workings of the engine will be detailed in [the third part of the documentation](#3-detailed-description-of-everything), and some details which I omited here will be covered in [the next half of the second part](#22-how-to-use-the-editors-and-other-further-details).
 
