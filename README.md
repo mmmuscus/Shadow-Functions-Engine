@@ -147,7 +147,7 @@ mapIsEdgeCalculation(newWorld, camera.row, camera.col);
 	
 calculateScreen(newWorld, newScreen, camera.row, camera.col);
 ```
-Theese three functions are the main focus of this engine. The first one is responsible for casting lines from the player's point of view to different walls in the enviroment, and calculating which cells are fully encapsualted in shadow. The second one makes everything a little bit prettier, it draws a line that is less shadow-y, inbetween the cells that are in the light and the ones that are in the dark. Whilst theese first two functions are concerned with calculating which cells are in view, or which are at the edge of light and darkness, the third function translates all this information into textures and hands it over to the newScreen array for rendering.
+Theese three functions are the main focus of this engine. The first one is responsible for casting lines from the player's point of view to different walls in the enviroment, and calculating which cells are fully encapsualted in shadow. The second one makes everything a little bit prettier, it draws a line that is less shadow-y, inbetween the cells that are in the light and the ones that are in the dark. Whilst theese first two functions are concerned with calculating which cells are in view, or which are at the edge of light and darkness, [the third function](#3445-calculatescreen) translates all this information into textures and hands it over to the newScreen array for rendering.
 #### 2.1.2.4. Rendering
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -166,7 +166,7 @@ renderScreen(oldScreen, newScreen);
 
 renderMenu(oldMenu, newMenu);
 ```
-Finally the last part of the game loop is repalcing the player character from the last frame with a ' ' and then re placing the player character into the correct position in the world. Then the [newMenu](#3316-newmenu) is filled up with the line that divides it from the [newScreen](#3314-newscreen) (more about theese arrays in [the part which is discussing the FOV editors](#221-the-fov-editors)). Lastly both the [newScreen](#3314-newscreen) and [newMenu](#3316-newmenu) are rendered in the console window.
+Finally the last part of the game loop is repalcing the player character from the last frame with a ' ' and then re placing the player character into the correct position in the world. Then the [newMenu](#3316-newmenu) is filled up with the line that divides it from the [newScreen](#3314-newscreen) (more about theese arrays in [the part which is discussing the FOV editors](#221-the-fov-editors)). Lastly both the [newScreen](#3314-newscreen) and [newMenu](#3316-newmenu) are rendered in the console window with the [renderScreen](#3443-renderscreen) and [renderMenu](#3444-rendermenu) functions.
 
 And thus the cycle continues, if there is anything that needs clearing up the exact workings of the engine will be detailed in [the third part of the documentation](#3-detailed-description-of-everything), and some details which I omited here will be covered in [the next half of the second part](#22-how-to-use-the-editors-and-other-further-details).
 
@@ -600,7 +600,7 @@ This section of [the third chapter of the documentation](#3-detailed-description
 * [movement.h](#342-movementh)
 * [output.h](#343-outputh)
 * [render.h](#344-renderh)
-* shadowFunctions.h
+* [shadowFunctions.h](#345-shadowfunctions)
 ### 3.4.1. [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h)
 #### 3.4.1.1. ___Pressed
 ###### This section was last checked in the 1.0.0. version of the engine
