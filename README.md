@@ -668,8 +668,8 @@ void cancelOut (bool plus, bool minus)
 **Usage:** This function cancels out two bools if they are both true.
 
 **Variables:**
-* plus: Holds the first bool we want to check.
-* minus: Holds the second bool we want to check.
+* **plus:** Holds the first bool we want to check.
+* **minus:** Holds the second bool we want to check.
 
 **How it's done:** We check if both of the variables are ture. If they are we set them both to false.
 
