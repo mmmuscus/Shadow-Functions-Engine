@@ -123,13 +123,13 @@ player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
 player = keepInBounds(player, lastPlayer, newWorld);
 player = setDirections(player, isWPressed, isSPressed, isAPressed, isDPressed);
 ```
-With all of our existing input and information from the last frame, we can finally start to move the player! The first two functions are making sure the player moves according (if he can!) to the input. The final function sets up the direction in which the player is facing, this is also done with the input, if the D key is pressed the player will face right, if the W key is also pressed the player will face top AND right. Basically the player will face in whichever direction the inputs dictate in every frame.
+With all of our existing input and information from the last frame, we can finally start to move the player! [The first function](#3421-playermovement) determines where the player should be moved according to the inputs. [The second function](#3422-keepinbounds) determines if said movement is possible [The final function](#3423-setdirections) sets up the direction in which the player is facing, this is also done with the input, if the D key is pressed the player will face right, if the W key is also pressed the player will face top AND right. Basically the player will face in whichever direction the inputs dictate in every frame.
 ```cpp
 whereToCamera = camMovement(whereToCamera, player);
 camera = cameraPan(camera, whereToCamera);
-camera = keepCamInBounds(camera, newWorld);
+camera = keepCamInBounds(camera);
 ```
-We need the camera to follow our character, so next we are dealing with this problem. The first function detects where the camera should be, next we pan the camera in that direction (it should be noted that panning the camera is not done instantly and needs time to be in the desired position), lastly we make sure that the camera is not going out of bounds.
+We need the camera to follow our character, so next we are dealing with this problem. [The first function](#3424-cammovement) detects where the camera should be, [next](#3425-camerapan) we pan the camera in that direction (it should be noted that panning the camera is not done instantly and needs time to be in the desired position), [lastly](#3426-keepcaminbounds) we make sure that the camera is not going out of bounds. For information about the camera click [here](#336-camera).
 #### 2.1.2.3. Producing the binary shading
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -598,7 +598,7 @@ map newWorld[WORLDROWS][WORLDCOLS];
 This section of [the third chapter of the documentation](#3-detailed-description-of-everything) will not gover the functions in order of apperance (as opposed to the previous sections) but in the order that they are in their header files. Thus this section will have the following parts:
 * [input.h](#341-inputh)
 * [movement.h](#342-movementh)
-* output.h
+* [output.h](#343-outputh)
 * render.h
 * shadowFunctions.h
 ### 3.4.1. [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h)
@@ -826,11 +826,16 @@ mob setDirections(mob playr, bool w, bool s, bool a, bool d)
 	return playr;
 }
 ```
-**Usage:**
+**Usage:** This function sets the orientational bools into the correct position (accordint to the input) in the player variable.
 
 **Variables:**
+* **playr:** This variable holds the orientation of the player character.
+* **w:** This is true when the w key is pressed down. 
+* **s:** This is true when the s key is pressed down.
+* **a:** This is true when the a key is pressed down.
+* **d:** This is true when the d key is pressed down.
 
-**How it's done & notes:**
+**How it's done & notes:** First the function sets all directional bools to false (to learn more about the mob structure click [here](#321-mob)), then it turns the correct bools to ture according to the input. Theese bools in themselves don't translate into the game, we need another function to parse them and load the correct FOV assoicated with this direction (to see all possible FOVs click [here](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs)).
 #### 3.4.2.4. camMovement
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -887,11 +892,13 @@ mob camMovement(mob cam, mob playr)
 	return cam;
 }
 ```
-**Usage:**
+**Usage:** Reurns the position of where the camera SHOULD be, accordin to the orientation of the player.
 
 **Variables:**
+* **cam:** Holds the position of where the camera SHOULD be.
+* **playr:** Holds the position of the player.
 
-**How it's done & notes:**
+**How it's done & notes:** The different camera positions associated with every orientation are hardcoded into this function. For further information about how this should work adn plans for future updates click [here](#2211-how-to-use-the-fov-editors).
 #### 3.4.2.5. cameraPan
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -920,15 +927,17 @@ mob cameraPan(mob cam, mob camDest)
 	return cam;
 }
 ```
-**Usage:**
+**Usage:** This function brings the camera closer on every frame to the position it should be.
 
 **Variables:**
+* **cam:** This variable holds information about the position of the camera.
+* **camDest:** This variable holds information about where the camera SHOULD be.
 
-**How it's done & notes:**
+**How it's done & notes:** This function increments or decrements (or does nothing with) the camera's correct coordinate. Since this gets called every frame the camera gets closer to it's destination on every frame, or if the camera is on the destination it should be the camera doesn't get moved. Since the movement speed of the camera, and the player character is the same, when the player turns quickly around and keeps moving in that direction the camera can't catch up with its destination and thus the camera doesn't show the majority of the player's FOV. A fix for this issue is planned for a future update of the engine. For information about the camera click [here](#336-camera), and for information about the camera's destination click [here](#337-wheretocamera).
 #### 3.4.2.6. keepCamInBounds
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
-mob keepCamInBounds(mob cam, map world[WORLDROWS][WORLDCOLS])
+mob keepCamInBounds(mob cam)
 {
 	if (cam.row < 0)
 	{
@@ -953,8 +962,11 @@ mob keepCamInBounds(mob cam, map world[WORLDROWS][WORLDCOLS])
 	return cam;
 }
 ```
-**Usage:**
+**Usage:** This function makes sure the camera dosen't show anything that would be out of bounds of the map.
 
 **Variables:**
+* **cam:** Holds information about the position of the camera.
 
-**How it's done & notes:**
+**How it's done & notes:** First the function checks if any of the camera's coordinates are lower than 0, if they are they get set back to 0. Since what the camera shows is displayed in [the newScreen array](#3314-newscreen), the next thing the function checks is if any of the camera's coordinates are bigger than the world's correct dimension minus the screen's correct dimension, if they are they get set back to the difference of thoose dimensions. For information about the camera click [here](#336-camera).
+### 3.4.3. [output.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/output.h)
+###### This section was last checked in the 1.0.0. version of the engine
