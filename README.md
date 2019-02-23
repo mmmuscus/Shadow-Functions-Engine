@@ -650,9 +650,7 @@ bool escPressed()
 
 **Variables:** -
 
-**How it's done:** The functions use another function called [GetKeyState](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeystate).
-
-**Notes:** The [GetKeyState function](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeystate) can be found in [the windiws.h header](https://en.wikipedia.org/wiki/Windows.h) which countains lots of useful functions from the windows API. The ___Pressed functions are one of the three places where I used external resources to solve my problem. The other link I used to write theese can be found [here](https://stackoverflow.com/questions/6331868/using-getkeystate).
+**How it's done & notes:** The functions use another function called [GetKeyState](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeystate). This function can be found in [the windiws.h header](https://en.wikipedia.org/wiki/Windows.h) which countains lots of useful functions from the windows API. The ___Pressed functions are one of the three places where I used external resources to solve my problem. The other link I used to write theese can be found [here](https://stackoverflow.com/questions/6331868/using-getkeystate).
 #### 3.4.1.2. cancelOut
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -671,8 +669,292 @@ void cancelOut (bool plus, bool minus)
 * **plus:** Holds the first bool we want to check.
 * **minus:** Holds the second bool we want to check.
 
-**How it's done:** We check if both of the variables are ture. If they are we set them both to false.
-
-**Notes:** This is used to cancel out contradictory input (for example when both the a and d keys are pressed), but it could be used for any form of cancellation of contradictory bools.
+**How it's done & notes:** We check if both of the variables are ture. If they are we set them both to false. This is used to cancel out contradictory input (for example when both the a and d keys are pressed), but it could be used for any form of cancellation of contradictory bools.
 ### 3.4.2. [movement.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/movement.h)
+#### 3.4.2.1. playerMovement
 ###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+mob playerMovement(mob playr, bool w, bool s, bool a, bool d)
+{
+	if (s)
+	{
+		playr.row++;
+	}
+	
+	if (w)
+	{
+		playr.row--;
+	}
+	
+	if (d)
+	{
+		playr.col++;
+	}
+	
+	if (a)
+	{
+		playr.col--;
+	}
+	
+	return playr;
+}
+```
+**Usage:** This function calculates where the player would be according to this frame's inputs.
+
+**Variables:**
+* **playr:** This variable holds the position of the player character.
+* **w:** This is true when the w key is pressed down, if it is the player gets moved up. 
+* **s:** This is true when the s key is pressed down, if it is the player gets moved down.
+* **a:** This is true when the a key is pressed down, if it is the player gets moved to the left.
+* **d:** This is true when the d key is pressed down, if it is the player gets moved to the right.
+
+**How it's done & notes:** The function checks for each of the four bools and increments the player's position if any is true. This function only calculates the possible position of the player. This position can be inside walls the [keepInBounds](#3422-keepinbounds) function is the one responsible for clearing up thoose sort of messes.
+#### 3.4.2.2. keepInBounds
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+mob keepInBounds(mob playr, mob lastPlayr, map world[WORLDROWS][WORLDCOLS])
+{
+	if (playr.row != lastPlayr.row && playr.col != lastPlayr.col)
+	{
+		if (world[playr.row][playr.col].walkable == false)
+		{
+			if (world[playr.row][lastPlayr.col].walkable == true && world[lastPlayr.row][playr.col].walkable == true)
+			{
+				playr.row = lastPlayr.row;
+				playr.col = lastPlayr.col;
+			}
+			else
+			{
+				if (world[playr.row][lastPlayr.col].walkable == false && world[lastPlayr.row][playr.col].walkable == false)
+				{
+					playr.row = lastPlayr.row;
+					playr.col = lastPlayr.col;
+				}
+				
+				if (world[playr.row][lastPlayr.col].walkable && world[lastPlayr.row][playr.col].walkable == false)
+				{
+					playr.col = lastPlayr.col;
+				}
+				else
+				{
+					playr.row = lastPlayr.row;
+				}
+			}
+		}
+		else
+		{
+			if (world[playr.row][lastPlayr.col].walkable == false && world[lastPlayr.row][playr.col].walkable == false)
+			{
+				playr.row = lastPlayr.row;
+				playr.col = lastPlayr.col;
+			}
+		}
+	}
+	else
+	{
+		if (world[playr.row][playr.col].walkable == false)
+		{
+			playr.row = lastPlayr.row;
+			playr.col = lastPlayr.col;
+		}	
+	}
+	
+	return playr;
+}
+```
+**Usage:** This function prevents the player from passing into unpassable objects.
+
+**Variables:**
+* **playr:** This variable holds the current caluclated possible position of the player (or in other words the cell the player wants to pass into).
+* **lastPlayr:** This variable holds the player's position from the last frame.
+* **world:** This array holds the map of the world with all of the attributes of each cell.
+
+**How it's done & notes:** First we check if both of the coordinates of the player have changed. We do this because if it haven't, we have an easy time, we only need to set back the player into the last frame's position if the cell he passed into blocks player movement (this attribute is stored in the .walkable part of the map structure, more information can be found [here](#322-map)). If however both of the coordinates have changed from the last frame's position we need to check a few more things. 
+
+For the rest of this explanation let's assume that the player on the last frame was on the (a; b) cell, and now he wants to pass into the (a + 1; b + 1) cell. I will use some small graphs to explain the different cases in this function. In theese graphs the '@' represents the player on the last frame (or the (a; b) cell), the '#' represents the calculated possible location of the player for this frame (or the (a + 1; b + 1) cell) and the 'x' characters represent cells that block player movement (if the '#' and 'x' characters would overlap they will be replaced by an '0'). The '|' characters are only there to make the graphs prettier and easier to interpret.
+
+```
+|@x|
+|x#|
+```
+The next thing we need to check is if the cell the player wants to pass into blocks player movement. If it doesn't we still need to check if the two cells that are next to the player from the last frame in the direction of the desired location block movement (see the figure above), if they do we don't let the player move, because the player would pass through walls, and that is not something we want.
+
+```
+|@ |
+| 0|
+```
+If the cell the player wishes to pass into does block movement we need to check if the cells that are next to the player from the last frame in the direction of the desired location block movement (see the figure above), if they don't, we don't let the player move, because he is up against the edge of the deisred location (which blocks movement), and opposed to later cases (see below) the character can't really "slide" on either side of said cell.
+
+```
+1. |@ |
+   |x0|
+   
+2. |@x|
+   | 0|
+```
+After the above cases we can be sure, that the desired location blocks movement, and that at least one of the cells that are next to the player from the last frame in the direction of the desired location block movement (see the first two figures from [this very section](#3422-keepinbounds)). We check for theese cells one by one, if both of them block movement we don't move the player. If only one is blocking movement we "slide" the player in the logical direction (see the figures above: in the case of the 1st figure we "slide" him to the right, and in the case of the 2nd figure we "slide" him downwards). The logic behind this is the following: The player wants to move to (a + 1; b + 1) but that cell is not avalaible for movement. The inputs consist of the s button (which signals the desire to move downwards) and the d button (which signals the desire to move to the right), so if the player can't move downward AND to the right, he should move to at least in one of the directions he wants to.
+#### 3.4.2.3. setDirections
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+mob setDirections(mob playr, bool w, bool s, bool a, bool d)
+{
+	playr.up = false;
+	playr.down = false;
+	playr.right = false;
+	playr.left = false;
+	
+	if (w)
+	{
+		playr.up = true;
+	}
+	
+	if (s)
+	{
+		playr.down = true;
+	}
+	
+	if (a)
+	{
+		playr.left = true;
+	}
+	
+	if (d)
+	{
+		playr.right = true;
+	}
+	
+	return playr;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.2.4. camMovement
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+mob camMovement(mob cam, mob playr)
+{
+	if (playr.right && !playr.up && !playr.down)
+	{
+		cam.row = playr.row - 12;
+		cam.col = playr.col - 3;
+	}
+	
+	if (playr.right && playr.up)
+	{
+		cam.row = playr.row - 16;
+		cam.col = playr.col - 9;
+	}
+	
+	if (playr.right && playr.down)
+	{
+		cam.row = playr.row - 8;
+		cam.col = playr.col - 9;
+	}
+	
+	if (playr.left && !playr.up && !playr.down)
+	{
+		cam.row = playr.row - 12;
+		cam.col = playr.col - 35;
+	}
+	
+	if (playr.left && playr.up)
+	{
+		cam.row = playr.row - 16;
+		cam.col = playr.col - 29;
+	}
+	
+	if (playr.left && playr.down)
+	{
+		cam.row = playr.row - 8;
+		cam.col = playr.col - 29;
+	}
+	
+	if (playr.up && !playr.right && !playr.left)
+	{
+		cam.row = playr.row - 22;
+		cam.col = playr.col - 19;
+	}
+	
+	if (playr.down && !playr.right && !playr.left)
+	{
+		cam.row = playr.row - 2;
+		cam.col = playr.col - 19;
+	}
+
+	return cam;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.2.5. cameraPan
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+mob cameraPan(mob cam, mob camDest)
+{
+	if (cam.row < camDest.row)
+	{
+		cam.row++;
+	}
+	
+	if (cam.row > camDest.row)
+	{
+		cam.row--;
+	}
+	
+	if (cam.col < camDest.col)
+	{
+		cam.col++;
+	}
+	
+	if (cam.col > camDest.col)
+	{
+		cam.col--;
+	}
+
+	return cam;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.2.6. keepCamInBounds
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+mob keepCamInBounds(mob cam, map world[WORLDROWS][WORLDCOLS])
+{
+	if (cam.row < 0)
+	{
+		cam.row = 0;
+	}
+	
+	if (cam.col < 0)
+	{
+		cam.col = 0;
+	}
+	
+	if (cam.row > WORLDROWS - SCREENROWS)
+	{
+		cam.row = WORLDROWS - SCREENROWS;
+	}
+	
+	if (cam.col > WORLDCOLS - SCREENCOLS)
+	{
+		cam.col = WORLDCOLS - SCREENCOLS;
+	}
+	
+	return cam;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
