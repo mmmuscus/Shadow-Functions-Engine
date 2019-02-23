@@ -86,7 +86,6 @@ After the [initialization](#211-initialization), the game loop is started:
 Sleep(sleepTime);
 ```
 The first thing it does is to wait for the set amount of time before doing anything.
-Next it deals with incoming input. Setting back all the bools to false that store the input from the 5 different keys, then getting the button information from the keyboard for each and acting accordingly. The escape key is set up to be the one that exits out of the game, so if its pressed the gameloop terminates. If however the escape key is not pressed, we cancel out any input that would be contradictody, such as moving right and left at the same time.
 ```cpp
 isWPressed = false;
 isAPressed = false;
@@ -108,7 +107,7 @@ if (isEscPressed)
 cancelOut(isWPressed, isSPressed);
 cancelOut(isAPressed, isDPressed);
 ```
-Next it deals with incoming input. Setting back all the bools to false that store the input from the 5 different keys, then getting the button information from the keyboard for each and acting accordingly. The escape key is set up to be the one that exits out of the game, so if its pressed the gameloop terminates. If however the escape key is not pressed, we cancel out any input that would be contradictody, such as moving right and left at the same time.
+Next it deals with incoming input. Setting back all the bools to false that store the input from the 5 different keys, then [getting the button information from the keyboard](#3411-___pressed) for each and acting accordingly. The escape key is set up to be the one that exits out of the game, so if its pressed the gameloop terminates. If however the escape key is not pressed, we [cancel out any input that would be contradictody](#3412-cancelout), such as moving right and left at the same time.
 ```cpp
 saveLastScreenArray(oldScreen, newScreen);
 saveLastMenuArray(oldMenu, newMenu);
@@ -598,9 +597,82 @@ map newWorld[WORLDROWS][WORLDCOLS];
 ###### This section was last checked in the 1.0.0. version of the engine
 This section of [the third chapter of the documentation](#3-detailed-description-of-everything) will not gover the functions in order of apperance (as opposed to the previous sections) but in the order that they are in their header files. Thus this section will have the following parts:
 * [input.h](#341-inputh)
-* movement.h
+* [movement.h](#342-movementh)
 * output.h
 * render.h
 * shadowFunctions.h
 ### 3.4.1. [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h)
+#### 3.4.1.1. ___Pressed
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+bool wPressed()
+{
+	if (GetKeyState('W') & 0x8000)
+	{
+		return true;
+	}
+}
+
+bool aPressed()
+{
+	if (GetKeyState('A') & 0x8000)
+	{
+		return true;
+	}
+}
+
+bool sPressed()
+{
+	if (GetKeyState('S') & 0x8000)
+	{
+		return true;
+	}
+}
+
+bool dPressed()
+{
+	if (GetKeyState('D') & 0x8000)
+	{
+		return true;
+	}
+}
+
+bool escPressed()
+{
+	if (GetKeyState(VK_ESCAPE) & 0x8000) 
+	{
+		return true;
+	}
+}
+```
+
+**Usage:** Theese functions return true when the correct key is pressed down.
+
+**Variables:** -
+
+**How it's done:** The functions use another function called [GetKeyState](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeystate).
+
+**Notes:** The [GetKeyState function](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getkeystate) can be found in [the windiws.h header](https://en.wikipedia.org/wiki/Windows.h) which countains lots of useful functions from the windows API. The ___Pressed functions are one of the three places where I used external resources to solve my problem. The other link I used to write theese can be found [here](https://stackoverflow.com/questions/6331868/using-getkeystate).
+#### 3.4.1.2. cancelOut
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void cancelOut (bool plus, bool minus)
+{
+	if (plus && minus)
+	{
+		plus = false;
+		minus = false;
+	}
+}
+```
+**Usage:** This function cancels out two bools if they are both true.
+
+**Variables:**
+* plus: Holds the first bool we want to check.
+* minus: Holds the second bool we want to check.
+
+**How it's done:** We check if both of the variables are ture. If they are we set them both to false.
+
+**Notes:** This is used to cancel out contradictory input (for example when both the a and d keys are pressed), but it could be used for any form of cancellation of contradictory bools.
+### 3.4.2. [movement.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/movement.h)
 ###### This section was last checked in the 1.0.0. version of the engine
