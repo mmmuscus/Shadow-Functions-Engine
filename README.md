@@ -224,7 +224,7 @@ The map "editor" is [the text file](https://github.com/mmmuscus/Shadow-Functions
 
 #### 2.2.3.2. Further ramblings about the coordinate system
 ###### This section was last checked in the 1.0.0. version of the engine
-I have explained the coordinate system once before, but just to be sure I will reiterate here. The coordinate system only deals with positive coordinates, and it is flipped, meaning that the (0; 0) cell is on the top left, and the (231; 63) cell is at the botom right of (in this case) [the editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt). Columns run along the x axis and rows run along the y axis, the conversion between theese names is often needed to understand the code of this engine.
+I have explained the coordinate system once before, but just to be sure I will reiterate here. The coordinate system only deals with positive coordinates, and it is flipped, meaning that the (0; 0) cell is on the top left, and the (231; 63) cell is at the botom right of (in this case) [the editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt) (this is because the windows API uses a coordinate system like this, and I use this API for certain tasks that involve the manipulation of the console window). Columns run along the x axis and rows run along the y axis, the conversion between theese names is often needed to understand the code of this engine.
 
 **Cells and points should NOT be confused!** Cell's coordinates refer to the coordinate of a character in for example [the map editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt), or in the [newWorld array](#3321-newworld), and they are often used with col and row variables instead of the x and the y of a normal coordinate system. Points on the other hand refer to actual coordinates. Theese point coordinates are used in casting the lines from the player to the differnet obstacles in the enviroment, to produce shadows. 
 ```
@@ -334,7 +334,7 @@ struct map
 * **solid:** This is true if this cell blocks light and thus creates shadows.
 * **walkable:** This is true if this cell does not block player movement. 
 * **mapInView:** This is true if the texture of the cell should be displayed.
-* **mapIsEdge:** This is true if the texture of the cell should be replaced with '▒'.
+* **mapIsEdge:** This is true if the texture of the cell should be replaced with '▒', because it is between a cell that is in view and another that isn't.
 
 **Notes:** Throughout the gameloop mapInView is changed, firstly it is true for every cell that is in the field of view of the player, after that the shadows are calculated and mapInView is actually only true for cells that are in fact in view.
 ### 3.2.3. fov
@@ -1161,4 +1161,163 @@ void initFOV(fov dir[FOVROWS][FOVCOLS], string fileName)
 **How it's done & notes:** First we open the desired FOV file. Then we start looping through all of the characters. According to the '_' and '@' characters we set the correct sub variable of the structure to true or false. For the meaning of the different characters in the FOV files click [here](#2211-how-to-use-the-fov-editors). For more information about the FOV editors click [here](#221-the-fov-editors).
 
 ### 3.4.4. [render.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/render.h)
+#### 3.4.4.1. goTo
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void goTo (int row, int column)
+{
+	HANDLE hStdout;
+	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	
+	COORD destCoord;
+	
+	destCoord.X = column;
+	destCoord.Y = row;
+	
+	SetConsoleCursorPosition(hStdout, destCoord);
+}
+```
+**Usage:** This function puts the cursor into a set position in the console window.
+
+**Variables:**
+* **row:** The row of the cell to which the cursor will be put on the console window.
+* **col:** The column of the cell to which the cursor will be put on the console window.
+
+**How it's done & notes:** This was one of the three times where I resorted to outside sources to solve my problem. I found my answer [here](https://stackoverflow.com/questions/10401724/move-text-cursor-to-particular-screen-coordinate) in the fourth answer. For information about the coordinate system in place please click [here](#2232-further-ramblings-about-the-coordinate-system)
+#### 3.4.4.2. clearScreen
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void clearScreen()
+{
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);	
+
+	COORD coordScreen = { 0, 0 };
+	DWORD cCharsWritten;
+	CONSOLE_SCREEN_BUFFER_INFO csbi; 
+	DWORD dwConSize;
+	
+	// Get the number of character cells in the current buffer. 
+
+	if( !GetConsoleScreenBufferInfo( hConsole, &csbi ))
+		return;
+	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+
+	// Fill the entire screen with blanks.
+
+	if( !FillConsoleOutputCharacter( hConsole, (TCHAR) ' ',
+    	dwConSize, coordScreen, &cCharsWritten ))
+    	return;
+
+	// Get the current text attribute.
+
+	if( !GetConsoleScreenBufferInfo( hConsole, &csbi ))
+    	return;
+
+	// Set the buffer's attributes accordingly.
+
+	if( !FillConsoleOutputAttribute( hConsole, csbi.wAttributes,
+    	dwConSize, coordScreen, &cCharsWritten ))
+    	return;
+
+	// Put the cursor at its home coordinates.
+
+	SetConsoleCursorPosition( hConsole, coordScreen );
+}
+```
+**Usage:** Clears the console window. 
+
+**Variables:** -
+
+**How it's done & notes:** This was one of the three times where I resorted to outside sources to solve my problem. Sadly I didn't keep the original link, but I found this implementation of a clear screen function right [here](https://docs.microsoft.com/en-us/windows/console/clearing-the-screen)!
+#### 3.4.4.3. renderScreen
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void renderScreen(char oldS[SCREENROWS][SCREENCOLS], char newS[SCREENROWS][SCREENCOLS])
+{
+	for (int i = 0; i < SCREENROWS; i++)
+	{
+		for (int j = 0; j < SCREENCOLS; j++)
+		{
+			if (newS[i][j] != oldS[i][j])
+			{
+				goTo(i, j);
+				cout<<newS[i][j];
+			}
+		}
+	}
+	
+	goTo(SCREENROWS, 0);
+}
+```
+**Usage:** This renders the "screen" part of the console window. 
+
+**Variables:**
+* **oldS:** This array holds the textures from the last frame of the "screen" part of the console window.
+* **newS:** This array holds the textures from this frame of the "screen" part of the console window.
+
+**How it's done & notes:** The function loops through both of the arrays and compares each cell's textures. If there is a difference, it goes to the correct cell of the console window with [the goTo function](#3441-goto), and updates the cell with the correct texture. This means that the engine only updates cells that's texture changed in this frame, if the engine would update every cell every frame that would lead to flashing, sometimes not even completing the updates properly and (obviously) a much slower runtime.
+#### 3.4.4.4. renderMenu
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void renderMenu(char oldM[SCREENROWS][MENUCOLS], char newM[SCREENROWS][MENUCOLS])
+{
+	for (int i = 0; i < SCREENROWS; i++)
+	{
+		for (int j = 0; j < MENUCOLS; j++)
+		{
+			if (newM[i][j] != oldM[i][j])
+			{
+				goTo(i, SCREENCOLS + j);
+				cout<<newM[i][j];
+			}
+		}
+	}
+}
+```
+**Usage:** This renders the "menu" part of the console window.
+
+**Variables:**
+* **oldM:** This array holds the textures from the last frame of the "menu" part of the console window.
+* **newM:** This array holds the textures from this frame of the "menu" part of the console window.
+
+**How it's done & notes:** The function loops through both of the arrays and compares each cell's textures. If there is a difference, it goes to the correct cell of the console window with [the goTo function](#3441-goto), and updates the cell with the correct texture. This means that the engine only updates cells that's texture changed in this frame, if the engine would update every cell every frame that would lead to flashing, sometimes not even completing the updates properly and (obviously) a much slower runtime.
+#### 3.4.4.5. calculateScreen
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SCREENCOLS], int cameraRow, int cameraCol)
+{
+	for (int i = 0; i < SCREENROWS; i++)
+	{
+		for (int j = 0; j < SCREENCOLS; j++)
+		{
+			if (world[i + cameraRow][j + cameraCol].mapInView)
+			{
+				screen[i][j] = world[i + cameraRow][j + cameraCol].texture;
+			}
+			else
+			{
+				if (world[i + cameraRow][j + cameraCol].mapIsEdge)
+				{
+						screen[i][j] = char(176);
+				}
+				else
+				{
+					screen[i][j] = char(178);
+				}
+			}
+		}
+	}
+}
+```
+**Usage:** This function translates all of the information calculated by the shadowFunction and mapIsEdgeCalculation functions into textures that can be rendered.
+
+**Variables:**
+* **world:** This array holds all of the information about the cells of the world, like what is or isn't visible, etc.
+* **screen:** This array will hold the textures of the "screen" part of the console window after the function is finished.
+* **cameraRow:** This is the value that holds in which row the camera is currently.
+* **cameraCol:** This is the value that holds in which column the camera is currently.
+
+**How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the workld is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of thoose are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
+### 3.4.5. [shadowFunctions](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/shadowFunctions.h)
 ###### This section was last checked in the 1.0.0. version of the engine
