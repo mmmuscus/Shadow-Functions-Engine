@@ -22,7 +22,7 @@ I am a highschool student, who is interested in computer science and more specif
 ###### This section was last checked in the 1.0.0. version of the engine
 The bare minimum I wanted to accomplish was a real time 2D top down game, with a "realistic" binary shading system (this was all planned to be running in the windows console). The concept of the shading system is the following: There is a player (represented by the '@' character); who has a field of view in which he can see things; anything that would block his view (e.g.: an 'x' character) casts a shadow, meaning that he can't see the things behind the "wall", even if those things would be in his field of view.
 
-Right now this shading system has a small bug, which I will discuss in a later section of the documentation. Besides the minimum goal I created basic text file based level and field of view editors. I also created the option to make new characters that could block light, or player movement.
+Right now this shading system has a small bug, which I will discuss in [a later section of the documentation](#34512-shadowfunction). Besides the minimum goal I created basic text file based level and field of view editors. I also created the option to make new characters that could block light, or player movement.
 
 Features as of now:
 * Real time 8 directional player movement
@@ -139,7 +139,7 @@ addFovInfoToMap(newWorld, player, playerInFov, currentFov);
 
 playerPov = getPov(playerPov, player);
 ```
-Next we start preparing for the shading of the correct places. Firstly we apply the correct field of view. Then we find out where is the player situated in the selected field of view, this will act as an anchor point between the world and the FOV array. With the help of this anchor we add the FOV to the map, after this we will know which cells of the map are currently in the field of view of the player. The last thing we will need before we can start the shading is the point from which the player "sees", or from where we can cast lines to the correct places on the map.
+Next we start preparing for the shading of the correct places. In [the first function](#3452-setcurrentfov) we apply the correct field of view. In [the next one](#3453-getplayerposinfov) we find out where is the player situated in the selected field of view, this will act as an anchor point between the world and the FOV array. With the help of this anchor [the third function](#3454-addfovinfotomap) can add the FOV to the map, after this we will know which cells of the map are currently in the field of view of the player. The last thing we will need before we can start the shading is the point from which the player "sees", or from where we can cast lines to the correct places on the map, so we get this with the help of [the last function](#3455-getpov).
 ```cpp
 shadowFunction(newWorld, camera.col, camera.row, playerPov, edges);
 		
@@ -147,7 +147,7 @@ mapIsEdgeCalculation(newWorld, camera.row, camera.col);
 	
 calculateScreen(newWorld, newScreen, camera.row, camera.col);
 ```
-Theese three functions are the main focus of this engine. The first one is responsible for casting lines from the player's point of view to different walls in the enviroment, and calculating which cells are fully encapsualted in shadow. The second one makes everything a little bit prettier, it draws a line that is less shadow-y, inbetween the cells that are in the light and the ones that are in the dark. Whilst theese first two functions are concerned with calculating which cells are in view, or which are at the edge of light and darkness, [the third function](#3445-calculatescreen) translates all this information into textures and hands it over to the newScreen array for rendering.
+Theese three functions are the main focus of this engine. [The first one](#34512-shadowfunction) is responsible for casting lines from the player's point of view to different walls in the enviroment, and calculating which cells are fully encapsualted in shadow. [The second one](#34514-mapisedgecalculation) makes everything a little bit prettier, it draws a line that is less shadow-y, inbetween the cells that are in the light and the ones that are in the dark. Whilst theese first two functions are concerned with calculating which cells are in view, or which are at the edge of light and darkness, [the third function](#3445-calculatescreen) translates all this information into textures and hands it over to the newScreen array for rendering.
 #### 2.1.2.4. Rendering
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -199,7 +199,7 @@ ___________________________________
 000000000000000_______0000000000000  
 ```
 The description of each character:
-* The '@' character represents the player, there should be exactly 1 of theese characters per FOV file because it acts as the anchor point between the .txt and the map on which the information about the field of view is pasted onto. (As of version 1.0.0. the position of this character does not get automatically parsed by the engine, so if you want to change it in this file you'll need to hardcode that change into the correct function as well. Fixing this issue is a planned goal for version 2.0.0.)
+* The '@' character represents the player, there should be exactly 1 of theese characters per FOV file because it acts as the anchor point between the .txt and the map on which the information about the field of view is pasted onto. (As of version 1.0.0. the position of this character does not get automatically parsed by the engine, so if you want to change it in this file you'll need to hardcode that change into [the correct function](#3453-getplayerposinfov) as well. Fixing this issue is a planned goal for version 2.0.0.)
 * The '_' characters represent cells that are in the player's field of view.
 * The '0' characters represent cells that are not in the player's field of view.
 
@@ -370,7 +370,7 @@ struct line
 * **bIntercept:** The value where the line intercepts the y axis.
 * **isItUnderLine:** This is true if the line is under the object which we are trying to shade.
 
-**Notes:** The line equation I am using for this project is the following: `y = (mSlope * x) + bIntercept`. This equation can't describe lines that are vertical, but I prevented that from happening, no lines that are cast are cast vertically (or horizontally for that matter). The isItUnderLine sub variable is only used when determining what is and what isn't in shade, when the lines are not for that purpose this sub variable can be left untouched. If the point (a; b) is under a line this inequality would be true: `b < (mSlope * a) + bIntercept`, if said point is over the line this inequality would be true: `b > (mSlope * a) + bIntercept`, if the point is on the line this equation is true: `b = (mSlope * a) + bIntercept`. For more information about this formula of the line click [here](https://en.wikipedia.org/wiki/Linear_equation#Slope%E2%80%93intercept_form).
+**Notes:** The line equation I am using for this project is the following: `y = (mSlope * x) + bIntercept`. This equation can't describe lines that are vertical, but I prevented that from happening, no lines that are cast are not cast vertically (or horizontally for that matter). The isItUnderLine sub variable is only used when [determining what is and what isn't in shade](#34512-shadowfunction), when the lines are not for that purpose this sub variable can be left untouched. If the point (a; b) is under a line this inequality would be true: `b < (mSlope * a) + bIntercept`, if said point is over the line this inequality would be true: `b > (mSlope * a) + bIntercept`, if the point is on the line this equation is true: `b = (mSlope * a) + bIntercept`. For more information about this formula of the line click [here](https://en.wikipedia.org/wiki/Linear_equation#Slope%E2%80%93intercept_form).
 ### 3.2.5. edgeLines
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1978,3 +1978,5 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
 * **cameraCol:** This variable holds the column of the camera.
 
 **How it's done & notes:** First we need to set all of the cells around the screen to not being in view, since if we don't all sorts of funny buisness can happen (less shadow-y shadows appearing at the edge of the screen where they shouldn't be). Then we go over all of the cells that will be displayed and call [the isBesideNotSolidInView function](#34513-isbesidenotsolidinview) with them. If that function returns ture we set the isEdge sub variable of the cell to true (for more information about the map structure click [here](#322-map)).
+# 4. Table of Contents
+###### This section was last checked in the 1.0.0. version of the engine
