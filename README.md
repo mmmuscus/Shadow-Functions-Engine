@@ -602,6 +602,8 @@ This section of [the third chapter of the documentation](#3-detailed-description
 * [render.h](#344-renderh)
 * [shadowFunctions.h](#345-shadowfunctions)
 ### 3.4.1. [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h)
+###### This section was last checked in the 1.0.0. version of the engine
+This header file contains functions that deal with the input coming form the keboard.
 #### 3.4.1.1. ___Pressed
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -671,6 +673,8 @@ void cancelOut (bool plus, bool minus)
 
 **How it's done & notes:** We check if both of the variables are ture. If they are we set them both to false. This is used to cancel out contradictory input (for example when both the a and d keys are pressed), but it could be used for any form of cancellation of contradictory bools.
 ### 3.4.2. [movement.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/movement.h)
+###### This section was last checked in the 1.0.0. version of the engine
+This header file contains functions that deal with moving the player and the camera according to what the game world dictates.
 #### 3.4.2.1. playerMovement
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -969,6 +973,8 @@ mob keepCamInBounds(mob cam)
 
 **How it's done & notes:** First the function checks if any of the camera's coordinates are lower than 0, if they are they get set back to 0. Since what the camera shows is displayed in [the newScreen array](#3314-newscreen), the next thing the function checks is if any of the camera's coordinates are bigger than the world's correct dimension minus the screen's correct dimension, if they are they get set back to the difference of thoose dimensions. For information about the camera click [here](#336-camera).
 ### 3.4.3. [output.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/output.h)
+###### This section was last checked in the 1.0.0. version of the engine
+This header file containts two functions that make rendering smoother and the game run faster and other fnctions initialize the information from the different editors. I don't know why I named it output, but its too late now!
 #### 3.4.3.1. saveLastScreenArray
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1161,6 +1167,8 @@ void initFOV(fov dir[FOVROWS][FOVCOLS], string fileName)
 **How it's done & notes:** First we open the desired FOV file. Then we start looping through all of the characters. According to the '_' and '@' characters we set the correct sub variable of the structure to true or false. For the meaning of the different characters in the FOV files click [here](#2211-how-to-use-the-fov-editors). For more information about the FOV editors click [here](#221-the-fov-editors).
 
 ### 3.4.4. [render.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/render.h)
+###### This section was last checked in the 1.0.0. version of the engine
+This header contains functions that either help rendering, or actually render stuff.
 #### 3.4.4.1. goTo
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1320,6 +1328,8 @@ void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SC
 
 **How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the workld is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of thoose are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
 ### 3.4.5. [shadowFunctions](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/shadowFunctions.h)
+###### This section was last checked in the 1.0.0. version of the engine
+This header contains functions that prepare for the shading of the correct parts of the game world, and also [the function that actually shades the correct places](#34512-shadowfunction).
 #### 3.4.5.1. makeCurrentFov
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
