@@ -1542,11 +1542,15 @@ line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
 	return e;
 }
 ```
-**Usage:**
+**Usage:** This function determines a line that passes throught two points.
 
 **Variables:**
+* **aXCol:** The x coordinate of the first point.
+* **aYRow:** The y coordinate of the first point.
+* **bXCol:** The x coordinate of the second point.
+* **bYRow:** The y coordinate of the second point.
 
-**How it's done & notes:**
+**How it's done & notes:** It can be prooven that the operations I'm doing with thoose variables produce the desired values (for an explanation click [here](https://www.khanacademy.org/math/algebra/two-var-linear-equations/writing-slope-intercept-equations/v/equation-of-a-line-3) and for an explanation of the line formula the engine uses click [here](#324-line)). It should be noted that the second point's coordinates are set as integers, this is because I use this function to cast lines from the player to the edges of objects, and the edges of the objects are always integers (for further information about this click [here](#2232-further-ramblings-about-the-coordinate-system)).
 #### 3.4.5.7. isUnderLine
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1560,11 +1564,14 @@ bool isUnderLine(line e, int solidYRow, int solidXCol)
 	return false;
 }
 ```
-**Usage:**
+**Usage:** This function determines if a cell is under a line (this icludes the case when the cell is just touching the line).
 
 **Variables:**
+* **e:** The line in question.
+* **solidYRow:** The y coordinate of the cell.
+* **solidXCol:** The x coordinate of the cell.
 
-**How it's done & notes:**
+**How it's done & notes:** The function checks for all of the four points of the cell if its under the given line, if all four are then it returns true. For the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system).
 #### 3.4.5.8. isOverLine
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1578,11 +1585,14 @@ bool isOverLine(line e, int solidYRow, int solidXCol)
 	return false;
 }
 ```
-**Usage:**
+**Usage:** This function determines if a cell is over a line (this icludes the case when the cell is just touching the line).
 
 **Variables:**
+* **e:** The line in question.
+* **solidYRow:** The y coordinate of the cell.
+* **solidXCol:** The x coordinate of the cell.
 
-**How it's done & notes:**
+**How it's done & notes:** The function checks for all of the four points of the cell if its over the given line, if all four are then it returns true. For the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system).
 #### 3.4.5.9. isBetweenLines
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
