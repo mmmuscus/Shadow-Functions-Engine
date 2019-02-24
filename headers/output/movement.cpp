@@ -183,7 +183,7 @@ mob cameraPan(mob cam, mob camDest)
 	return cam;
 }
 
-mob keepCamInBounds(mob cam, map world[WORLDROWS][WORLDCOLS])
+mob keepCamInBounds(mob cam)
 {
 	if (cam.row < 0)
 	{

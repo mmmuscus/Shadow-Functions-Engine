@@ -10,4 +10,4 @@ mob camMovement(mob cam, mob playr);
 
 mob cameraPan(mob cam, mob camDest);
 
-mob keepCamInBounds(mob cam, map world[WORLDROWS][WORLDCOLS]);
+mob keepCamInBounds(mob cam);

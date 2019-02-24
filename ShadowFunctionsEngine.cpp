@@ -132,7 +132,7 @@ int main()
 
 		whereToCamera = camMovement(whereToCamera, player);
 		camera = cameraPan(camera, whereToCamera);
-		camera = keepCamInBounds(camera, newWorld);
+		camera = keepCamInBounds(camera);
 
 		setCurrentFov(player, currentFov, right, left, up, down, rightUp, rightDown, leftUp, leftDown);
 		playerInFov = getPlayerPosInFov(player, playerInFov);
