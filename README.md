@@ -3,7 +3,7 @@
 **Note:** I was using [Dev C++](https://en.wikipedia.org/wiki/Dev-C%2B%2B) as the IDE with TMD-GCC 4.9.2. as the compiler, I have seen the project not functioning as intended with other IDEs and compilers.
 ## 1.1. The structure of this documentation
 ###### This section was last checked in the 1.0.0. version of the engine
-This documentation will have three main parts and a table of contents:
+This documentation will have three main parts and a [table of contents](#4-table-of-contents):
 * [The first](#1-introduction) is the introduction (the part you are reading right now)
 * [The second](#2-how-to-use-the-engine) is an overview of [how the engine works](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) and [how you can operate it and it's different editors](#22-how-to-use-the-editors-and-other-further-details)
 * [The third](#3-detailed-description-of-everything) will go over every last detail about the [defines](#31-defines), [structures](#32-structures), [variables](#33-variables-in-the-main-cpp-file) and [functions](#34-functions) the engine uses
@@ -1980,3 +1980,27 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
 **How it's done & notes:** First we need to set all of the cells around the screen to not being in view, since if we don't all sorts of funny buisness can happen (less shadow-y shadows appearing at the edge of the screen where they shouldn't be). Then we go over all of the cells that will be displayed and call [the isBesideNotSolidInView function](#34513-isbesidenotsolidinview) with them. If that function returns ture we set the isEdge sub variable of the cell to true (for more information about the map structure click [here](#322-map)).
 # 4. Table of Contents
 ###### This section was last checked in the 1.0.0. version of the engine
+[1. Introduction](#1-introduction)  
+* [1.1. The structure of this documentation](#11-the-structure-of-this-documentation)
+* [1.2. Who the hell am I and what the hecky heck is this?](#12-who-the-hell-am-i-and-what-the-hecky-heck-is-this)
+* [1.3. So what is the project?](#13-so-what-is-the-project)
+
+[2. How to use the engine](#2-how-to-use-the-engine)
+* [2.1. How the engine works: a breakdown of the main .cpp file](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file)
+  * [2.1.1. Initialization](#211-initialization)
+    * [2.1.1.1. System variables](#2111-system-variables)
+    * [2.1.1.2. Alterable variables](#2112-alterable-variables)
+    * [2.1.1.3. Variables that hold information parsed from the editors](#2113-variables-that-hold-information-parsed-from-the-editors)
+  * [2.1.2. The game loop](#212-the-game-loop)
+    * [2.1.2.1. Keeping the loop going, storing input and information from the last frame](#2121-keeping-the-loop-going-storing-input-and-information-from-the-last-frame)
+    * [2.1.2.2. Player and camera movement](#2122-player-and-camera-movement)
+    * [2.1.2.3. Producing the binary shading](#2123-producing-the-binary-shading)
+    * [2.1.2.4. Rendering](#2124-rendering)
+* [2.2. How to use the editors, and other further details](22-how-to-use-the-editors-and-other-further-details)
+  * [2.2.1. The FOV editors](#221-the-fov-editors)
+    * [2.2.1.1. How to use the FOV editors](#2211-how-to-use-the-fov-editors)
+    * [2.2.1.2. The whys of the FOV editors and the explanation of the newScreen and newMenu arrays](2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays)
+  * [2.2.2. How to use the material editors](#222-how-to-use-the-material-editors)
+  * [2.2.3. The map editor](#223-the-map-editor)
+    * [2.2.3.1. How to use the map editor](#2231-how-to-use-the-map-editor)
+    * [2.2.3.2. Further ramblings about the coordinate system](#2232-further-ramblings-about-the-coordinate-system)
