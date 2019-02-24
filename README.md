@@ -2004,3 +2004,80 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
   * [2.2.3. The map editor](#223-the-map-editor)
     * [2.2.3.1. How to use the map editor](#2231-how-to-use-the-map-editor)
     * [2.2.3.2. Further ramblings about the coordinate system](#2232-further-ramblings-about-the-coordinate-system)
+    
+[3. Detailed description of EVERYTHING](#3-detailed-description-of-everything)
+* [3.1. Defines](#31-defines)
+  * [3.1.1. SCREENROWS, SCREENCOLS and MENUCOLS](#311-screenrows-screencols-and-menucols)
+  * [3.1.2. FOVROWS and FOVCOLS](#312-fovrows-and-fovcols)
+  * [3.1.3. WORLDROWS and WORLDCOLS](#313-worldrows-and-worldcols)
+  * [3.1.4. SOLIDCOUNT and WALKABLECOUNT](#314-solidcount-and-walkablecount)
+* [3.2. Structures](#32-structures)
+  * [3.2.1. mob](#321-mob)
+  * [3.2.2. map](#322-map)
+  * [3.2.3. fov](#323-fov)
+  * [3.2.4. line](#324-line)
+  * [3.2.5. edgeLines](#325-edgelines)
+  * [3.2.6. koordinate](#326-koordinate)
+* [3.3. Variables in the main .cpp file](#33-variables-in-the-main-cpp-file)
+  * [3.3.1. playerTexture](#331-playertexture)
+  * [3.3.2. screenDivisionTexture](#332-screendivisiontexture)
+  * [3.3.3. is___Pressed](#333-is___pressed)
+  * [3.3.4. player](#334-player)
+  * [3.3.5. lastPlayer](#335-lastplayer)
+  * [3.3.6. camera](#336-camera)
+  * [3.3.7. whereToCamera](#337-wheretocamera)
+  * [3.3.8. playerInFov](#338-playerinfov)
+  * [3.3.9. playerPov](#339-playerpov)
+  * [3.3.10. edges](#3310-edges)
+  * [3.3.11. sleepTime](#3311-sleeptime)
+  * [3.3.12. isNotExit](#3312-isnotexit)
+  * [3.3.13. oldScreen](#3313-oldscreen)
+  * [3.3.14. newScreen](#3314-newscreen)
+  * [3.3.15. oldMenu](#3315-oldmenu)
+  * [3.3.16. newMenu](#3316-newmenu)
+  * [3.3.17. FOV arrays](#3317-fov-arrays)
+  * [3.3.18. currentFov](#3318-currentfov)
+  * [3.3.19. solid](3319-solid)
+  * [3.3.20. walkable](3320-walkable)
+  * [3.3.21. newWorld](#3321-newworld)
+* [3.4. Functions](#34-functions)
+  * [3.4.1. input.h](#341-inputh)
+    * [3.4.1.1. ___Pressed](#3411-___pressed)
+    * [3.4.1.2. cancelOut](#3412-cancelout)
+  * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+  * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+  * []
+    * []
+    * []
+    * []
+    * []
+    * []
+  * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+    * []
+
+[]
