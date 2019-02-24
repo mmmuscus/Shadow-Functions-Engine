@@ -1398,11 +1398,21 @@ void setCurrentFov(mob playr, fov toBecomeCurrentFov[FOVROWS][FOVCOLS], fov r[FO
 	}
 }
 ```
-**Usage:**
+**Usage:** This function sets the current [FOV array](#3317-fov-arrays) to the correct [FOV array](#3317-fov-arrays) according to the input.
 
 **Variables:**
+* **playr:** This variable holds the needed information about the input.
+* **toBecomeCurrentFov:** This array will contain the correct [FOV array](#3317-fov-arrays) according to this frame's inputs.
+* **r:** This array holds the information about how the FOV looks when the player is looking to the right.
+* **l:** This array holds the information about how the FOV looks when the player is looking to the left.
+* **u:** This array holds the information about how the FOV looks when the player is looking upwards.
+* **d:** This array holds the information about how the FOV looks when the player is looking downwards.
+* **ru:** This array holds the information about how the FOV looks when the player is looking upwards and to the right.
+* **rd:** This array holds the information about how the FOV looks when the player is looking downwards and to the right.
+* **lu:** This array holds the information about how the FOV looks when the player is looking upwards and to the left.
+* **ld:** This array holds the information about how the FOV looks when the player is looking downwards and to the left.
 
-**How it's done & notes:**
+**How it's done & notes:** The function checks each of the 8 cases one by one and then copies the correct FOV array into the toBecomeCurrentFov array, with the use of [the makeCurrentFov function](#3451-makecurrentfov).
 #### 3.4.5.3. getPlayerPosInFov
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1459,11 +1469,13 @@ mob getPlayerPosInFov(mob playr, mob fovPlayr)
 	return fovPlayr;
 }
 ```
-**Usage:**
+**Usage:** This function sets where the player is in the [FOV array](#3317-fov-arrays) accoding to the input.
 
 **Variables:**
+* **playr:** This variable holds the needed information about the input.
+* **fovPlayr:** This variable will hold where the player is in the current [FOV array](#3317-fov-arrays).
 
-**How it's done & notes:**
+**How it's done & notes:** The function checks each of the 8 cases one by one, then hardcodes the correct values into the .col and .row sub variables of the fovPlayr variable. For more information about the mob structure click [here](#321-mob). The information from this fovPlayr variable will be used as an anchor point by [the function that adds the information from the current FOV array into the map](#3454-addfovinfotomap). A better implementation of this function is planned for the 2.0.0. update!
 #### 3.4.5.4. addFovInfoToMap
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1490,11 +1502,15 @@ void addFovInfoToMap(map world[WORLDROWS][WORLDCOLS], mob playr, mob fovPlayr, f
 	}
 }
 ```
-**Usage:**
+**Usage:** This function adds the infromation from [the current FOV array](#3318-currentfov) about the different cells that are visible or not into the map of the world.
 
 **Variables:**
+* **world:** This array will hold the information if the cell is in view or not, about the needed cells of the world.
+* **playr:** This variable holds the position of the player in the world.
+* **fovplayr:** This variable holds the position of the player in [the current FOV array](#3318-currentfov).
+* **fov:** This array holds information about the current FOV of the player. 
 
-**How it's done & notes:**
+**How it's done & notes:** First the function sets all of the cells to not visible in [the world array](#3321-newworld). Then we start looping over a chunk of the world which's size equals that of [the FOV ararys](#3317-fov-arrays). If a cell in [the current FOV array](#3318-currentfov) is in view we set the correct cell in the world to in view. We do this with the help of our anchor point. Since the anchor point is the position of the player in [the current FOV array](#3318-currentfov), if we subtract it from the player's position in the world we get the top left point of the FOV of the player in the world. After that we can just simply loop over every cell of [the current FOV array](#3318-currentfov) by adding i and j to the correct dimensions.  
 #### 3.4.5.5. getPov
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1506,11 +1522,13 @@ koordinate getPov(koordinate pov, mob playr)
 	return pov;
 }
 ```
-**Usage:**
+**Usage:** This gets the point of view from which the player "sees" things.
 
 **Variables:**
+* **pov:** This variable will contain the coordinates of the point from which the player "sees" things.
+* **playr:** This variable holds the position of the player in the world.
 
-**How it's done & notes:**
+**How it's done & notes:** We just simply add 0.5 to the position of the player. Since we will cast lines to the edges of different cells in [the function that shades things](#34512-shadowfunction), and since the edges of the cells all have integer cordinates for their four points, adding 0.5 to both of the coordinates of the player prevents the engine from casting lines that are vertical (vertical lines can't be described by the line equation the engine is using for more information click [here](#324-line)). **Important:** the playr variable has cell coordinates in it and the pov variable will have point coordinates in it, for more information about the difference between the two click [here](#2232-further-ramblings-about-the-coordinate-system).
 #### 3.4.5.6. getLineEquation
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
