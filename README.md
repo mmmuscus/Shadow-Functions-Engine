@@ -1542,7 +1542,7 @@ line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
 	return e;
 }
 ```
-**Usage:** This function determines a line that passes throught two points.
+**Usage:** This function determines the line that passes throught two points.
 
 **Variables:**
 * **aXCol:** The x coordinate of the first point.
@@ -1564,14 +1564,14 @@ bool isUnderLine(line e, int solidYRow, int solidXCol)
 	return false;
 }
 ```
-**Usage:** This function determines if a cell is under a line (this icludes the case when the cell is just touching the line).
+**Usage:** This function returns true if a cell is under a line (this icludes the case when the cell is just touching the line).
 
 **Variables:**
 * **e:** The line in question.
 * **solidYRow:** The y coordinate of the cell.
 * **solidXCol:** The x coordinate of the cell.
 
-**How it's done & notes:** The function checks for all of the four points of the cell if its under the given line, if all four are then it returns true. For the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system).
+**How it's done & notes:** The function checks for all of the four points of the cell if its under the given line, if all four are then it returns true. For the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system). For more information about the line formula click [here](#324-line).
 #### 3.4.5.8. isOverLine
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1585,14 +1585,14 @@ bool isOverLine(line e, int solidYRow, int solidXCol)
 	return false;
 }
 ```
-**Usage:** This function determines if a cell is over a line (this icludes the case when the cell is just touching the line).
+**Usage:** This function returns true if a cell is over a line (this icludes the case when the cell is just touching the line).
 
 **Variables:**
 * **e:** The line in question.
 * **solidYRow:** The y coordinate of the cell.
 * **solidXCol:** The x coordinate of the cell.
 
-**How it's done & notes:** The function checks for all of the four points of the cell if its over the given line, if all four are then it returns true. For the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system).
+**How it's done & notes:** The function checks for all of the four points of the cell if its over the given line, if all four are then it returns true. For the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system). For more information about the line formula click [here](#324-line).
 #### 3.4.5.9. isBetweenLines
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1631,11 +1631,15 @@ bool isBetweenLines(line a, line b, int yRow, int xCol)
 	return true;
 }
 ```
-**Usage:**
+**Usage:** This function returns true if a cell is between two lines (a cell is also determined to be between two lines if any of the lines touch it in just one point).
 
 **Variables:**
+* **a:** The first line. 
+* **b:** The second line.
+* **yRow:** The y coordinate of the cell.
+* **xCol:** The x coordinate of the cell.
 
-**How it's done & notes:**
+**How it's done & notes:** The engine checks both of the possibilities (is the line under or over the cell we are checking) for both of the lines. This is done by utilizing properties of the line structure (for more info click [here](#324-line)), [the isUnderline function](#3457-isunderline) and [the isOverLine function](#3458-isoverline).
 #### 3.4.5.10. isBehindWall
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1664,11 +1668,36 @@ bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int r
 	return true;
 }
 ```
-**Usage:**
+**Usage:** This function returns true if the cell and the player character are on "opposite sides" of a rectangle.
 
 **Variables:**
+* **pov:** This variable holds the point from which the player "sees" things. 
+* **yRow:** This variable holds the y coordinate of the cell.
+* **xCol:** This variable holds the x coordinate of the cell.
+* **top:** This variable holds the y coordinate of the top side of the rectangle.
+* **bottom:** This variable holds the y coordinate of the bottom side of the rectangle.
+* **right:** This variable holds the x coordinate of the right side of the rectangle.
+* **left:** This variable holds the x coordinate of the left side of the rectangle.
 
-**How it's done & notes:**
+**How it's done & notes:** For explaining the workings of this function I will use small figures. In theese the '@' character will represent the player character, the 'x' will represent the wall of the rectangels, and the '#' will represent the cells that are deemed to be "behind the wall" by the function (if the 'x' and '#' characters would overlap I will use '0' characters to represent both of the in one cell). The '|' characters are just there to make everything preiiter.
+```
+1. |   ######| 2. |######   | 3. |   ######| 4. |    @    | 5. |    @    |
+   |   ######|    |######   |    |  x######|    |         |    |         |
+   |@ x000000|    |000000x @|    |@ x######|    | xxxxxxx |    |    x    |
+   |   ######|    |######   |    |  x######|    |#########|    |####0####|
+   |   ######|    |######   |    |   ######|    |#########|    |####0####|
+```
+This function will be used to help determine which cells are behind the ones casting shadows. This is the reasoning behind the lone 'x' character (in the first two and last figures) not being "behind the wall", since that character is the one casting shadows. In the above cases the function would return true or false according to the figures. Basically the function determines whether the cell is behind (from the perspective of the player) the first cell(s) of a rectangle.
+```
+|@        |
+|         |
+|   xxx   |
+|    #####|
+|    #####|
+```
+The function only checks for the cases when it would need to return false, or in other words when the player and the cell are in on the same sides of the rectangle. If thats not the case it goes on to check all of the other ifs as well. So in the end it will combine all of the ifs and produce a result like the on in the figure above, when the player is not in one line with any of the cells.
+
+Since cell coordinates refer to the top left point of the cell, and the above mentioned reasons the wierd requirements of `xCol > right - 2` and `yRow < top + 1` are required. For further information about the coordinate sytem and the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system).
 #### 3.4.5.11. getEdgeLines
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1751,11 +1780,16 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 	}
 }
 ```
-**Usage:**
+**Usage:** This function returns the two lines that are cast from the player, both touch the rectangle in just one point, and encapsulate it. 
 
 **Variables:**
+* **pov:** This variable holds the point from which the player "sees" things. 
+* **top:** This variable holds the y coordinate of the top side of the rectangle.
+* **bot:** This variable holds the y coordinate of the bottom side of the rectangle.
+* **right:** This variable holds the x coordinate of the right side of the rectangle.
+* **left:** This variable holds the x coordinate of the left side of the rectangle.
 
-**How it's done & notes:**
+**How it's done & notes:** The function checks all of the 8 different possibilites one by one and then sets the two line's variables to the correct values using [the getLineEquation function](#3456-getlineequation).
 #### 3.4.5.12. shadowFunction
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1836,11 +1870,47 @@ void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRo
 	}
 }
 ```
-**Usage:**
+**Usage:** This function determines which cells are in shade in the world.
 
 **Variables:**
+* **world:** This array will hold the information about the visibility of the cells.
+* **cameraCol:** The column in which the camera is.
+* **cameraRow:** The column in which the camera is.
+* **pov:** This variable holds the point from which the player "sees" things. 
+* **edg:** This variable will be used to hold the lines that are cast from the player to the rectangle.
 
-**How it's done & notes:**
+**How it's done & notes:** The function goes over the screen of the game first horizontally, then vertically searching for rectangles that are 1 by x (or x by 1) in dimension. For the rest of this explanation I will be talking about the horizontal search of the screen, since the vertical search is the same, all the same porcesses happen they are just just flipped by 90 degrees. So, the function starts sweeping the screen horizontally, starting with the first line then going down to the next one by one. If it finds a cell that has the ability to block light it will find the end of that x long rectangle. This will be done with a while function that increments untill the cell it is on dosen't block light. 
+
+Now we have the edges of that rectangle (`i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol`), we will hand this information to [the getEdgeLines function](#34511-getedgelines), which will determine the two lines that will get cast from the player to the rectangle.
+
+Now that we have theese lines we start to go over every cell of the screen again, and determine if that cell is between the lines AND if that cell is behind the rectangle (this is done with the help of [the isBetweenLines](#3459-isbetweenlines) and [the isBehindWall](#34510-isbehindwall) functions). If both is true we set that cells visibility to false (all of the cells that are in the FOV of the player are set to visible by [the addFovInfoToMap function](#3454-addfovinfotomap), for more info about the map structure click [here](#322-map)).
+```
+#######################################
+#######################################
+##############################  #######
+###############################   #####
+###############################    ####
+################################   ####
+################################   ####
+##########################xxxxxxx   ###
+###########################         ###
+#####   #####################       ###
+#############      xxxxxxxxxxxx     ###
+######################              ###
+##############################x    @###
+######################              ###
+#############                       ###
+#####                x              ###
+#######         #####xxxxxxxxx      ###
+######### ##################        ###
+###########################        ####
+##########################         ####
+#########################          ####
+#######################            ####
+##########################      #######
+#######################################
+```
+Since this function only shades cells that are FULLY between the two lines, wierd things like the one you see above can happen (the '@' represents the player, the 'x' characters are walls and the '#' characters are not in view). This is not a bug, just a flaw in planning/execution. I plan to adress this issue in further updates.
 #### 3.4.5.13. isBesideNotSolidInView
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
