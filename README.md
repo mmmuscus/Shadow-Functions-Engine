@@ -370,7 +370,7 @@ struct line
 * **bIntercept:** The value where the line intercepts the y axis.
 * **isItUnderLine:** This is true if the line is under the object which we are trying to shade.
 
-**Notes:** The line equation I am using for this project is the following: `y = (mSlope * x) + bIntercept`. This equation can't describe lines that are vertical, but I prevented that from happening, no lines that are cast are cast vertically (or horizontally for that matter). The isItUnderLine sub variable is only used when determining what is and what isn't in shade, when the lines are not for that purpose this sub variable can be left untouched.
+**Notes:** The line equation I am using for this project is the following: `y = (mSlope * x) + bIntercept`. This equation can't describe lines that are vertical, but I prevented that from happening, no lines that are cast are cast vertically (or horizontally for that matter). The isItUnderLine sub variable is only used when determining what is and what isn't in shade, when the lines are not for that purpose this sub variable can be left untouched. If the point (a; b) is under a line this inequality would be true: `b < (mSlope * a) + bIntercept`, if said point is over the line this inequality would be true: `b > (mSlope * a) + bIntercept`, if the point is on the line this equation is true: `b = (mSlope * a) + bIntercept`. For more information about this formula of the line click [here](https://en.wikipedia.org/wiki/Linear_equation#Slope%E2%80%93intercept_form).
 ### 3.2.5. edgeLines
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1320,4 +1320,547 @@ void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SC
 
 **How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the workld is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of thoose are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
 ### 3.4.5. [shadowFunctions](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/shadowFunctions.h)
+#### 3.4.5.1. makeCurrentFov
 ###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void makeCurrentFov(fov presetDir[FOVROWS][FOVCOLS], fov toBeDir[FOVROWS][FOVCOLS])
+{
+	for (int i = 0; i < FOVROWS; i++)
+	{
+		for (int j = 0; j < FOVCOLS; j++)
+		{
+			toBeDir[i][j].inView = presetDir[i][j].inView;
+			toBeDir[i][j].isPlayer = presetDir[i][j].isPlayer;
+		}
+	}
+}
+```
+**Usage:** This function copies a [FOV array](#3317-fov-arrays) into another [FOV array](#3317-fov-arrays).
+
+**Variables:**
+* **presetDir:** This is the [FOV array](#3317-fov-arrays) that gets copied.
+* **toBeDir:** This is the [FOV array](#3317-fov-arrays) that gets overwritten.
+
+**How it's done & notes:** The function loops through each variable of the arrays, and copies the different sub variables from one to the other. For more information about the fov structure click [here](#323-fov). This function gets used to set the [currentFov array](#3318-currentfov) to the correct FOV array.
+#### 3.4.5.2. setCurrentFov
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void setCurrentFov(mob playr, fov toBecomeCurrentFov[FOVROWS][FOVCOLS], fov r[FOVROWS][FOVCOLS], fov l[FOVROWS][FOVCOLS], fov u[FOVROWS][FOVCOLS], fov d[FOVROWS][FOVCOLS], fov ru[FOVROWS][FOVCOLS], fov rd[FOVROWS][FOVCOLS], fov lu[FOVROWS][FOVCOLS], fov ld[FOVROWS][FOVCOLS])
+{
+	if (playr.right && !playr.up && !playr.down)
+	{
+		makeCurrentFov(r, toBecomeCurrentFov);
+	}
+	
+	if (playr.right && playr.up)
+	{
+		makeCurrentFov(ru, toBecomeCurrentFov);
+	}
+	
+	if (playr.right && playr.down)
+	{
+		makeCurrentFov(rd, toBecomeCurrentFov);
+	}
+	
+	if (playr.left && !playr.up && !playr.down)
+	{
+		makeCurrentFov(l, toBecomeCurrentFov);
+	}
+	
+	if (playr.left && playr.up)
+	{
+		makeCurrentFov(lu, toBecomeCurrentFov);
+	}
+	
+	if (playr.left && playr.down)
+	{
+		makeCurrentFov(ld, toBecomeCurrentFov);
+	}
+	
+	if (playr.up && !playr.right && !playr.left)
+	{
+		makeCurrentFov(u, toBecomeCurrentFov);
+	}
+	
+	if (playr.down && !playr.right && !playr.left)
+	{
+		makeCurrentFov(d, toBecomeCurrentFov);
+	}
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.3. getPlayerPosInFov
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+mob getPlayerPosInFov(mob playr, mob fovPlayr)
+{
+	if (playr.right && !playr.up && !playr.down)
+	{
+		fovPlayr.row = 10;
+		fovPlayr.col = 1;
+	}
+	
+	if (playr.right && playr.up)
+	{
+		fovPlayr.row = 14;
+		fovPlayr.col = 7;
+	}
+	
+	if (playr.right && playr.down)
+	{
+		fovPlayr.row = 6;
+		fovPlayr.col = 7;
+	}
+	
+	if (playr.left && !playr.up && !playr.down)
+	{
+		fovPlayr.row = 10;
+		fovPlayr.col = 33;
+	}
+	
+	if (playr.left && playr.up)
+	{
+		fovPlayr.row = 14;
+		fovPlayr.col = 27;
+	}
+	
+	if (playr.left && playr.down)
+	{
+		fovPlayr.row = 6;
+		fovPlayr.col = 27;
+	}
+	
+	if (playr.up && !playr.right && !playr.left)
+	{
+		fovPlayr.row = 20;
+		fovPlayr.col = 17;
+	}
+	
+	if (playr.down && !playr.right && !playr.left)
+	{
+		fovPlayr.row = 0;
+		fovPlayr.col = 17;
+	}
+	
+	return fovPlayr;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.4. addFovInfoToMap
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void addFovInfoToMap(map world[WORLDROWS][WORLDCOLS], mob playr, mob fovPlayr, fov fov[FOVROWS][FOVCOLS])
+{
+	for (int i = 0; i < WORLDROWS; i++)
+	{
+		for (int j = 0; j < WORLDCOLS; j++)
+		{
+			world[i][j].mapIsEdge = false;
+			world[i][j].mapInView = false;
+		}
+	}
+	
+	for (int i = 0; i < FOVROWS; i++)
+	{
+		for (int j = 0; j < FOVCOLS; j++)
+		{
+			if (fov[i][j].inView)
+			{
+				world[playr.row - fovPlayr.row + i][playr.col - fovPlayr.col + j].mapInView = true;
+			}
+		}
+	}
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.5. getPov
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+koordinate getPov(koordinate pov, mob playr)
+{
+	pov.x = playr.col + 0.5;
+	pov.y = playr.row + 0.5;
+
+	return pov;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.6. getLineEquation
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
+{
+	line e;
+
+	e.mSlope = (bYRow - aYRow) / (bXCol - aXCol);
+	e.bIntercept = aYRow - (e.mSlope * aXCol);
+
+	return e;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.7. isUnderLine
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+bool isUnderLine(line e, int solidYRow, int solidXCol)
+{
+	if ((solidYRow <= (solidXCol * e.mSlope) + e.bIntercept) && ((solidYRow + 1) <= (solidXCol * e.mSlope) + e.bIntercept) && (solidYRow <= ((solidXCol + 1) * e.mSlope) + e.bIntercept) && ((solidYRow + 1) <= ((solidXCol + 1) * e.mSlope) + e.bIntercept))
+	{
+		return true;
+	}
+
+	return false;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.8. isOverLine
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+bool isOverLine(line e, int solidYRow, int solidXCol)
+{
+	if ((solidYRow >= (solidXCol * e.mSlope) + e.bIntercept) && ((solidYRow + 1) >= (solidXCol * e.mSlope) + e.bIntercept) && (solidYRow >= ((solidXCol + 1) * e.mSlope) + e.bIntercept) && ((solidYRow + 1) >= ((solidXCol + 1) * e.mSlope) + e.bIntercept))
+	{
+		return true;
+	}
+
+	return false;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.9. isBetweenLines
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+bool isBetweenLines(line a, line b, int yRow, int xCol)
+{
+	if (a.isItUnderLine)
+	{
+		if (!isUnderLine(a, yRow, xCol))
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (!isOverLine(a, yRow, xCol))
+		{
+			return false;
+		}
+	}
+
+	if (b.isItUnderLine)
+	{
+		if (!isUnderLine(b, yRow, xCol))
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (!isOverLine(b, yRow, xCol))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.10. isBehindWall
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int right, int left)
+{
+	if (pov.x < left && xCol < left + 1)
+	{
+		return false;
+	}
+	
+	if (pov.x > right && xCol > right - 2)
+	{
+		return false;
+	}
+	
+	if (pov.y < top && yRow < top + 1)
+	{
+		return false;
+	}
+	
+	if (pov.y > bottom && yRow > bottom - 2)
+	{
+		return false;
+	}
+	
+	return true;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.11. getEdgeLines
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
+{
+	edgeLines edg;
+	
+	if (pov.y < top)
+	{
+		if (pov.x < left)
+		{
+			edg.first = getLineEquation(pov.x, pov.y, right, top);
+			edg.first.isItUnderLine = false;
+			edg.second = getLineEquation(pov.x, pov.y, left, bot);
+			edg.second.isItUnderLine = true;
+			return edg;
+		}
+		else if (pov.x > right)
+		{
+			edg.first = getLineEquation(pov.x, pov.y, left, top);
+			edg.first.isItUnderLine = false;
+			edg.second = getLineEquation(pov.x, pov.y, right, bot);
+			edg.second.isItUnderLine = true;
+			return edg;
+		}
+		else
+		{
+			edg.first = getLineEquation(pov.x, pov.y, right, top);
+			edg.first.isItUnderLine = false;
+			edg.second = getLineEquation(pov.x, pov.y, left, top);
+			edg.second.isItUnderLine = false;
+			return edg;
+		}
+	}
+	else if (pov.y > bot)
+	{
+		if (pov.x < left)
+		{
+			edg.first = getLineEquation(pov.x, pov.y, left, top);
+			edg.first.isItUnderLine = false;
+			edg.second = getLineEquation(pov.x, pov.y, right, bot);
+			edg.second.isItUnderLine = true;
+			return edg;
+		}
+		else if (pov.x > right)
+		{
+			edg.first = getLineEquation(pov.x, pov.y, right, top);
+			edg.first.isItUnderLine = false;
+			edg.second = getLineEquation(pov.x, pov.y, left, bot);
+			edg.second.isItUnderLine = true;
+			return edg;
+		}
+		else
+		{
+			edg.first = getLineEquation(pov.x, pov.y, right, bot);
+			edg.first.isItUnderLine = true;
+			edg.second = getLineEquation(pov.x, pov.y, left, bot);
+			edg.second.isItUnderLine = true;
+			return edg;
+		}
+	}
+	else
+	{
+		if (pov.x < left)
+		{
+			edg.first = getLineEquation(pov.x, pov.y, left, top);
+			edg.first.isItUnderLine = false;
+			edg.second = getLineEquation(pov.x, pov.y, left, bot);
+			edg.second.isItUnderLine = true;
+			return edg;
+		}
+		else if (pov.x > right)
+		{
+			edg.first = getLineEquation(pov.x, pov.y, right, top);
+			edg.first.isItUnderLine = false;
+			edg.second = getLineEquation(pov.x, pov.y, right, bot);
+			edg.second.isItUnderLine = true;
+			return edg;
+		}
+	}
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.12. shadowFunction
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRow, koordinate pov, edgeLines edg)
+{
+	for (int i = 0; i < SCREENROWS; i++)
+	{
+		int j = 0;
+			
+		while (j < SCREENCOLS)
+		{
+			if (world[i + cameraRow][j + cameraCol].solid)
+			{
+				int k = 0;
+				
+				while (world[i + cameraRow][j + cameraCol + k].solid)
+				{
+					k++;
+				}
+				
+				edg = getEdgeLines(pov, i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol);
+				
+				for (int g = 0; g < SCREENROWS; g++)
+				{
+					for(int h = 0; h < SCREENCOLS; h++)
+					{
+						if (isBetweenLines(edg.first, edg.second, g + cameraRow, h + cameraCol) && isBehindWall(pov, g + cameraRow, h + cameraCol, i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol))
+						{
+							world[g + cameraRow][h + cameraCol].mapInView = false;
+						}
+					}
+				}
+				
+				j += k;
+			}
+			else
+			{
+				j++;
+			}
+		}
+	}
+	
+	for (int i = 0; i < SCREENCOLS; i++)
+	{
+		int j = 0;
+		
+		while (j < SCREENROWS)
+		{
+			if (world[j + cameraRow][i + cameraCol].solid)
+			{
+				int k = 0;
+				
+				while (world[j + cameraRow + k][i + cameraCol].solid)
+				{
+					k++;
+				}
+				
+				edg = getEdgeLines(pov, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol);
+				
+				for (int g = 0; g < SCREENROWS; g++)
+				{
+					for(int h = 0; h < SCREENCOLS; h++)
+					{
+						if (isBetweenLines(edg.first, edg.second, g + cameraRow, h + cameraCol) && isBehindWall(pov, g + cameraRow, h + cameraCol, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol))
+						{
+							world[g + cameraRow][h + cameraCol].mapInView = false;
+						}
+					}
+				}
+				
+				j += k;
+			}
+			else
+			{
+				j++;
+			}
+		}
+	}
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.13. isBesideNotSolidInView
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+bool isBesideNotSolidInView(map world[WORLDROWS][WORLDCOLS], int xCol, int yRow)
+{
+	for (int i = yRow - 1; i <= yRow + 1; i++)
+	{
+		for (int j = xCol - 1; j <= xCol + 1; j++)
+		{
+			if (world[j][i].mapInView && !world[j][i].solid)
+			{
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
+#### 3.4.5.14. mapIsEdgeCalculation
+###### This section was last checked in the 1.0.0. version of the engine
+```cpp
+void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int cameraCol)
+{
+	for (int i = 0; i < SCREENROWS + 2; i++)
+	{
+		world[cameraRow - 1 + i][cameraCol - 1].mapInView = false;
+		world[cameraRow - 1 + i][cameraCol + SCREENCOLS].mapInView = false;
+	}
+	
+	for (int i = 0; i < SCREENCOLS + 2; i++)
+	{
+		world[cameraRow - 1][cameraCol - 1 + i].mapInView = false;
+		world[cameraRow + SCREENROWS][cameraCol - 1 + i].mapInView = false;
+	}
+	
+	for (int i = 0; i < SCREENROWS; i++)
+	{
+		for (int j = 0; j < SCREENCOLS; j++)
+		{
+			if (!world[i + cameraRow][j + cameraCol].mapInView)
+			{
+				if (isBesideNotSolidInView(world, i + cameraRow, j + cameraCol))
+				{
+					world[i + cameraRow][j + cameraCol].mapIsEdge = true;
+				}
+			}
+		}
+	}
+}
+```
+**Usage:**
+
+**Variables:**
+
+**How it's done & notes:**
