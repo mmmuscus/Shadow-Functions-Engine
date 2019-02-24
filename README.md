@@ -1,6 +1,6 @@
 # 1. Introduction
 ###### This section was last checked in the 1.0.0. version of the engine
-**Note:** I was using [Dev C++](https://en.wikipedia.org/wiki/Dev-C%2B%2B) as the IDE with TMD-GCC 4.9.2. as the compiler, I have seen the project not functioning as intended with other IDEs and compilers.
+**Note:** I was using [Dev C++](https://en.wikipedia.org/wiki/Dev-C%2B%2B) as the IDE with TMD-GCC 4.9.2. as the compiler, I have seen the project not functioning as intended with other IDEs and compilers, but it's most probably gonna be fine.
 ## 1.1. The structure of this documentation
 ###### This section was last checked in the 1.0.0. version of the engine
 This documentation will have three main parts and a [table of contents](#4-table-of-contents):
