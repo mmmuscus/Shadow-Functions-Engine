@@ -1930,11 +1930,14 @@ bool isBesideNotSolidInView(map world[WORLDROWS][WORLDCOLS], int xCol, int yRow)
 	return false;
 }
 ```
-**Usage:**
+**Usage:** This function returns true if there are any cells beside this one that are in view and do not block light.
 
 **Variables:**
+* **world:** This array holds information about the world of the game.
+* **xCol:** This varaible holds the x coordinate of the cell.
+* **yRow:** This varaible holds the y coordinate of the cell.
 
-**How it's done & notes:**
+**How it's done & notes:** Checks for all of the 8 cells that are beside this one if theese conditions apply. The function also checks for the cell that is given to it whan called, but this is not a problem since we will oly call this function for cells that are not in view.
 #### 3.4.5.14. mapIsEdgeCalculation
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1967,8 +1970,11 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
 	}
 }
 ```
-**Usage:**
+**Usage:** This function calculates where the less shadow-y shadows should be displayed (they should be around everything that is in view).
 
 **Variables:**
+* **world:** This array holds information about the world of the game.
+* **cameraRow:** This variable holds the row of the camera.
+* **cameraCol:** This variable holds the column of the camera.
 
-**How it's done & notes:**
+**How it's done & notes:** First we need to set all of the cells around the screen to not being in view, since if we don't all sorts of funny buisness can happen (less shadow-y shadows appearing at the edge of the screen where they shouldn't be). Then we go over all of the cells that will be displayed and call [the isBesideNotSolidInView function](#34513-isbesidenotsolidinview) with them. If that function returns ture we set the isEdge sub variable of the cell to true (for more information about the map structure click [here](#322-map)).
