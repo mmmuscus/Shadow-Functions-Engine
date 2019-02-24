@@ -600,7 +600,7 @@ This section of [the third chapter of the documentation](#3-detailed-description
 * [movement.h](#342-movementh)
 * [output.h](#343-outputh)
 * [render.h](#344-renderh)
-* [shadowFunctions.h](#345-shadowfunctions)
+* [shadowFunctions.h](#345-shadowfunctionsh)
 ### 3.4.1. [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h)
 ###### This section was last checked in the 1.0.0. version of the engine
 This header file contains functions that deal with the input coming form the keboard.
@@ -1327,7 +1327,7 @@ void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SC
 * **cameraCol:** This is the value that holds in which column the camera is currently.
 
 **How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the workld is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of thoose are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
-### 3.4.5. [shadowFunctions](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/shadowFunctions.h)
+### 3.4.5. [shadowFunctions.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/shadowFunctions.h)
 ###### This section was last checked in the 1.0.0. version of the engine
 This header contains functions that prepare for the shading of the correct parts of the game world, and also [the function that actually shades the correct places](#34512-shadowfunction).
 #### 3.4.5.1. makeCurrentFov
@@ -2044,27 +2044,27 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
   * [3.4.1. input.h](#341-inputh)
     * [3.4.1.1. ___Pressed](#3411-___pressed)
     * [3.4.1.2. cancelOut](#3412-cancelout)
-  * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-  * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-  * []
-    * []
-    * []
-    * []
-    * []
-    * []
-  * []
+  * [3.4.2. movement.h](#342-movementh)
+    * [3.4.2.1. playerMovement](#3421-playermovement)
+    * [3.4.2.2. keepInBounds](#3422-keepinbounds)
+    * [3.4.2.3. setDirections](#3423-setdirections)
+    * [3.4.2.4. camMovement](#3424-cammovement)
+    * [3.4.2.5. cameraPan](#3425-camerapan)
+    * [3.4.2.6. keepCamInBounds](#3426-keepcaminbounds)
+  * [3.4.3. output.h](#343-outputh)
+    * [3431-savelastscreenarray](#3431-savelastscreenarray)
+    * [3.4.3.2. saveLastMenuArray](#3432-savelastmenuarray)
+    * [3.4.3.3. initSolid](#3433-initsolid)
+    * [3.4.3.4. initWalkable](#3434-initwalkable)
+    * [3.4.3.5. initWorld](#3435-initworld)
+    * [3.4.3.6. initFOV](#3436-initfov)
+  * [3.4.4. render.h](#344-renderh)
+    * [3.4.4.1. goTo](#3441-goto)
+    * [3.4.4.2. clearScreen](#3442-clearscreen)
+    * [3.4.4.3. renderScreen](#3443-renderscreen)
+    * [3.4.4.4. renderMenu](#3444-rendermenu)
+    * [3.4.4.5. calculateScreen](#3445-calculatescreen)
+  * [3.4.5. shadowFunctions.h](#345-shadowfunctionsh)
     * []
     * []
     * []
