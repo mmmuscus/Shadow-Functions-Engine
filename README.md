@@ -1978,7 +1978,7 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
 * **cameraCol:** This variable holds the column of the camera.
 
 **How it's done & notes:** First we need to set all of the cells around the screen to not being in view, since if we don't all sorts of funny buisness can happen (less shadow-y shadows appearing at the edge of the screen where they shouldn't be). Then we go over all of the cells that will be displayed and call [the isBesideNotSolidInView function](#34513-isbesidenotsolidinview) with them. If that function returns ture we set the isEdge sub variable of the cell to true (for more information about the map structure click [here](#322-map)).
-# 4. Table of Contents
+# 4. Table of contents
 ###### This section was last checked in the 1.0.0. version of the engine
 [1. Introduction](#1-introduction)  
 * [1.1. The structure of this documentation](#11-the-structure-of-this-documentation)
@@ -2065,19 +2065,19 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
     * [3.4.4.4. renderMenu](#3444-rendermenu)
     * [3.4.4.5. calculateScreen](#3445-calculatescreen)
   * [3.4.5. shadowFunctions.h](#345-shadowfunctionsh)
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
-    * []
+    * [3.4.5.1. makeCurrentFov](#3451-makecurrentfov)
+    * [3.4.5.2. setCurrentFov](#3452-setcurrentfov)
+    * [3.4.5.3. getPlayerPosInFov](#3453-getplayerposinfov)
+    * [3.4.5.4. addFovInfoToMap](#3454-addfovinfotomap)
+    * [3.4.5.5. getPov](3455-getpov)
+    * [3.4.5.6. getLineEquation](#3456-getlineequation)
+    * [3.4.5.7. isUnderLine](#3457-isunderline)
+    * [3.4.5.8. isOverLine](#3458-isoverline)
+    * [3.4.5.9. isBetweenLines](#3459-isbetweenlines)
+    * [3.4.5.10. isBehindWall](#34510-isbehindwall)
+    * [3.4.5.11. getEdgeLines](#34511-getedgelines)
+    * [3.4.5.12. shadowFunction](#34512-shadowfunction)
+    * [3.4.5.13. isBesideNotSolidInView](#34513-isbesidenotsolidinview)
+    * [3.4.5.14. mapIsEdgeCalculation](#34514-mapisedgecalculation)
 
-[]
+[4. Table of contents](#4-table-of-contents)
