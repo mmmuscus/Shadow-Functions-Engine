@@ -199,7 +199,7 @@ ___________________________________
 000000000000000_______0000000000000  
 ```
 The description of each character:
-* The '@' character represents the player, there should be exactly 1 of theese characters per FOV file because it acts as the anchor point between the .txt and the map on which the information about the field of view is pasted onto. (As of version 1.0.0. the position of this character does not get automatically parsed by the engine, so if you want to change it in this file you'll need to hardcode that change into [the correct function](#3453-getplayerposinfov) as well. Fixing this issue is a planned goal for version 2.0.0.)
+* The '@' character represents the player, there should be exactly 1 of theese characters per FOV file because it acts as the anchor point between the .txt and the map on which the information about the field of view is pasted onto (the function that does this can be found [here](#3454-addfovinfotomap)). (As of version 1.0.0. the position of this character does not get automatically parsed by the engine, so if you want to change it in this file you'll need to hardcode that change into [the correct function](#3453-getplayerposinfov) as well. Fixing this issue is a planned goal for version 2.0.0.)
 * The '_' characters represent cells that are in the player's field of view.
 * The '0' characters represent cells that are not in the player's field of view.
 
@@ -431,7 +431,7 @@ bool isEscPressed;
 ```
 **Usage:** Theese variables are true on every frame the correct button (which's name is in the ___ space) is pressed.
 
-**Notes:** You can easily get the information from more key as well, you just need to add a new variable in [this .cpp file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/ShadowFunctionsEngine.cpp) and a new function in the [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h) and [input.cpp](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.cpp) file. 
+**Notes:** You can easily get the information from more keys as well, you just need to add a new variable in [the main .cpp file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/ShadowFunctionsEngine.cpp) and a new function in the [input.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.h) and [input.cpp](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/input/input.cpp) file. 
 ### 3.3.4. player
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -463,7 +463,7 @@ camera.col = player.col - 3;
 ```
 **Usage:** This variable holds information about the position of the camera.
 
-**Notes:** The camera's position is defined by the upper left corner of the view it shows. Meaning that if `camera.row = a` and `camera.col = b` the cell that is described by the row a and column b will be the top left cell shown by the engine. Altering theese variables right here will result in the camera being in a different position relative to the player only untill the player is first moved. If you want to alter the camera's position to the player at all times you should change the responsible function alongside theese variables. If you do decide to alter the camera's relative position watch out for the complications explained right [here](#2231-how-to-use-the-map-editor). For information about the mob structure click [here](#321-mob).
+**Notes:** The camera's position is defined by the upper left corner of the view it shows. Meaning that if `camera.row = a` and `camera.col = b` the cell that is described by the row a and column b will be the top left cell shown by the engine. Altering theese variables right here will result in the camera being in a different position relative to the player only untill the player is first moved. If you want to alter the camera's position to the player at all times you should change [the responsible function](#3424-cammovement) alongside theese variables. If you do decide to alter the camera's relative position watch out for the complications explained right [here](#2231-how-to-use-the-map-editor). For information about the mob structure click [here](#321-mob).
 ### 3.3.7. whereToCamera
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -473,7 +473,7 @@ whereToCamera.col = camera.col;
 ```
 **Usage:** This variable holds information about the position the camera should be.
 
-**Notes:** Since I didn't want to teleport the camera franticly every time the player changes directions, I needed a variable that holds the position of where the camera should be (this position is changing very frantically but its not visible to the player). The function dealing with camera pan brings the camera one cell closer both vertically and horizontally to its desired location on every frame. For information about the mob structure click [here](#321-mob).
+**Notes:** Since I didn't want to teleport the camera franticly every time the player changes directions, I needed a variable that holds the position of where the camera should be (this position is changing very frantically but its not visible to the player). [The function dealing with camera pan](#3425-camerapan) brings the camera one cell closer both vertically and horizontally to its desired location on every frame. For information about the mob structure click [here](#321-mob).
 ### 3.3.8. playerInFov
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -495,7 +495,7 @@ koordinate playerPov;
 ```cpp
 edgeLines edges;
 ```
-**Usage:** This variable holds the two lines that are currently being cast from the player to objects that dont let light through. 
+**Usage:** This variable holds the two lines that are currently being cast from the player to objects that don't let light through. 
 
 **Notes:** For information about the edgeLines structure click [here](#325-edgelines).
 ### 3.3.11. sleepTime
@@ -505,7 +505,7 @@ int sleepTime = 30;
 ```
 **Usage:** This variable is equal to the time in miliseconds between two frames.
 
-**Notes:** Altering this variable can be done right here, no need for any extra steps. If you want to achieve 60 FPS set the value of this variable to 16. 
+**Notes:** Altering this variable can be done right here, no need for any extra steps. If you want to achieve 60 FPS set the value to 16. 
 ### 3.3.12. isNotExit
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -519,7 +519,7 @@ bool isNotExit = true;
 ```cpp
 char oldScreen[SCREENROWS][SCREENCOLS];
 ```
-**Usage:** This array holds the textures of the last frame of the screen part of the console window.
+**Usage:** This array holds the textures of the last frame of the "screen" part of the console window.
 
 **Notes:** This array is needed for the faster and smoother running of the game. For the explanation of the segmentation of the console window click [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays). 
 ### 3.3.14. newScreen
@@ -527,7 +527,7 @@ char oldScreen[SCREENROWS][SCREENCOLS];
 ```cpp
 char newScreen[SCREENROWS][SCREENCOLS];
 ```
-**Usage:** This array holds textures of the screen part of the console window.
+**Usage:** This array holds textures of the "screen" part of the console window.
 
 **Notes:** For the explanation of the segmentation of the console window click [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays).
 ### 3.3.15. oldMenu
@@ -535,7 +535,7 @@ char newScreen[SCREENROWS][SCREENCOLS];
 ```cpp
 char oldMenu[SCREENROWS][MENUCOLS];
 ```
-**Usage:** This array holds the textures of the last frame of the menu part of the console window.
+**Usage:** This array holds the textures of the last frame of the "menu" part of the console window.
 
 **Notes:** This array is needed for the faster and smoother running of the game. For the explanation of the segmentation of the console window click [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays).
 ### 3.3.16. newMenu
@@ -543,7 +543,7 @@ char oldMenu[SCREENROWS][MENUCOLS];
 ```cpp
 char newMenu[SCREENROWS][MENUCOLS];
 ```
-**Usage:** This array holds textures of the menu part of the console window.
+**Usage:** This array holds textures of the "menu" part of the console window.
 
 **Notes:** For the explanation of the segmentation of the console window click [here](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays).
 ### 3.3.17. FOV arrays
