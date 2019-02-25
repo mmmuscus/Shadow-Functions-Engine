@@ -30,6 +30,8 @@ Features as of now:
 * Map and field of view editors
 * Character attribute editors (can this character block light? can it block player movement?)
 
+For an example of the shading system in action click [here](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/example.png).
+
 The next main goal of the project is to make an animation pipeline. The plan for it is to have every frame drawn in a textfile under each other, with a general function that can read any animation text file into a 3 dimensional array, and another general function that could play said animation in a set position on the screen. Beside this main goal I plan to make several quality of life changes to the different text based editors and to the structure and efficency of the code in general.
 
 # 2. How to use the engine
