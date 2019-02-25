@@ -1695,7 +1695,7 @@ This function will be used to help determine which cells are behind the ones cas
 |    #####|
 |    #####|
 ```
-The function only checks for the cases when it would need to return false, or in other words when the player and the cell are in on the same sides of the rectangle. If thats not the case it goes on to check all of the other ifs as well. So in the end it will combine all of the ifs and produce a result like the on in the figure above, when the player is not in one line with any of the cells.
+The function only checks for the cases when it would need to return false, or in other words when the player and the cell are in on the same sides of the rectangle. If thats not the case it goes on to check all of the other ifs as well. So in the end it will combine all of the ifs and produce a result when the player is not in one line with any of the cells, like the on in the figure above.
 
 Since cell coordinates refer to the top left point of the cell, and the above mentioned reasons the wierd requirements of `xCol > right - 2` and `yRow < top + 1` are required. For further information about the coordinate sytem and the difference between cell and point coordinates click [here](#2232-further-ramblings-about-the-coordinate-system).
 #### 3.4.5.11. getEdgeLines
@@ -1875,7 +1875,7 @@ void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRo
 **Variables:**
 * **world:** This array will hold the information about the visibility of the cells.
 * **cameraCol:** The column in which the camera is.
-* **cameraRow:** The column in which the camera is.
+* **cameraRow:** The row in which the camera is.
 * **pov:** This variable holds the point from which the player "sees" things. 
 * **edg:** This variable will be used to hold the lines that are cast from the player to the rectangle.
 
@@ -1910,7 +1910,7 @@ Now that we have these lines we start to go over every cell of the screen again,
 ##########################      #######
 #######################################
 ```
-Since this function only shades cells that are FULLY between the two lines, wierd things like the one you see above can happen (the '@' represents the player, the 'x' characters are walls and the '#' characters are not in view). This is not a bug, just a flaw in planning/execution. I plan to adress this issue in further updates.
+Since this function only shades cells that are FULLY between the two lines, wierd things like the one you see above can happen (the '@' represents the player, the 'x' characters are walls and the '#' characters are not in view). This is not a bug, just a flaw in planning. I plan to adress this issue in further updates.
 #### 3.4.5.13. isBesideNotSolidInView
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1937,7 +1937,7 @@ bool isBesideNotSolidInView(map world[WORLDROWS][WORLDCOLS], int xCol, int yRow)
 * **xCol:** This varaible holds the x coordinate of the cell.
 * **yRow:** This varaible holds the y coordinate of the cell.
 
-**How it's done & notes:** Checks for all of the 8 cells that are beside this one if these conditions apply. The function also checks for the cell that is given to it whan called, but this is not a problem since we will oly call this function for cells that are not in view.
+**How it's done & notes:** Checks for all of the 8 cells that are beside this one if these conditions apply. The function also checks for the cell that is given to it whan called, but this is not a problem since we will oly call this function in [the mapIsEdgeCalculation function](#34514-mapisedgecalculation) for cells that are not in view.
 #### 3.4.5.14. mapIsEdgeCalculation
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1977,7 +1977,7 @@ void mapIsEdgeCalculation(map world[WORLDROWS][WORLDCOLS], int cameraRow, int ca
 * **cameraRow:** This variable holds the row of the camera.
 * **cameraCol:** This variable holds the column of the camera.
 
-**How it's done & notes:** First we need to set all of the cells around the screen to not being in view, since if we don't all sorts of funny buisness can happen (less shadow-y shadows appearing at the edge of the screen where they shouldn't be). Then we go over all of the cells that will be displayed and call [the isBesideNotSolidInView function](#34513-isbesidenotsolidinview) with them. If that function returns ture we set the isEdge sub variable of the cell to true (for more information about the map structure click [here](#322-map)).
+**How it's done & notes:** First we need to set all of the cells around the screen to not being in view, since if we don't all sorts of funny buisness can happen (less shadow-y shadows appearing at the edge of the screen where they shouldn't be). Then we go over all of the cells that will be displayed and call [the isBesideNotSolidInView function](#34513-isbesidenotsolidinview) with them if they are not in view. If that function returns ture we set the isEdge sub variable of the cell to true (for more information about the map structure click [here](#322-map)).
 # 4. Table of contents
 ###### This section was last checked in the 1.0.0. version of the engine
 [1. Introduction](#1-introduction)  
