@@ -10,7 +10,7 @@ This documentation will have three main parts and a [table of contents](#4-table
 
 In the [introduction](#1-introduction) I will cover [my motivation](#12-who-the-hell-am-i-and-what-the-hecky-heck-is-this) for this engine, [the idea, the end product and plans about the future of the project](#13-so-what-is-the-project).
 
-[The second part](#2-how-to-use-the-engine) will have two segments. [The first](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) detailing the architecture of the system, what it does. [The second](#22-how-to-use-the-editors-and-other-further-details) will be the guide to operate it. Hopefully theese two segments will provide you with sufficent information to make a game with this engine.
+[The second part](#2-how-to-use-the-engine) will have two segments. [The first](#21-how-the-engine-works-a-breakdown-of-the-main-cpp-file) detailing the architecture of the system, what it does. [The second](#22-how-to-use-the-editors-and-other-further-details) will be the guide to operate it. Hopefully these two segments will provide you with sufficent information to make a game with this engine.
 
 [The last part](#3-detailed-description-of-everything) will (as mentioned above) go over the hows of the systems in place. It will be broken down into different subsections, each dealing with a header or cpp file and it's [defines](#31-defines), [structures](#32-structures), [variables](#33-variables-in-the-main-cpp-file), or [functions](#34-functions). [This part](#3-detailed-description-of-everything) will act more like a cheat sheet than anything, if you wish to conserve your sanity do not read it from start to finish in one sitting.
 
@@ -269,7 +269,7 @@ This segment of the documentation will have four main subsections:
 #define FOVROWS 21
 #define FOVCOLS 35
 ```
-**Usage:** These define the dimensions of the [FOV editors](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs), and also [the arrays that hold the information parsed from thoose editors](#3317-fov-arrays).
+**Usage:** These define the dimensions of the [FOV editors](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs), and also [the arrays that hold the information parsed from those editors](#3317-fov-arrays).
 
 **Notes:** These defines can be altered if someone wishes, but I dont think that is necessary. If however you are altering these please be wary, you can accidentaly set their values to numbers that [could mess with the rendering of the newScreen array](#2212-the-whys-of-the-fov-editors-and-the-explanation-of-the-newscreen-and-newmenu-arrays), or these values [could indirectly negatively affect the map of the world](#2231-how-to-use-the-map-editor).
 ### 3.1.3. WORLDROWS and WORLDCOLS
@@ -712,7 +712,7 @@ mob playerMovement(mob playr, bool w, bool s, bool a, bool d)
 * **a:** This is true when the a key is pressed down, if it is the player gets moved to the left.
 * **d:** This is true when the d key is pressed down, if it is the player gets moved to the right.
 
-**How it's done & notes:** The function checks for each of the four bools and increments the player's position if any is true. This function only calculates the possible position of the player. This position can be inside walls, the [keepInBounds](#3422-keepinbounds) function is the one responsible for clearing up thoose sort of messes.
+**How it's done & notes:** The function checks for each of the four bools and increments the player's position if any is true. This function only calculates the possible position of the player. This position can be inside walls, the [keepInBounds](#3422-keepinbounds) function is the one responsible for clearing up those sort of messes.
 #### 3.4.2.2. keepInBounds
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -971,7 +971,7 @@ mob keepCamInBounds(mob cam)
 **Variables:**
 * **cam:** Holds information about the position of the camera.
 
-**How it's done & notes:** First the function checks if any of the camera's coordinates are lower than 0, if they are they get set back to 0. Since what the camera shows is displayed in [the newScreen array](#3314-newscreen), the next thing the function checks is if any of the camera's coordinates are bigger than the world's correct dimension minus the screen's correct dimension, if they are they get set back to the difference of thoose dimensions. For information about the camera click [here](#336-camera).
+**How it's done & notes:** First the function checks if any of the camera's coordinates are lower than 0, if they are they get set back to 0. Since what the camera shows is displayed in [the newScreen array](#3314-newscreen), the next thing the function checks is if any of the camera's coordinates are bigger than the world's correct dimension minus the screen's correct dimension, if they are they get set back to the difference of those dimensions. For information about the camera click [here](#336-camera).
 ### 3.4.3. [output.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/output.h)
 ###### This section was last checked in the 1.0.0. version of the engine
 This header file containts two functions that make rendering smoother and the game run faster and other functions that initialize the information from the different editors. I don't know why I named it output, but its too late now!
@@ -1326,7 +1326,7 @@ void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SC
 * **cameraRow:** This is the value that holds in which row the camera is currently.
 * **cameraCol:** This is the value that holds in which column the camera is currently.
 
-**How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the world is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of thoose are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
+**How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the world is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of those are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
 ### 3.4.5. [shadowFunctions.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/shadowFunctions.h)
 ###### This section was last checked in the 1.0.0. version of the engine
 This header contains functions that prepare for the shading of the correct parts of the game world, and also [the function that actually shades the correct places](#34512-shadowfunction).
@@ -1550,7 +1550,7 @@ line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
 * **bXCol:** The x coordinate of the second point.
 * **bYRow:** The y coordinate of the second point.
 
-**How it's done & notes:** It can be proven that the operations I'm doing with thoose variables produce the desired values (for an explanation click [here](https://www.khanacademy.org/math/algebra/two-var-linear-equations/writing-slope-intercept-equations/v/equation-of-a-line-3) and for an explanation of the line formula the engine uses click [here](#324-line)). It should be noted that the second point's coordinates are set as integers, this is because I use this function to cast lines from the player to the edges of objects, and the edges of the objects are always integers (for further information about this click [here](#2232-further-ramblings-about-the-coordinate-system)).
+**How it's done & notes:** It can be proven that the operations I'm doing with those variables produce the desired values (for an explanation click [here](https://www.khanacademy.org/math/algebra/two-var-linear-equations/writing-slope-intercept-equations/v/equation-of-a-line-3) and for an explanation of the line formula the engine uses click [here](#324-line)). It should be noted that the second point's coordinates are set as integers, this is because I use this function to cast lines from the player to the edges of objects, and the edges of the objects are always integers (for further information about this click [here](#2232-further-ramblings-about-the-coordinate-system)).
 #### 3.4.5.7. isUnderLine
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1679,7 +1679,7 @@ bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int r
 * **right:** This variable holds the x coordinate of the right side of the rectangle.
 * **left:** This variable holds the x coordinate of the left side of the rectangle.
 
-**How it's done & notes:** For explaining the workings of this function I will use small figures. In theese the '@' character will represent the player character, the 'x' will represent the wall of the rectangels, and the '#' will represent the cells that are deemed to be "behind the wall" by the function (if the 'x' and '#' characters would overlap I will use '0' characters to represent both of the in one cell). The '|' characters are just there to make everything preiiter.
+**How it's done & notes:** For explaining the workings of this function I will use small figures. In these the '@' character will represent the player character, the 'x' will represent the wall of the rectangels, and the '#' will represent the cells that are deemed to be "behind the wall" by the function (if the 'x' and '#' characters would overlap I will use '0' characters to represent both of the in one cell). The '|' characters are just there to make everything preiiter.
 ```
 1. |   ######| 2. |######   | 3. |   ######| 4. |    @    | 5. |    @    |
    |   ######|    |######   |    |  x######|    |         |    |         |
