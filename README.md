@@ -1351,7 +1351,7 @@ void makeCurrentFov(fov presetDir[FOVROWS][FOVCOLS], fov toBeDir[FOVROWS][FOVCOL
 * **presetDir:** This is the [FOV array](#3317-fov-arrays) that gets copied.
 * **toBeDir:** This is the [FOV array](#3317-fov-arrays) that gets overwritten.
 
-**How it's done & notes:** The function loops through each variable of the arrays, and copies the different sub variables from one to the other. For more information about the fov structure click [here](#323-fov). This function gets used to set the [currentFov array](#3318-currentfov) to the correct FOV array.
+**How it's done & notes:** The function loops through each variable of the arrays, and copies the different sub variables from one to the other. For more information about the fov structure click [here](#323-fov).
 #### 3.4.5.2. setCurrentFov
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1469,7 +1469,7 @@ mob getPlayerPosInFov(mob playr, mob fovPlayr)
 	return fovPlayr;
 }
 ```
-**Usage:** This function sets where the player is in the [FOV array](#3317-fov-arrays) accoding to the input.
+**Usage:** This function sets where the player is in the [FOV array](#3317-fov-arrays) accoding to the orientation of the player, or in other worlds which FOV does the player currently use.
 
 **Variables:**
 * **playr:** This variable holds the needed information about the input.
@@ -1502,10 +1502,10 @@ void addFovInfoToMap(map world[WORLDROWS][WORLDCOLS], mob playr, mob fovPlayr, f
 	}
 }
 ```
-**Usage:** This function adds the infromation from [the current FOV array](#3318-currentfov) about the different cells that are visible or not into the map of the world.
+**Usage:** This function adds the infromation from [the current FOV array](#3318-currentfov) about the different cells (if they are visible or not) into the map of the world.
 
 **Variables:**
-* **world:** This array will hold the information if the cell is in view or not, about the needed cells of the world.
+* **world:** This array will hold the information if the cell is in view or not, for all of the cells in the world.
 * **playr:** This variable holds the position of the player in the world.
 * **fovplayr:** This variable holds the position of the player in [the current FOV array](#3318-currentfov).
 * **fov:** This array holds information about the current FOV of the player. 
@@ -1528,7 +1528,7 @@ koordinate getPov(koordinate pov, mob playr)
 * **pov:** This variable will contain the coordinates of the point from which the player "sees" things.
 * **playr:** This variable holds the position of the player in the world.
 
-**How it's done & notes:** We just simply add 0.5 to the position of the player. Since we will cast lines to the edges of different cells in [the function that shades things](#34512-shadowfunction), and since the edges of the cells all have integer cordinates for their four points, adding 0.5 to both of the coordinates of the player prevents the engine from casting lines that are vertical (vertical lines can't be described by the line equation the engine is using for more information click [here](#324-line)). **Important:** the playr variable has cell coordinates in it and the pov variable will have point coordinates in it, for more information about the difference between the two click [here](#2232-further-ramblings-about-the-coordinate-system).
+**How it's done & notes:** We just simply add 0.5 to the position of the player. Since we will cast lines to the edges of different cells in [the function that shades things](#34512-shadowfunction), and since the edges of the cells all have integer cordinates for their four points, adding 0.5 to both of the coordinates of the player prevents the engine from casting lines that are vertical (vertical lines can't be described by the line equation the engine is using, for more information click [here](#324-line)). **Important:** the playr variable has cell coordinates in it and the pov variable will have point coordinates in it, for more information about the difference between the two click [here](#2232-further-ramblings-about-the-coordinate-system).
 #### 3.4.5.6. getLineEquation
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1550,7 +1550,7 @@ line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
 * **bXCol:** The x coordinate of the second point.
 * **bYRow:** The y coordinate of the second point.
 
-**How it's done & notes:** It can be prooven that the operations I'm doing with thoose variables produce the desired values (for an explanation click [here](https://www.khanacademy.org/math/algebra/two-var-linear-equations/writing-slope-intercept-equations/v/equation-of-a-line-3) and for an explanation of the line formula the engine uses click [here](#324-line)). It should be noted that the second point's coordinates are set as integers, this is because I use this function to cast lines from the player to the edges of objects, and the edges of the objects are always integers (for further information about this click [here](#2232-further-ramblings-about-the-coordinate-system)).
+**How it's done & notes:** It can be proven that the operations I'm doing with thoose variables produce the desired values (for an explanation click [here](https://www.khanacademy.org/math/algebra/two-var-linear-equations/writing-slope-intercept-equations/v/equation-of-a-line-3) and for an explanation of the line formula the engine uses click [here](#324-line)). It should be noted that the second point's coordinates are set as integers, this is because I use this function to cast lines from the player to the edges of objects, and the edges of the objects are always integers (for further information about this click [here](#2232-further-ramblings-about-the-coordinate-system)).
 #### 3.4.5.7. isUnderLine
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
