@@ -595,7 +595,7 @@ map newWorld[WORLDROWS][WORLDCOLS];
 **Notes:** This array gets initalized from the [map editor](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt), for details about this editor click [here](#223-the-map-editor). For details about the map structure click [here](#322-map).
 ## 3.4. Functions
 ###### This section was last checked in the 1.0.0. version of the engine
-This section of [the third chapter of the documentation](#3-detailed-description-of-everything) will not gover the functions in order of apperance (as opposed to the previous sections) but in the order that they are in their header files. Thus this section will have the following parts:
+This section of [the third chapter of the documentation](#3-detailed-description-of-everything) will not go over the functions in order of apperance (as opposed to the previous sections) but in the order that they are in their header files. Thus this section will have the following parts:
 * [input.h](#341-inputh)
 * [movement.h](#342-movementh)
 * [output.h](#343-outputh)
@@ -674,7 +674,7 @@ void cancelOut (bool plus, bool minus)
 **How it's done & notes:** We check if both of the variables are ture. If they are we set them both to false. This is used to cancel out contradictory input (for example when both the a and d keys are pressed), but it could be used for any form of cancellation of contradictory bools.
 ### 3.4.2. [movement.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/movement.h)
 ###### This section was last checked in the 1.0.0. version of the engine
-This header file contains functions that deal with moving the player and the camera according to what the game world dictates.
+This header file contains functions that deal with moving the player and the camera according to what the inputs and the game world dictates.
 #### 3.4.2.1. playerMovement
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -712,7 +712,7 @@ mob playerMovement(mob playr, bool w, bool s, bool a, bool d)
 * **a:** This is true when the a key is pressed down, if it is the player gets moved to the left.
 * **d:** This is true when the d key is pressed down, if it is the player gets moved to the right.
 
-**How it's done & notes:** The function checks for each of the four bools and increments the player's position if any is true. This function only calculates the possible position of the player. This position can be inside walls the [keepInBounds](#3422-keepinbounds) function is the one responsible for clearing up thoose sort of messes.
+**How it's done & notes:** The function checks for each of the four bools and increments the player's position if any is true. This function only calculates the possible position of the player. This position can be inside walls, the [keepInBounds](#3422-keepinbounds) function is the one responsible for clearing up thoose sort of messes.
 #### 3.4.2.2. keepInBounds
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -769,7 +769,7 @@ mob keepInBounds(mob playr, mob lastPlayr, map world[WORLDROWS][WORLDCOLS])
 **Usage:** This function prevents the player from passing into unpassable objects.
 
 **Variables:**
-* **playr:** This variable holds the current caluclated possible position of the player (or in other words the cell the player wants to pass into).
+* **playr:** This variable holds the current caluclated possible position of the player (or in other words the cell the player wants to pass into accordint to the input).
 * **lastPlayr:** This variable holds the player's position from the last frame.
 * **world:** This array holds the map of the world with all of the attributes of each cell.
 
@@ -796,7 +796,7 @@ If the cell the player wishes to pass into does block movement we need to check 
 2. |@x|
    | 0|
 ```
-After the above cases we can be sure, that the desired location blocks movement, and that at least one of the cells that are next to the player from the last frame in the direction of the desired location block movement (see the first two figures from [this very section](#3422-keepinbounds)). We check for theese cells one by one, if both of them block movement we don't move the player. If only one is blocking movement we "slide" the player in the logical direction (see the figures above: in the case of the 1st figure we "slide" him to the right, and in the case of the 2nd figure we "slide" him downwards). The logic behind this is the following: The player wants to move to (a + 1; b + 1) but that cell is not avalaible for movement. The inputs consist of the s button (which signals the desire to move downwards) and the d button (which signals the desire to move to the right), so if the player can't move downward AND to the right, he should move to at least in one of the directions he wants to.
+After the above cases we can be sure, that the desired location blocks movement, and that at least one of the cells that are next to the player from the last frame in the direction of the desired location block movement (see the first two figures from [this very section](#3422-keepinbounds)). We check for theese cells one by one, if both of them block movement we don't move the player. If only one is blocking movement we "slide" the player in the logical direction (see the figures above: in the case of the 1st figure we "slide" him to the right, and in the case of the 2nd figure we "slide" him downwards). The logic behind this is the following: the player wants to move to (a + 1; b + 1) but that cell is not avalaible for movement. The inputs consist of the s button (which signals the desire to move downwards) and the d button (which signals the desire to move to the right), so if the player can't move downward AND to the right, he should move to at least in one of the directions he wants to.
 #### 3.4.2.3. setDirections
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -839,7 +839,7 @@ mob setDirections(mob playr, bool w, bool s, bool a, bool d)
 * **a:** This is true when the a key is pressed down.
 * **d:** This is true when the d key is pressed down.
 
-**How it's done & notes:** First the function sets all directional bools to false (to learn more about the mob structure click [here](#321-mob)), then it turns the correct bools to ture according to the input. Theese bools in themselves don't translate into the game, we need another function to parse them and load the correct FOV assoicated with this direction (to see all possible FOVs click [here](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs)).
+**How it's done & notes:** First the function sets all directional bools to false (to learn more about the mob structure click [here](#321-mob)), then it turns the correct bools to ture according to the input. Theese bools in themselves don't translate into the game, we need [another function to parse them and load the correct FOV assoicated with this direction](#3452-setcurrentfov) (to see all possible FOVs click [here](https://github.com/mmmuscus/Shadow-Functions-Engine/tree/master/FOVs)).
 #### 3.4.2.4. camMovement
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -896,13 +896,13 @@ mob camMovement(mob cam, mob playr)
 	return cam;
 }
 ```
-**Usage:** Reurns the position of where the camera SHOULD be, accordin to the orientation of the player.
+**Usage:** Reurns the position of where the camera SHOULD be, according to the orientation of the player.
 
 **Variables:**
 * **cam:** Holds the position of where the camera SHOULD be.
 * **playr:** Holds the position of the player.
 
-**How it's done & notes:** The different camera positions associated with every orientation are hardcoded into this function. For further information about how this should work adn plans for future updates click [here](#2211-how-to-use-the-fov-editors).
+**How it's done & notes:** The different camera positions associated with every orientation are hardcoded into this function. For further information about how this should work and plans for future updates click [here](#2211-how-to-use-the-fov-editors). To learn more about the variable that holds where the camera SHOULD be click [here](#337-wheretocamera).
 #### 3.4.2.5. cameraPan
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -974,7 +974,7 @@ mob keepCamInBounds(mob cam)
 **How it's done & notes:** First the function checks if any of the camera's coordinates are lower than 0, if they are they get set back to 0. Since what the camera shows is displayed in [the newScreen array](#3314-newscreen), the next thing the function checks is if any of the camera's coordinates are bigger than the world's correct dimension minus the screen's correct dimension, if they are they get set back to the difference of thoose dimensions. For information about the camera click [here](#336-camera).
 ### 3.4.3. [output.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/output/output.h)
 ###### This section was last checked in the 1.0.0. version of the engine
-This header file containts two functions that make rendering smoother and the game run faster and other fnctions initialize the information from the different editors. I don't know why I named it output, but its too late now!
+This header file containts two functions that make rendering smoother and the game run faster and other functions that initialize the information from the different editors. I don't know why I named it output, but its too late now!
 #### 3.4.3.1. saveLastScreenArray
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1118,7 +1118,7 @@ void initWorld(map world[WORLDROWS][WORLDCOLS], char solide[SOLIDCOUNT], char wa
 * **walkablee:** This array holds all of the characters that don't block player movement.
 * **fileName:** This string holds the path from [the main .cpp file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/ShadowFunctionsEngine.cpp) to [the world.txt file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt).
 
-**How it's done & notes:** Firstly the function opens [the world.txt file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt). Then it starts looping through each character. If the character is an 'i' the function replaces it with a ' ' character for the texture (click [here](#2231-how-to-use-the-map-editor) if you want to find out why this is). Then the function loops through both the solid and walkable characters, and sets the correct attributes of [the structure](#322-map) to the correct walues. For more information about the map editor click [here](#223-the-map-editor).
+**How it's done & notes:** Firstly the function opens [the world.txt file](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/maps/world.txt). Then it starts looping through each character. If the character is an 'i' the function replaces it with a ' ' character for the texture (click [here](#2231-how-to-use-the-map-editor) if you want to find out why this is). Then the function loops through both the solid and walkable characters, and sets the correct attributes of [the structure](#322-map) to the correct values. For more information about the map editor click [here](#223-the-map-editor).
 #### 3.4.3.6. initFOV
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1191,7 +1191,7 @@ void goTo (int row, int column)
 * **row:** The row of the cell to which the cursor will be put on the console window.
 * **col:** The column of the cell to which the cursor will be put on the console window.
 
-**How it's done & notes:** This was one of the three times where I resorted to outside sources to solve my problem. I found my answer [here](https://stackoverflow.com/questions/10401724/move-text-cursor-to-particular-screen-coordinate) in the fourth answer. For information about the coordinate system in place please click [here](#2232-further-ramblings-about-the-coordinate-system)
+**How it's done & notes:** This was one of the three times where I resorted to outside sources to solve my problem. I found my answer [here](https://stackoverflow.com/questions/10401724/move-text-cursor-to-particular-screen-coordinate) in the fourth answer. For information about the coordinate system in place please click [here](#2232-further-ramblings-about-the-coordinate-system).
 #### 3.4.4.2. clearScreen
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
@@ -1318,7 +1318,7 @@ void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SC
 	}
 }
 ```
-**Usage:** This function translates all of the information calculated by the shadowFunction and mapIsEdgeCalculation functions into textures that can be rendered.
+**Usage:** This function translates all of the information calculated by the [shadowFunction](#34512-shadowfunction) and [mapIsEdgeCalculation](#34514-mapisedgecalculation) functions into textures that can be rendered.
 
 **Variables:**
 * **world:** This array holds all of the information about the cells of the world, like what is or isn't visible, etc.
@@ -1326,7 +1326,7 @@ void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SC
 * **cameraRow:** This is the value that holds in which row the camera is currently.
 * **cameraCol:** This is the value that holds in which column the camera is currently.
 
-**How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the workld is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of thoose are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
+**How it's done & notes:** The function loops through a part of the map that is equal in size to the "screen" part of the console window. Then if the cell of the world is not in view the texture of the cell on the screen becomes '▓'. If the cell of the world is in the edge, the texture of the cell on the screen becomes'░', and if neither of thoose are true the texture of the cell on the screen becomes the texture of the cell on the world. For mor information about the map structure click [here](#322-map).
 ### 3.4.5. [shadowFunctions.h](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/headers/rendering/shadowFunctions.h)
 ###### This section was last checked in the 1.0.0. version of the engine
 This header contains functions that prepare for the shading of the correct parts of the game world, and also [the function that actually shades the correct places](#34512-shadowfunction).
