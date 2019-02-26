@@ -24,7 +24,7 @@ The bare minimum I wanted to accomplish was a real time 2D top down game, with a
 
 Here is an example for the shading system in action:
 
-![example](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/example.png)
+![example](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/screenShots/example.png)
 
 Right now this system has a small bug, which I will discuss in [a later section of the documentation](#34512-shadowfunction). Besides the minimum goal I created basic text file based level and field of view editors. I also created the option to make new characters that could block light, or player movement.
 
@@ -1888,33 +1888,10 @@ void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRo
 Now we have the edges of that rectangle (`i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol`), we will hand this information to [the getEdgeLines function](#34511-getedgelines), which will determine the two lines that will get cast from the player to the rectangle.
 
 Now that we have these lines we start to go over every cell of the screen again, and determine if that cell is between the lines AND if that cell is behind the rectangle (this is done with the help of [the isBetweenLines](#3459-isbetweenlines) and [the isBehindWall](#34510-isbehindwall) functions). If both is true we set that cells visibility to false (all of the cells that are in the FOV of the player are set to visible by [the addFovInfoToMap function](#3454-addfovinfotomap), for more info about the map structure click [here](#322-map)).
-```
-#######################################
-#######################################
-##############################  #######
-###############################   #####
-###############################    ####
-################################   ####
-################################   ####
-##########################xxxxxxx   ###
-###########################         ###
-#####   #####################       ###
-#############      xxxxxxxxxxxx     ###
-######################              ###
-##############################x    @###
-######################              ###
-#############                       ###
-#####                x              ###
-#######         #####xxxxxxxxx      ###
-######### ##################        ###
-###########################        ####
-##########################         ####
-#########################          ####
-#######################            ####
-##########################      #######
-#######################################
-```
-Since this function only shades cells that are FULLY between the two lines, wierd things like the one you see above can happen (the '@' represents the player, the 'x' characters are walls and the '#' characters are not in view). This is not a bug, just a flaw in planning. I plan to adress this issue in further updates.
+
+![bug](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/screenShots/bug.png)
+
+Since this function only shades cells that are FULLY between the two lines, wierd things like the one you see above can happen. This is not a bug, just a flaw in planning. I plan to adress this issue in further updates.
 #### 3.4.5.13. isBesideNotSolidInView
 ###### This section was last checked in the 1.0.0. version of the engine
 ```cpp
