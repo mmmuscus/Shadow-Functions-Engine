@@ -204,26 +204,402 @@ bool isBetweenLines(line a, line b, int yRow, int xCol)
 	return true;
 }
 
-bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int right, int left)
+bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 {
-	if (pov.x < left && xCol < left + 1)
+	if (e.isItUnderLine)
 	{
-		return false;
+		if (xCol - INFINITECIMAL < ((yRow + 1) - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL > ((yRow + 1) - e.bIntercept) / e.mSlope)
+		{
+			if (yRow < (e.mSlope * xCol) + e.bIntercept && yRow + 1  > (e.mSlope * xCol) + e.bIntercept)
+			{
+				return true;
+			}
+			
+			if (yRow < (e.mSlope * (xCol + 1)) + e.bIntercept && yRow + 1  > (e.mSlope * (xCol + 1)) + e.bIntercept)
+			{
+				return true;
+			}
+		}
+		
+		if (yRow - INFINITECIMAL <= (e.mSlope * xCol) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * xCol) + e.bIntercept && yRow - INFINITECIMAL <= (e.mSlope * (xCol + 1)) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * (xCol + 1)) + e.bIntercept)
+		{
+			if ((e.mSlope * xCol) + e.bIntercept - yRow + (e.mSlope * (xCol + 1)) + e.bIntercept - yRow + INFINITECIMAL >= 1)
+			{
+				return true;
+			}
+		}
+		
+		if (xCol - INFINITECIMAL <= (yRow - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= (yRow - e.bIntercept) / e.mSlope && xCol - INFINITECIMAL <= ((yRow + 1) - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= ((yRow + 1) - e.bIntercept) / e.mSlope)
+		{
+			if (((yRow - e.bIntercept) / e.mSlope) - xCol > (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol)
+			{
+				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol + INFINITECIMAL >= 1)
+				{
+					return true;
+				}
+			}
+			
+			if (((yRow - e.bIntercept) / e.mSlope) - xCol < (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol)
+			{
+				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol - INFINITECIMAL <= 1)
+				{
+					return true;
+				}
+			}
+		}
 	}
 	
-	if (pov.x > right && xCol > right - 2)
+	if (!e.isItUnderLine)
 	{
-		return false;
+		if (xCol - INFINITECIMAL < (yRow - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL > (yRow - e.bIntercept) / e.mSlope)
+		{
+			if (yRow < (e.mSlope * xCol) + e.bIntercept && yRow + 1 > (e.mSlope * xCol) + e.bIntercept)
+			{
+				return true;
+			}
+				
+			if (yRow < (e.mSlope * (xCol + 1)) + e.bIntercept && yRow + 1 > (e.mSlope * (xCol + 1)) + e.bIntercept)
+			{
+				return true;
+			}
+		}
+		
+		if (yRow - INFINITECIMAL <= (e.mSlope * xCol) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * xCol) + e.bIntercept && yRow - INFINITECIMAL <= (e.mSlope * (xCol + 1)) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * (xCol + 1)) + e.bIntercept)
+		{
+			if ((e.mSlope * xCol) + e.bIntercept - yRow + (e.mSlope * (xCol + 1)) + e.bIntercept - yRow - INFINITECIMAL <= 1)
+			{
+				return true;
+			}
+		}
+		
+		if (xCol - INFINITECIMAL <= (yRow - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= (yRow - e.bIntercept) / e.mSlope && xCol - INFINITECIMAL <= ((yRow + 1) - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= ((yRow + 1) - e.bIntercept) / e.mSlope)
+		{
+			if (((yRow - e.bIntercept) / e.mSlope) - xCol > (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol)
+			{
+				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol - INFINITECIMAL <= 1)
+				{
+					return true;
+				}
+			}
+			
+			if (((yRow - e.bIntercept) / e.mSlope) - xCol < (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol)
+			{
+				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol + INFINITECIMAL >= 1)
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int right, int left)
+{	
+	if (bottom - top == 1 && right - left != 1 && pov.y == top + 0.5)
+	{
+		if (pov.x < left)
+		{
+			if (xCol > left)
+			{
+				return true;
+			}
+			
+			if (xCol >= left && yRow != top)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.x > right)
+		{
+			if (xCol < right - 1)
+			{
+				return true;
+			}
+			
+			if (xCol <= right - 1 && yRow != top)
+			{
+				return true;
+			}
+		}
 	}
 	
-	if (pov.y < top && yRow < top + 1)
+	if (right - left == 1 && bottom - top != 1 && pov.x == left + 0.5)
 	{
-		return false;
+		if (pov.y < top)
+		{
+			if (yRow > top)
+			{
+				return true;
+			}
+			
+			if (yRow >= top && xCol != left)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.y > bottom)
+		{
+			if (yRow < bottom - 1)
+			{
+				return true;
+			}
+			
+			if (yRow <= bottom - 1 && xCol != left)
+			{
+				return true;
+			}
+		}
 	}
 	
-	if (pov.y > bottom && yRow > bottom - 2)
+	if (pov.y > top && pov.y < bottom && bottom - top != 1)
 	{
-		return false;
+		if (pov.x < left)
+		{
+			if (xCol > left)
+			{
+				return true;
+			}
+			
+			if (xCol == left && (yRow < top || yRow > bottom - 1))
+			{
+				return true;
+			}
+		}
+		
+		if (pov.x > right - 1)
+		{
+			if (xCol < right - 1)
+			{
+				return true;
+			}
+			
+			if (xCol == left && (yRow < top || yRow > bottom - 1))
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (pov.x > left && pov.x < right && right - left != 1)
+	{
+		if (pov.y < top)
+		{
+			if (yRow > top)
+			{
+				return true;
+			}
+			
+			if (yRow == top && (xCol < left || xCol > right - 1))
+			{
+				return true;
+			}
+		}
+		
+		if (pov.y > bottom - 1)
+		{
+			if (yRow < bottom - 1)
+			{
+				return true;
+			}
+			
+			if (yRow == top && (xCol < left || xCol > right - 1))
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (pov.y < top && bottom - top != 1)
+	{
+		if (pov.x < left)
+		{
+			if (xCol > left && yRow >= top)
+			{
+				return true;
+			}
+			
+			if (xCol == left && yRow > bottom - 1)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.x > right - 1)
+		{
+			if (xCol < right - 1 && yRow >= top)
+			{
+				return true;
+			}
+			
+			if (xCol == left && yRow > bottom - 1)
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (pov.y > bottom - 1 && bottom - top != 1)
+	{
+		if (pov.x < left)
+		{
+			if (xCol > left && yRow <= bottom - 1)
+			{
+				return true;
+			}
+			
+			if (xCol == left && yRow < top)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.x > right - 1)
+		{
+			if (xCol < right - 1 && yRow <= bottom - 1)
+			{
+				return true;
+			}
+			
+			if (xCol == left && yRow < top)
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (pov.x < left && right - left != 1)
+	{
+		if (pov.y < top)
+		{
+			if (yRow > top && xCol >= left)
+			{
+				return true;
+			}
+			
+			if (yRow == top && xCol > right - 1)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.y > bottom - 1)
+		{
+			if (yRow < bottom - 1 && xCol >= left)
+			{
+				return true;
+			}
+			
+			if (yRow == top && xCol > right - 1)
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (pov.x > right - 1 && right - left != 1)
+	{
+		if (pov.y < top)
+		{
+			if (yRow > bottom - 1 && xCol <= right - 1)
+			{
+				return true;
+			}
+			
+			if (yRow == top && xCol < left)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.y > bottom - 1)
+		{
+			if (yRow < top && xCol <= right - 1)
+			{
+				return true;
+			}
+			
+			if (yRow == top && xCol < left)
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (bottom - top == 1 && right - left == 1)
+	{
+		if (pov.x < left && xCol < left)
+		{
+			return false;
+		}
+		
+		if (pov.x > right && xCol > right - 1)
+		{
+			return false;
+		}
+		
+		if (pov.y < top && yRow < top)
+		{
+			return false;
+		}
+		
+		if (pov.y > bottom && yRow > bottom - 1)
+		{
+			return false;
+		}
+		
+		if (xCol == left && yRow == top)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	return false;
+}
+
+bool tShapeDetector(koordinate pov, int yRow, int xCol, int top, int bottom, int right, int left)
+{
+	if (bottom - top == 1)
+	{
+		if (pov.x < left)
+		{
+			if (xCol == left)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.x > right)
+		{
+			if (xCol == right - 1)
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (right - left == 1)
+	{
+		if (pov.y < top)
+		{
+			if (yRow == top)
+			{
+				return true;
+			}
+		}
+		
+		if (pov.y > bottom)
+		{
+			if (xCol == bottom - 1)
+			{
+				return false;
+			}
+		}
 	}
 	
 	return true;
@@ -325,15 +701,29 @@ void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRo
 					k++;
 				}
 				
-				edg = getEdgeLines(pov, i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol);
-				
-				for (int g = 0; g < SCREENROWS; g++)
+				if (k > 1)
 				{
-					for(int h = 0; h < SCREENCOLS; h++)
+					edg = getEdgeLines(pov, i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol);
+				
+					for (int g = 0; g < SCREENROWS; g++)
 					{
-						if (isBetweenLines(edg.first, edg.second, g + cameraRow, h + cameraCol) && isBehindWall(pov, g + cameraRow, h + cameraCol, i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol))
+						for(int h = 0; h < SCREENCOLS; h++)
 						{
-							world[g + cameraRow][h + cameraCol].mapInView = false;
+							if (isBehindWall(pov, g + cameraRow, h + cameraCol, i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol))
+							{
+								if (isMoreThanHalfInShade(edg.first, g + cameraRow, h + cameraCol) || isMoreThanHalfInShade(edg.second, g + cameraRow, h + cameraCol))
+								{
+									if (!world[g + cameraRow][h + cameraCol].solid || !tShapeDetector(pov, g + cameraRow, h + cameraCol, i + cameraRow, i + cameraRow + 1, j + k + cameraCol, j + cameraCol))
+									{
+										world[g + cameraRow][h + cameraCol].mapInView = false;
+									}
+								}
+								
+								if (isBetweenLines(edg.first, edg.second, g + cameraRow, h + cameraCol)/* || (doesLineIntersectIt(edg.first, g + cameraRow, h + cameraCol) || doesLineIntersectIt(edg.second, g + cameraRow, h + cameraCol))*/)
+								{
+									world[g + cameraRow][h + cameraCol].mapInView = false;
+								}
+							}
 						}
 					}
 				}
@@ -362,15 +752,52 @@ void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRo
 					k++;
 				}
 				
-				edg = getEdgeLines(pov, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol);
-				
-				for (int g = 0; g < SCREENROWS; g++)
+				if (k > 1)
 				{
-					for(int h = 0; h < SCREENCOLS; h++)
+					edg = getEdgeLines(pov, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol);
+				
+					for (int g = 0; g < SCREENROWS; g++)
 					{
-						if (isBetweenLines(edg.first, edg.second, g + cameraRow, h + cameraCol) && isBehindWall(pov, g + cameraRow, h + cameraCol, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol))
+						for (int h = 0; h < SCREENCOLS; h++)
 						{
-							world[g + cameraRow][h + cameraCol].mapInView = false;
+							if (isBehindWall(pov, g + cameraRow, h + cameraCol, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol))
+							{
+								if (isMoreThanHalfInShade(edg.first, g + cameraRow, h + cameraCol) || isMoreThanHalfInShade(edg.second, g + cameraRow, h + cameraCol))
+								{
+									if (!world[g + cameraRow][h + cameraCol].solid || !tShapeDetector(pov, g + cameraRow, h + cameraCol, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol))
+									{
+										world[g + cameraRow][h + cameraCol].mapInView = false;
+									}
+								}
+								
+								if (isBetweenLines(edg.first, edg.second, g + cameraRow, h + cameraCol)/* || (doesLineIntersectIt(edg.first, g + cameraRow, h + cameraCol) || doesLineIntersectIt(edg.second, g + cameraRow, h + cameraCol))*/)
+								{
+									world[g + cameraRow][h + cameraCol].mapInView = false;
+								}
+							}
+						}
+					}
+				}
+				else if (!world[j + cameraRow][i + cameraCol + 1].solid && !world[j + cameraRow][i + cameraCol - 1].solid)
+				{
+					edg = getEdgeLines(pov, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol);
+					
+					for (int g = 0; g < SCREENROWS; g++)
+					{
+						for (int h = 0; h < SCREENCOLS; h++)
+						{
+							if (isBehindWall(pov, g + cameraRow, h + cameraCol, j + cameraRow, j + k + cameraRow, i + cameraCol + 1, i + cameraCol))
+							{
+								if (isMoreThanHalfInShade(edg.first, g + cameraRow, h + cameraCol) || isMoreThanHalfInShade(edg.second, g + cameraRow, h + cameraCol))
+								{
+									world[g + cameraRow][h + cameraCol].mapInView = false;
+								}
+								
+								if (isBetweenLines(edg.first, edg.second, g + cameraRow, h + cameraCol)/* || (doesLineIntersectIt(edg.first, g + cameraRow, h + cameraCol) || doesLineIntersectIt(edg.second, g + cameraRow, h + cameraCol))*/)
+								{
+									world[g + cameraRow][h + cameraCol].mapInView = false;
+								}
+							}
 						}
 					}
 				}
@@ -385,13 +812,30 @@ void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRo
 	}
 }
 
+void holePlugger(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRow)
+{
+	for (int i = 0; i < SCREENCOLS; i++)
+	{
+		for (int j = 0; j < SCREENROWS; j++)
+		{
+			if (world[j + cameraRow][i + cameraCol].mapInView)
+			{
+				if ((world[j + cameraRow + 1][i + cameraCol].solid || !world[j + cameraRow + 1][i + cameraCol].mapInView) && (world[j + cameraRow - 1][i + cameraCol].solid || !world[j + cameraRow - 1][i + cameraCol].mapInView) && (world[j + cameraRow][i + cameraCol + 1].solid || !world[j + cameraRow][i + cameraCol + 1].mapInView) && (world[j + cameraRow][i + cameraCol - 1].solid || !world[j + cameraRow][i + cameraCol - 1].mapInView))
+				{
+					world[j + cameraRow][i + cameraCol].mapInView = false;
+				}
+			} 
+		}
+	}
+}
+
 bool isBesideNotSolidInView(map world[WORLDROWS][WORLDCOLS], int xCol, int yRow)
 {
 	for (int i = yRow - 1; i <= yRow + 1; i++)
 	{
 		for (int j = xCol - 1; j <= xCol + 1; j++)
 		{
-			if (world[j][i].mapInView && !world[j][i].solid)
+			if (world[j][i].mapInView/* && !world[j][i].solid*/)
 			{
 				return true;
 			}

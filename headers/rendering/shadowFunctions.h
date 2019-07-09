@@ -18,11 +18,17 @@ bool isOverLine(line e, int solidYRow, int solidXCol);
 
 bool isBetweenLines(line a, line b, int yRow, int xCol);
 
+bool isMoreThanHalfInShade(line e, int yRow, int xCol);
+
 bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int right, int left);
+
+bool tShapeDetector(koordinate pov, int yRow, int xCol, int top, int bottom, int right, int left);
 
 edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left);
 
 void shadowFunction(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRow, koordinate pov, edgeLines edg);
+
+void holePlugger(map world[WORLDROWS][WORLDCOLS], int cameraCol, int cameraRow);
 
 bool isBesideNotSolidInView(map world[WORLDROWS][WORLDCOLS], int xCol, int yRow);
 

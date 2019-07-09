@@ -141,6 +141,7 @@ int main()
 		playerPov = getPov(playerPov, player);
 	
 		shadowFunction(newWorld, camera.col, camera.row, playerPov, edges);
+		holePlugger(newWorld, camera.col, camera.row);
 		
 		mapIsEdgeCalculation(newWorld, camera.row, camera.col);
 	
