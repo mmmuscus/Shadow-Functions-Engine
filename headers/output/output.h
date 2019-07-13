@@ -1,8 +1,6 @@
 #include "../system/system.h"
 
-void saveLastScreenArray(char oldS[SCREENROWS][SCREENCOLS], char newS[SCREENROWS][SCREENCOLS]);
-
-void saveLastMenuArray(char oldM[SCREENROWS][MENUCOLS], char newM[SCREENROWS][MENUCOLS]);
+void saveLastConsoleArray(char oldC[CONSOLEROWS][CONSOLECOLS], char newC[CONSOLEROWS][CONSOLECOLS]);
 
 void initSolid(char solide[SOLIDCOUNT], string fileName);
 

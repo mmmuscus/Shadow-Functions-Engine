@@ -9,10 +9,12 @@ using namespace std;
 #ifndef DEFINE_INIT
 #define DEFINE_INIT
 
-#define SCREENROWS 24
 #define SCREENCOLS 39
 
 #define MENUCOLS 41
+
+#define CONSOLEROWS 24
+#define CONSOLECOLS 80
 
 #define FOVROWS 21
 #define FOVCOLS 35
@@ -24,6 +26,8 @@ using namespace std;
 #define WALKABLECOUNT 1
 
 #define INFINITECIMAL 0.000001
+
+#define MAXAMOUNTOFANIMATIONFRAMES 500
 
 #endif //DEFINE_INIT
 
@@ -72,6 +76,15 @@ struct koordinate
 {
 	double x;
 	double y;
+};
+
+struct animation
+{
+	int frames;
+	int currentFrame;
+	int height;
+	int width;
+	char frameArray[MAXAMOUNTOFANIMATIONFRAMES][CONSOLEROWS][SCREENCOLS + MENUCOLS];
 };
 
 #endif //STRUCT INIT

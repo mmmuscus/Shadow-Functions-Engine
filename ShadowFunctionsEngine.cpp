@@ -10,6 +10,7 @@
 
 #include "headers/rendering/render.h"
 #include "headers/rendering/shadowFunctions.h"
+#include "headers/rendering/animation.h"
 
 
 const char playerTexture = '@';
@@ -21,6 +22,7 @@ int main()
 	bool isSPressed;
 	bool isAPressed;
 	bool isDPressed;
+	bool isEPressed;
 	bool isEscPressed;
 	
 
@@ -33,10 +35,11 @@ int main()
 	player.left = false;
 
 	mob lastPlayer;
+	lastPlayer.row = player.row;
+	lastPlayer.col = player.col;
 
 	mob camera;
-	camera.row = player.row - 12;
-	camera.col = player.col - 3;
+	camera = camMovement(camera, player);
 
 	mob whereToCamera;
 	whereToCamera.row = camera.row;
@@ -49,15 +52,13 @@ int main()
 	edgeLines edges;
 	
 
-	int sleepTime = 30;
+	int sleepTime = 60;
 	
 	bool isNotExit = true;
+	bool isIntro = true;
 	
-	char oldScreen[SCREENROWS][SCREENCOLS];
-	char newScreen[SCREENROWS][SCREENCOLS];
-	
-	char oldMenu[SCREENROWS][MENUCOLS];
-	char newMenu[SCREENROWS][MENUCOLS];
+	char oldConsole[CONSOLEROWS][CONSOLECOLS];
+	char newConsole[CONSOLEROWS][CONSOLECOLS];
 	
 	fov right[FOVROWS][FOVCOLS];
 	fov left[FOVROWS][FOVCOLS];
@@ -94,73 +95,104 @@ int main()
 	map newWorld[WORLDROWS][WORLDCOLS];
 
 	initWorld(newWorld, solid, walkable, "maps/world.txt");
+	
+	animation logo = initNewAnimation(logo, "animations/logo.txt");
 
 	while (isNotExit)
 	{
-		Sleep(sleepTime);
-		
-
-		isWPressed = false;
-		isAPressed = false;
-		isSPressed = false;
-		isDPressed = false;
-		isEscPressed = false;
-		
-		isWPressed = wPressed();
-		isAPressed = aPressed();
-		isSPressed = sPressed();
-		isDPressed = dPressed();
-		isEscPressed = escPressed();
-		
-		if (isEscPressed)
+		if (isIntro)
 		{
-			isNotExit = false;
+			Sleep(sleepTime);
+			
+			isEPressed = ePressed();
+			
+			if (isEPressed)
+			{
+				isIntro = false;
+				
+				sleepTime = 30;
+				
+				clearConsole(newConsole, oldConsole);
+			}
+			else
+			{
+				saveLastConsoleArray(oldConsole, newConsole);
+				
+				playAnimation(newConsole, logo, 0, 0);
+				if (logo.currentFrame < logo.frames)
+				{
+					logo.currentFrame++;
+				}
+			}
+			
+			renderConsole(oldConsole, newConsole);
 		}
-		
-		cancelOut(isWPressed, isSPressed);
-		cancelOut(isAPressed, isDPressed);
-		
-		saveLastScreenArray(oldScreen, newScreen);
-		saveLastMenuArray(oldMenu, newMenu);
-		
-		lastPlayer.row = player.row;
-		lastPlayer.col = player.col;
-
-		player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
-		player = keepInBounds(player, lastPlayer, newWorld);
-		player = setDirections(player, isWPressed, isSPressed, isAPressed, isDPressed);
-
-		whereToCamera = camMovement(whereToCamera, player);
-		camera = cameraPan(camera, whereToCamera);
-		camera = keepCamInBounds(camera);
-
-		setCurrentFov(player, currentFov, right, left, up, down, rightUp, rightDown, leftUp, leftDown);
-		playerInFov = getPlayerPosInFov(player, playerInFov);
-		addFovInfoToMap(newWorld, player, playerInFov, currentFov);
-
-		playerPov = getPov(playerPov, player);
-	
-		shadowFunction(newWorld, camera.col, camera.row, playerPov, edges);
-		holePlugger(newWorld, camera.col, camera.row);
-		
-		mapIsEdgeCalculation(newWorld, camera.row, camera.col);
-	
-		calculateScreen(newWorld, newScreen, camera.row, camera.col);
-		
-		if (newScreen[lastPlayer.row - camera.row][lastPlayer.col - camera.col] == playerTexture)
-		{		
-			newScreen[lastPlayer.row - camera.row][lastPlayer.col - camera.col] = ' ';
-		}
-		newScreen[player.row - camera.row][player.col - camera.col] = playerTexture;
-		
-		for (int i = 0; i < SCREENROWS; i++)
+		else
 		{
-			newMenu[i][0] = screenDivisionTexture;
+			Sleep(sleepTime);
+			
+
+			isWPressed = false;
+			isAPressed = false;
+			isSPressed = false;
+			isDPressed = false;
+			isEPressed = false;
+			isEscPressed = false;
+		
+			isWPressed = wPressed();
+			isAPressed = aPressed();
+			isSPressed = sPressed();
+			isDPressed = dPressed();
+			isEPressed = ePressed();
+			isEscPressed = escPressed();
+			
+			cancelOut(isWPressed, isSPressed);
+			cancelOut(isAPressed, isDPressed);
+		
+			if (isEscPressed)
+			{
+				isNotExit = false;
+			}
+		
+			saveLastConsoleArray(oldConsole, newConsole);
+		
+			lastPlayer.row = player.row;
+			lastPlayer.col = player.col;
+
+			player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
+			player = keepInBounds(player, lastPlayer, newWorld);
+			player = setDirections(player, isWPressed, isSPressed, isAPressed, isDPressed);
+
+			whereToCamera = camMovement(whereToCamera, player);
+			camera = cameraPan(camera, whereToCamera);
+			camera = keepCamInBounds(camera);
+
+			setCurrentFov(player, currentFov, right, left, up, down, rightUp, rightDown, leftUp, leftDown);
+			playerInFov = getPlayerPosInFov(player, playerInFov);
+			addFovInfoToMap(newWorld, player, playerInFov, currentFov);
+
+			playerPov = getPov(playerPov, player);
+	
+			shadowFunction(newWorld, camera.col, camera.row, playerPov, edges);
+			holePlugger(newWorld, camera.col, camera.row);
+		
+			mapIsEdgeCalculation(newWorld, camera.row, camera.col);
+	
+			calculateScreen(newWorld, newConsole, camera.row, camera.col);
+		
+			if (newConsole[lastPlayer.row - camera.row][lastPlayer.col - camera.col] == playerTexture)
+			{		
+				newConsole[lastPlayer.row - camera.row][lastPlayer.col - camera.col] = ' ';
+			}
+			newConsole[player.row - camera.row][player.col - camera.col] = playerTexture;
+		
+			for (int i = 0; i < CONSOLEROWS; i++)
+			{
+				newConsole[i][39] = screenDivisionTexture;
+			}
+		
+			renderConsole(oldConsole, newConsole);
 		}
-		
-		renderScreen(oldScreen, newScreen);
-		
-		renderMenu(oldMenu, newMenu);
 	}
 	
 	clearScreen();

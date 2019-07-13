@@ -32,6 +32,14 @@ bool dPressed()
 	}
 }
 
+bool ePressed()
+{
+	if (GetKeyState('E') & 0x8000)
+	{
+		return true;
+	}
+}
+
 bool escPressed()
 {
 	if (GetKeyState(VK_ESCAPE) & 0x8000) 

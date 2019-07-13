@@ -53,41 +53,36 @@ void clearScreen()
 	SetConsoleCursorPosition( hConsole, coordScreen );
 }
 
-void renderScreen(char oldS[SCREENROWS][SCREENCOLS], char newS[SCREENROWS][SCREENCOLS])
+void renderConsole(char oldC[CONSOLEROWS][CONSOLECOLS], char newC[CONSOLEROWS][CONSOLECOLS])
 {
-	for (int i = 0; i < SCREENROWS; i++)
+	for (int i = 0; i < CONSOLEROWS; i++)
 	{
-		for (int j = 0; j < SCREENCOLS; j++)
+		for (int j = 0; j < CONSOLECOLS; j++)
 		{
-			if (newS[i][j] != oldS[i][j])
+			if (newC[i][j] != oldC[i][j])
 			{
 				goTo(i, j);
-				cout<<newS[i][j];
+				cout<<newC[i][j];
 			}
 		}
 	}
-	
-	goTo(SCREENROWS, 0);
 }
 
-void renderMenu(char oldM[SCREENROWS][MENUCOLS], char newM[SCREENROWS][MENUCOLS])
+void clearConsole(char newC[CONSOLEROWS][CONSOLECOLS], char oldC[CONSOLEROWS][CONSOLECOLS])
 {
-	for (int i = 0; i < SCREENROWS; i++)
+	for (int i = 0; i < CONSOLEROWS; i++)
 	{
-		for (int j = 0; j < MENUCOLS; j++)
+		for (int j = 0; j < CONSOLECOLS; j++)
 		{
-			if (newM[i][j] != oldM[i][j])
-			{
-				goTo(i, SCREENCOLS + j);
-				cout<<newM[i][j];
-			}
+			newC[i][j] = ' ';
+			oldC[i][j] = 'x';
 		}
 	}
 }
 
-void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[SCREENROWS][SCREENCOLS], int cameraRow, int cameraCol)
+void calculateScreen(map world[WORLDROWS][WORLDCOLS], char screen[CONSOLEROWS][CONSOLECOLS], int cameraRow, int cameraCol)
 {
-	for (int i = 0; i < SCREENROWS; i++)
+	for (int i = 0; i < CONSOLEROWS; i++)
 	{
 		for (int j = 0; j < SCREENCOLS; j++)
 		{
