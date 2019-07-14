@@ -36,14 +36,6 @@ Features as of now:
 
 The next main goal of the project is to make an animation pipeline. The plan for it is to have every frame drawn in a textfile under each other, with a general function that can read any animation text file into a 3 dimensional array, and another general function that could play said animation in a set position on the screen. Beside this main goal I plan to make several quality of life changes to the different text based editors and to the structure and efficency of the code in general.
 
-# 3. Detailed description of EVERYTHING
-###### This section was last checked in the 1.0.0. version of the engine
-This segment of the documentation will have four main subsections:
-* [Defines](#31-defines)
-* [Structures](#32-structures)
-* [Variables](#33-variables-in-the-main-cpp-file)
-* [Functions](#34-functions)
-
 ## 3.4. Functions
 ###### This section was last checked in the 1.0.0. version of the engine
 This section of [the third chapter of the documentation](#3-detailed-description-of-everything) will not go over the functions in order of apperance (as opposed to the previous sections) but in the order that they are in their header files. Thus this section will have the following parts:
