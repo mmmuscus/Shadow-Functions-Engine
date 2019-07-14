@@ -24,7 +24,7 @@ The bare minimum I wanted to accomplish was a real time 2D top down game, with a
 
 Here is an example for the shading system in action:
 
-![example](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/screenShots/example.png)
+![example](https://github.com/mmmuscus/Shadow-Functions-Engine/blob/master/documentation/screenShots/example.png)
 
 Right now this system has a small bug, which I will discuss in [a later section of the documentation](#34512-shadowfunction). Besides the minimum goal I created basic text file based level and field of view editors. I also created the option to make new characters that could block light, or player movement.
 
