@@ -597,12 +597,12 @@ bool tShapeDetector(koordinate pov, int yRow, int xCol, int top, int bottom, int
 		{
 			if (xCol == bottom - 1)
 			{
-				return false;
+				return true;
 			}
 		}
 	}
 	
-	return true;
+	return false;
 }
 
 edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
