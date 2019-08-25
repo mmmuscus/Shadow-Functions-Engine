@@ -30,6 +30,10 @@ set(SOURCE_FILES
 
 add_executable(${PROJECT_NAME} ${INCLUDE_FILES} ${SOURCE_FILES})
 
+if (UNIX)
+    target_link_libraries(${PROJECT_NAME} X11)
+endif()
+
 set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES
