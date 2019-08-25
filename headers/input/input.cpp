@@ -2,50 +2,32 @@
 
 bool wPressed()
 {
-	if (GetKeyState('W') & 0x8000)
-	{
-		return true;
-	}
+	return (GetKeyState('W') & 0x8000);
 }
 
 bool aPressed()
 {
-	if (GetKeyState('A') & 0x8000)
-	{
-		return true;
-	}
+	return (GetKeyState('A') & 0x8000);
 }
 
 bool sPressed()
 {
-	if (GetKeyState('S') & 0x8000)
-	{
-		return true;
-	}
+	return (GetKeyState('S') & 0x8000);
 }
 
 bool dPressed()
 {
-	if (GetKeyState('D') & 0x8000)
-	{
-		return true;
-	}
+	return (GetKeyState('D') & 0x8000);
 }
 
 bool ePressed()
 {
-	if (GetKeyState('E') & 0x8000)
-	{
-		return true;
-	}
+	return (GetKeyState('E') & 0x8000);
 }
 
 bool escPressed()
 {
-	if (GetKeyState(VK_ESCAPE) & 0x8000) 
-	{
-		return true;
-	}
+	return (GetKeyState(VK_ESCAPE) & 0x8000);
 }
 
 void cancelOut (bool plus, bool minus)
