@@ -1,9 +1,15 @@
-#include <windows.h>
+#if defined(WIN32) or defined(_WINDOWS)
+	#include <windows.h>
+	#include <winnt.h>
+	#include <String>
+#elif defined(UNIX)
+	#include <unistd.h>  // for sleep
+	#define Sleep sleep
+#endif
+
 #include <iostream>
 #include <fstream>
-#include <winnt.h>
 #include <stdio.h>
-#include <String>
 using namespace std;
 
 #ifndef DEFINE_INIT
