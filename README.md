@@ -36,4 +36,4 @@ Features as of now:
 * Character attribute editors (can this character block light? can it block player movement?)
 * Animation pipeline
 
-The next big update of the project (3.0.0.) will be the entity update. In this version i plan to add different entities with different attributes, for example: torches that emit light, NPCs that can be interacted with, posts that have text on them etc.
+The next big update of the project (3.0.0.) will be the entity update. In this version I plan to add different entities with different attributes, for example: torches that emit light, NPCs that can be interacted with, posts that have text on them etc.
