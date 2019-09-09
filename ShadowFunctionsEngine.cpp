@@ -1,7 +1,8 @@
+// For further infromation about the code please refer back to the documentation!
+
+
 #include "headers/system/system.h"
 
-
-// For further infromation about the code please refer back to the documentation!
 
 #include "headers/input/input.h"
 
@@ -37,6 +38,7 @@ int main()
 	// In the following comments I will provide some detail about the variables that should
 	// help the cursory glancer to understand some basics about the code. However theese comments
 	// wont go into detail about the engine, for that please refer back to the documentation.
+	
 	
 	bool isWPressed;
 	bool isSPressed;
@@ -118,11 +120,14 @@ int main()
 	
 	animation logo = initNewAnimation(logo, "animations/logo.txt");
 
+
 	// After initialization we start the game loop.
+	
 	
 	while (isNotExit)
 	{
 		//   The game loop starts off with the intro.
+		
 		
 		if (isIntro)
 		{
@@ -171,10 +176,13 @@ int main()
 		{
 			//   If the intro part of the loop has ended, we start the game part of the loop.
 			
+			
 			//   The loop first waits for the set amount of time before computing anything.
 			Sleep(sleepTime);
 			
+			
 			//   Next we deal with the incoming input.
+			
 			
 			//   First we set back all the bools that deal with the input to false.
 			isWPressed = false;
@@ -203,9 +211,16 @@ int main()
 			//   Lastly we cancel out any contradictory input (such as left AND right). 
 			cancelOut(isWPressed, isSPressed);
 			cancelOut(isAPressed, isDPressed);
+			
+			
+			//   After the input we ensure the smoother running of the engine by saving information
+			// from the last frame.
+			
 		
+			//   Firstly we save the last frame of the console window.
 			saveLastConsoleArray(oldConsole, newConsole);
 		
+			//   Next we save the position of the player in the last frame.
 			lastPlayer.row = player.row;
 			lastPlayer.col = player.col;
 
