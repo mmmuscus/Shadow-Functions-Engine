@@ -223,6 +223,10 @@ int main()
 			//   Next we save the position of the player in the last frame.
 			lastPlayer.row = player.row;
 			lastPlayer.col = player.col;
+			
+			
+			//   After all this prep we start moving the player.
+			
 
 			player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
 			player = keepInBounds(player, lastPlayer, newWorld);
