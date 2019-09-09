@@ -228,38 +228,78 @@ int main()
 			//   After all this prep we start moving the player.
 			
 
+			//   First we calculate where the player should be moved according to the input.
 			player = playerMovement(player, isWPressed, isSPressed, isAPressed, isDPressed);
+			//   Next we calculate if the player can be moved into said position.
 			player = keepInBounds(player, lastPlayer, newWorld);
+			//   Lastly we set the direction of the player according to input.
 			player = setDirections(player, isWPressed, isSPressed, isAPressed, isDPressed);
+			
+			
+			//   After the player is moved next, we move the camera.
+			
 
+			//   First we calculate where the camera should be according to the player's position.
 			whereToCamera = camMovement(whereToCamera, player);
+			//   Next we "pan" the camera from the position it is to the position it should be
+			// (the camera gets closer to its target by 1 cell both vertically and horizontally in
+			// every frame).
 			camera = cameraPan(camera, whereToCamera);
+			// Lastly we make sure the camera is still in bounds.
 			camera = keepCamInBounds(camera);
-
+			
+			
+			//   Next we start the prep work for the binadry shading
+			
+			
+			//   First we set the correct Field Of View according to the orientation of the player.
 			setCurrentFov(player, currentFov, right, left, up, down, rightUp, rightDown, leftUp, leftDown);
+			//   Next we get the position of the player in the set FOV array.
 			playerInFov = getPlayerPosInFov(player, playerInFov);
+			//   With the help of the position of the player in the FOV array we paste the FOV
+			// information onto the map of the world.
 			addFovInfoToMap(newWorld, player, playerInFov, currentFov);
 
+			//   Lastly we get the point of view of the player from which he sees the world (and
+			// from which the lines that do the shading are cast).
 			playerPov = getPov(playerPov, player);
+			
+			
+			//   After the prep work we start actually doing the shading.
+			
 	
+			//   With all the previous information we do the shading calculations.
 			shadowFunction(newWorld, camera.col, camera.row, playerPov, edges);
+			//   Next we correct a bug thats due to the small resolution of the console window.
 			holePlugger(newWorld, camera.col, camera.row);
 		
+			//   We add an edge around the visible cells of the screen to make it look prettier.
 			mapIsEdgeCalculation(newWorld, camera.row, camera.col);
 	
+			//   Lastly we convert all this information into acual displayable textures.
 			calculateScreen(newWorld, newConsole, camera.row, camera.col);
+			
+			
+			//   Lastly we do the actual rendering of the engine using all the information
+			// calculated previously.
 		
+			//   First we move the player's texture to the correct position in the currentFrame
+			// array. We do this by first placing the correct texture onto the last position of the
+			// player, and then placing the player's texture into the correct position in the array.
 			if (newConsole[lastPlayer.row - camera.row][lastPlayer.col - camera.col] == playerTexture)
 			{		
 				newConsole[lastPlayer.row - camera.row][lastPlayer.col - camera.col] = ' ';
 			}
 			newConsole[player.row - camera.row][player.col - camera.col] = playerTexture;
 		
+			//   Next we place the line that divides the "screen" and "menu" part of the console
+			// window into the correct coloumn of the window.
 			for (int i = 0; i < CONSOLEROWS; i++)
 			{
 				newConsole[i][39] = screenDivisionTexture;
 			}
 		
+			//   Lastly we render the console window.
 			renderConsole(oldConsole, newConsole);
 		}
 	}
