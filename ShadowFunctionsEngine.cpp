@@ -1,6 +1,8 @@
 #include "headers/system/system.h"
 
 
+// For further infromation about the code please refer back to the documentation!
+
 #include "headers/input/input.h"
 
 
@@ -18,6 +20,24 @@ const char screenDivisionTexture = '#';
 
 int main()
 {
+	// First the engine initializes all the variables that are needed fot it to run
+	
+	
+	// The first kind of variables that the engine initializes are called "system variables".
+	// These are variables that the engine manipulates, they should not be altered.
+	//
+	// The second kind of variables are ones that could be altered, if one wants to change
+	// them, tho some have some restrictions about how you can alter them e.g.: player.row,
+	// player.pow etc.
+	//
+	// The thrid type of variables are the ones that hold the information that is getting
+	// parsed from the different kinds of editors.
+	
+	
+	// In the following comments I will provide some detail about the variables that should
+	// help the cursory glancer to understand some basics about the code. However theese comments
+	// wont go into detail about the engine, for that please refer back to the documentation.
+	
 	bool isWPressed;
 	bool isSPressed;
 	bool isAPressed;
@@ -98,26 +118,45 @@ int main()
 	
 	animation logo = initNewAnimation(logo, "animations/logo.txt");
 
+	// After initialization we start the game loop.
+	
 	while (isNotExit)
 	{
+		//   The game loop starts off with the intro.
+		
 		if (isIntro)
 		{
+			//   The loop first waits for the set amount of time before computing anything.
 			Sleep(sleepTime);
 			
+			//   First we check if the 'E' button was pressed.
 			isEPressed = ePressed();
 			
 			if (isEPressed)
 			{
+				//   If the 'E' button was pressed then we prime the game loop to exit the intro
+				// part and enter the game part.
+				
+				//   For this we first set the correct bool to false (so the game loop starts).
 				isIntro = false;
 				
+				//   Next we set the variable controlling the framerate to the correct value for
+				// the gameplay.
 				sleepTime = 30;
 				
+				//   After that we prime the console window for cleariing the screen.
 				clearConsole(newConsole, oldConsole);
 			}
 			else
 			{
+				//   If the 'E' button wasn't pressed we continue playing the animation.
+				
+				//   For any type of rendering in the engine we need to save the last frame of the
+				// console window.
 				saveLastConsoleArray(oldConsole, newConsole);
 				
+				//   Next we update the current frame of the console window by "playing" the next
+				// frame of the animation.
 				playAnimation(newConsole, logo, 0, 0);
 				if (logo.currentFrame < logo.frames)
 				{
@@ -125,13 +164,19 @@ int main()
 				}
 			}
 			
+			//   Lastly we render the console window.
 			renderConsole(oldConsole, newConsole);
 		}
 		else
 		{
+			//   If the intro part of the loop has ended, we start the game part of the loop.
+			
+			//   The loop first waits for the set amount of time before computing anything.
 			Sleep(sleepTime);
 			
-
+			//   Next we deal with the incoming input.
+			
+			//   First we set back all the bools that deal with the input to false.
 			isWPressed = false;
 			isAPressed = false;
 			isSPressed = false;
@@ -139,20 +184,25 @@ int main()
 			isEPressed = false;
 			isEscPressed = false;
 		
+			//   Next we get the input by using the correct functions of the engine.
 			isWPressed = wPressed();
 			isAPressed = aPressed();
 			isSPressed = sPressed();
 			isDPressed = dPressed();
 			isEPressed = ePressed();
 			isEscPressed = escPressed();
-			
-			cancelOut(isWPressed, isSPressed);
-			cancelOut(isAPressed, isDPressed);
 		
+			//   After that we check if the escape key was pressed. If it was we set the bool that
+			// is responsible for getting into the game loop false, thus terminating the loop in
+			// the next pass.
 			if (isEscPressed)
 			{
 				isNotExit = false;
 			}
+			
+			//   Lastly we cancel out any contradictory input (such as left AND right). 
+			cancelOut(isWPressed, isSPressed);
+			cancelOut(isAPressed, isDPressed);
 		
 			saveLastConsoleArray(oldConsole, newConsole);
 		
