@@ -1,7 +1,13 @@
+// For further infromation about the code please refer back to the documentation!
+
+
 #include "render.h"
 
 using namespace std;
 
+//   This function puts the cursor in a set position on the console window.
+//   The working of this function can be found in the link below as the fourth answer:
+// https://stackoverflow.com/questions/10401724/move-text-cursor-to-particular-screen-coordinate
 void goTo (int row, int column)
 {
 	HANDLE hStdout;
@@ -15,6 +21,9 @@ void goTo (int row, int column)
 	SetConsoleCursorPosition(hStdout, destCoord);
 }
 
+//   This function clears the console window.
+//   The workings of this function can be found at this link:
+// https://docs.microsoft.com/en-us/windows/console/clearing-the-screen
 void clearScreen()
 {
 	HANDLE hConsole;
@@ -53,12 +62,17 @@ void clearScreen()
 	SetConsoleCursorPosition( hConsole, coordScreen );
 }
 
+//   This function renders the console array onto the console window.
 void renderConsole(char oldC[CONSOLEROWS][CONSOLECOLS], char newC[CONSOLEROWS][CONSOLECOLS])
 {
+	//   First the function loops through all of the variables in the array.
 	for (int i = 0; i < CONSOLEROWS; i++)
 	{
 		for (int j = 0; j < CONSOLECOLS; j++)
 		{
+			//   We check if the variable we are on is different in the pervious frame,
+			// if it is we go to the correct cell on the console window and write the 
+			// variable from the current frame onto the window.
 			if (newC[i][j] != oldC[i][j])
 			{
 				goTo(i, j);
