@@ -1,7 +1,11 @@
 #include "movement.h"
 
+//   This function increments the correct coordinate of the player according to input.
 mob playerMovement(mob playr, bool w, bool s, bool a, bool d)
 {
+	//   The function checks for all 4 different directions and then increments the 
+	// coordinates accordingly.
+	
 	if (s)
 	{
 		playr.row++;
