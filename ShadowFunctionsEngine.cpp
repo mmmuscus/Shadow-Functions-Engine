@@ -15,31 +15,33 @@
 #include "headers/rendering/shadowFunctions.h"
 #include "headers/rendering/animation.h"
 
-
+//   The texture of the player.
 const char playerTexture = '@';
+//   The texture that divides the "screen" and "menu" parts of the console window.
 const char screenDivisionTexture = '#';
 
 int main()
 {
-	// First the engine initializes all the variables that are needed fot it to run
+	//   First the engine initializes all the variables that are needed fot it to run
 	
 	
-	// The first kind of variables that the engine initializes are called "system variables".
+	//   The first kind of variables that the engine initializes are called "system variables".
 	// These are variables that the engine manipulates, they should not be altered.
 	//
-	// The second kind of variables are ones that could be altered, if one wants to change
+	//   The second kind of variables are ones that could be altered, if one wants to change
 	// them, tho some have some restrictions about how you can alter them e.g.: player.row,
 	// player.pow etc.
 	//
-	// The thrid type of variables are the ones that hold the information that is getting
+	//   The thrid type of variables are the ones that hold the information that is getting
 	// parsed from the different kinds of editors.
 	
 	
-	// In the following comments I will provide some detail about the variables that should
+	//   In the following comments I will provide some detail about the variables that should
 	// help the cursory glancer to understand some basics about the code. However theese comments
 	// wont go into detail about the engine, for that please refer back to the documentation.
 	
 	
+	//   These varaibles hold the input coming from the kayboard.
 	bool isWPressed;
 	bool isSPressed;
 	bool isAPressed;
@@ -47,7 +49,7 @@ int main()
 	bool isEPressed;
 	bool isEscPressed;
 	
-
+	//   This variable holds the information about the player (position/orientation).
 	mob player;
 	player.row = 31;
 	player.col = 45;
@@ -56,32 +58,48 @@ int main()
 	player.right = true;
 	player.left = false;
 
+	//   This variable holds the position of the player in the last frame.
 	mob lastPlayer;
 	lastPlayer.row = player.row;
 	lastPlayer.col = player.col;
 
+	//   This variable holds the position of the camera.
 	mob camera;
 	camera = camMovement(camera, player);
 
+	//   This variable holds the position of where the camera should get to.
 	mob whereToCamera;
 	whereToCamera.row = camera.row;
 	whereToCamera.col = camera.col;
 	
+	//   This variable holds the position of the player in the current FOV array.
 	mob playerInFov;
 	
+	//   This variable holds the coordinate from which the player "sees" the world.
 	koordinate playerPov;
 	
+	//   This variable holds the lines that get cast from the player to the edges of
+	// rectangles.
 	edgeLines edges;
 	
 
+	//   This variable holds the amount of time the engine waits inbetween every frame in
+	// miliseconds.
 	int sleepTime = 60;
 	
+	//   If this variable gets set to false the game loop terminates.
 	bool isNotExit = true;
+	//   If this variable gets set to false the intro part of the game loop stops and the
+	// game part of the game loop begins.
 	bool isIntro = true;
 	
+	//   This array holds information about the last frame of the console window. With the
+	// help of this array the rendering can run much smoother and faster.
 	char oldConsole[CONSOLEROWS][CONSOLECOLS];
+	//   This array holds information about the current frame of the console window.
 	char newConsole[CONSOLEROWS][CONSOLECOLS];
 	
+	//   These arrays hold all the 8 possible FOVs.
 	fov right[FOVROWS][FOVCOLS];
 	fov left[FOVROWS][FOVCOLS];
 	fov up[FOVROWS][FOVCOLS];
@@ -91,6 +109,7 @@ int main()
 	fov leftUp[FOVROWS][FOVCOLS];
 	fov leftDown[FOVROWS][FOVCOLS];
 	
+	//   This array holds the current FOV of the player.
 	fov currentFov[FOVROWS][FOVCOLS];
 	
 	initFOV(right, "FOVs/right.txt");
@@ -108,16 +127,21 @@ int main()
 	
 	playerPov = getPov(playerPov, player);
 	
+	//   This vector holds all the characters that block the player from seeing things
+	// behind them.
 	char solid[SOLIDCOUNT];
+	//   This vector holds all the characters that don't block player movement.
 	char walkable[WALKABLECOUNT];
 	
 	initSolid(solid, "materials/solid.txt");
 	initWalkable(walkable, "materials/walkable.txt");
 	
+	//   This array holds all the relevant inforation about the world map.
 	map newWorld[WORLDROWS][WORLDCOLS];
 
 	initWorld(newWorld, solid, walkable, "maps/world.txt");
 	
+	//   This variable holds the logo animation.
 	animation logo = initNewAnimation(logo, "animations/logo.txt");
 
 
