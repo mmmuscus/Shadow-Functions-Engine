@@ -5,6 +5,8 @@
 #include <fstream>
 #include <stdio.h>
 
+// <Linux port curtesy of SuoerFola>
+
 #if defined(WIN32) or defined(_WINDOWS)
 	#include <windows.h>
 	#include <winnt.h>
@@ -94,6 +96,8 @@
 
 #endif  // shadow_functions_engine_system_h
 
+// </Linux port curtesy of SuoerFola>
+
 using namespace std;
 
 #ifndef DEFINE_INIT
@@ -122,7 +126,7 @@ using namespace std;
 //   The amount of characters in the walkablecount.txt file.
 #define WALKABLECOUNT 1
 
-//   A small amount that helps correcting cases like x = 1/3 = 0.333333
+//   A small amount that helps correcting cases like x = 1/3 = 0.333333 then
 // x * 3 = 0.999999 =/= 1. 
 #define INFINITECIMAL 0.000001
 
