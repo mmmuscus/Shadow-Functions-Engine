@@ -17,7 +17,9 @@ In the [introduction](#1-introduction) I will cover [my motivation](#12-who-the-
 
 ## 1.2. Who the hell am I and what the hecky heck is this?
 ###### This section was last checked in the 2.0.2. version of the engine
-I am a high school student, who is interested in computer science and more specifically, creating video games. This project was a challenge I gave myself. The aim was to find out if I am able to create something rather complex with my basic understanding of programming, whilst not looking up solutions to my problems. I have already tried my hands at [a project similar to this](https://github.com/mmmuscus/Snake), but this was way more ambitious so it was also a test in planning and creating coexisting systems.
+I originally started this project in high school. The initial goals of the project was to find out what I can do with my basic understanding of programming, whilst not looking up the answers to my problems. The last update I did while (on paper) I still was in high school was version 2.0.2.
+
+Now I am enrolled in a computer science degree. With this the project's goals have changed a bit. In the classes that I am taking and will be taking I will learn a lot of new things about programming. I plan to incorporate all this knowledge into my project. Another thing that has changed is the fact that after the 2.0.2. update I plan to look up different parts and functionalities of (for example) the windows.h header file, like how to set the dimensions or the font of the console window. The one goal that still remains the same is that if I have a problem I want to figure out the solution to it by myself.
 
 ## 1.3. So what is the project?
 ###### This section was last checked in the 2.0.2. version of the engine
