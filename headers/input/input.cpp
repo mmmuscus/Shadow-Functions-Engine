@@ -1,3 +1,6 @@
+// For further infromation about the code please refer back to the documentation!
+
+
 #include "input.h"
 
 //   These functions return true if the correct button was pressed.

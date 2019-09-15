@@ -1,3 +1,6 @@
+// For further infromation about the code please refer back to the documentation!
+
+
 #ifndef shadow_functions_engine_system_h
 #define shadow_functions_engine_system_h
 

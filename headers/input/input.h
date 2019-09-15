@@ -1,3 +1,6 @@
+// For further infromation about the code please refer back to the documentation!
+
+
 #include "../system/system.h"
 
 bool wPressed ();
