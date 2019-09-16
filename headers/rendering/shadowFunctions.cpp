@@ -1,19 +1,30 @@
+// For further infromation about the code please refer back to the documentation!
+
+
 #include "shadowFunctions.h"
 
+//   This function copies one FOV array into another.
 void makeCurrentFov(fov presetDir[FOVROWS][FOVCOLS], fov toBeDir[FOVROWS][FOVCOLS])
 {
+	//   The function loops through all the variables on the array.
 	for (int i = 0; i < FOVROWS; i++)
 	{
 		for (int j = 0; j < FOVCOLS; j++)
 		{
+			//   The function copies the correct sub variables of the current variable of
+			// the array.
 			toBeDir[i][j].inView = presetDir[i][j].inView;
 			toBeDir[i][j].isPlayer = presetDir[i][j].isPlayer;
 		}
 	}
 }
 
+//   This function sets the correct FOV for the player according to its orientation.
 void setCurrentFov(mob playr, fov toBecomeCurrentFov[FOVROWS][FOVCOLS], fov r[FOVROWS][FOVCOLS], fov l[FOVROWS][FOVCOLS], fov u[FOVROWS][FOVCOLS], fov d[FOVROWS][FOVCOLS], fov ru[FOVROWS][FOVCOLS], fov rd[FOVROWS][FOVCOLS], fov lu[FOVROWS][FOVCOLS], fov ld[FOVROWS][FOVCOLS])
 {
+	//   The function checks all of the 8 possibilities and sets the correct FOV for the 
+	// player.
+	
 	if (playr.right && !playr.up && !playr.down)
 	{
 		makeCurrentFov(r, toBecomeCurrentFov);
@@ -55,8 +66,12 @@ void setCurrentFov(mob playr, fov toBecomeCurrentFov[FOVROWS][FOVCOLS], fov r[FO
 	}
 }
 
+//   This function gets the position of the player from a FOV array.
 mob getPlayerPosInFov(mob playr, mob fovPlayr)
 {
+	//   The function hardcodes the correct row and col(umn) values for the player
+	// according to its orientation.
+	
 	if (playr.right && !playr.up && !playr.down)
 	{
 		fovPlayr.row = 10;
@@ -108,21 +123,34 @@ mob getPlayerPosInFov(mob playr, mob fovPlayr)
 	return fovPlayr;
 }
 
+//   This function makes the correct cells visible on the map according to the current
+// FOV of the player.
 void addFovInfoToMap(map world[WORLDROWS][WORLDCOLS], mob playr, mob fovPlayr, fov fov[FOVROWS][FOVCOLS])
 {
+	//   First the function loops through every cell on the world map.
 	for (int i = 0; i < WORLDROWS; i++)
 	{
 		for (int j = 0; j < WORLDCOLS; j++)
 		{
+			//   The function sets the current cells visibility to false (a cell can only
+			// be .mapIsEdge if it isn't in view so .mapIsEdge gets set to false too).
 			world[i][j].mapIsEdge = false;
 			world[i][j].mapInView = false;
 		}
 	}
 	
+	//   Next the function loops over the current FOV array of the player.
 	for (int i = 0; i < FOVROWS; i++)
 	{
 		for (int j = 0; j < FOVCOLS; j++)
 		{
+			//   The function checks if the current cell of the FOV array is in view, if
+			// it is we set the correct cell of the world map to in view too. We do this 
+			// by using the position of the player in the FOV array as ana nchor point
+			// between the FOV and the map. So the cell in the upper left corner of the
+			// FOV array is obviously (0,0) and the cell in the upper left corner of the
+			// FOV array in the map (as anchored by the player) is:
+			// (player.row - fovplayer.row, player.col - fovplayer.col).
 			if (fov[i][j].inView)
 			{
 				world[playr.row - fovPlayr.row + i][playr.col - fovPlayr.col + j].mapInView = true;
@@ -131,17 +159,25 @@ void addFovInfoToMap(map world[WORLDROWS][WORLDCOLS], mob playr, mob fovPlayr, f
 	}
 }
 
+//   This function gets the Point Of View (or POV) of the player according to its cell
+// position.
 koordinate getPov(koordinate pov, mob playr)
 {
+	//   The function adds .5 to both of the cell coordinates of the player.
 	pov.x = playr.col + 0.5;
 	pov.y = playr.row + 0.5;
 
 	return pov;
 }
 
+//   This function gets the a line that passes through two given points.
 line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
 {
 	line e;
+
+	//   The following calculations are prooven to work ro find the line that is between
+	// two points. Here is a link for manually solving a problem like this:
+	// https://www.khanacademy.org/math/algebra/two-var-linear-equations/writing-slope-intercept-equations/v/equation-of-a-line-3
 
 	e.mSlope = (bYRow - aYRow) / (bXCol - aXCol);
 	e.bIntercept = aYRow - (e.mSlope * aXCol);
@@ -149,23 +185,33 @@ line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
 	return e;
 }
 
+//   This function checks if a cell is under a given line.
 bool isUnderLine(line e, int solidYRow, int solidXCol)
 {
+	//   The function checks all of the 4 corners of the cell if they are under the line,
+	// if they are the function returns true.
 	if ((solidYRow <= (solidXCol * e.mSlope) + e.bIntercept) && ((solidYRow + 1) <= (solidXCol * e.mSlope) + e.bIntercept) && (solidYRow <= ((solidXCol + 1) * e.mSlope) + e.bIntercept) && ((solidYRow + 1) <= ((solidXCol + 1) * e.mSlope) + e.bIntercept))
 	{
 		return true;
 	}
 
+	//   If there is at least one corner that isn't under the line the function returns
+	// false.
 	return false;
 }
 
+//   This function checks if a cell is over a given line.
 bool isOverLine(line e, int solidYRow, int solidXCol)
 {
+	//   The function checks all of the 4 corners of the cell if they are over the line,
+	// if they are the function returns true.
 	if ((solidYRow >= (solidXCol * e.mSlope) + e.bIntercept) && ((solidYRow + 1) >= (solidXCol * e.mSlope) + e.bIntercept) && (solidYRow >= ((solidXCol + 1) * e.mSlope) + e.bIntercept) && ((solidYRow + 1) >= ((solidXCol + 1) * e.mSlope) + e.bIntercept))
 	{
 		return true;
 	}
 
+	//   If there is at least one corner that isn't over the line the function returns
+	// false.
 	return false;
 }
 
