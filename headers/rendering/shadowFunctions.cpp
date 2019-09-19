@@ -299,8 +299,8 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 		if (yRow - INFINITECIMAL <= (e.mSlope * xCol) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * xCol) + e.bIntercept && yRow - INFINITECIMAL <= (e.mSlope * (xCol + 1)) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * (xCol + 1)) + e.bIntercept)
 		{
 			//   If the line intersects both the left and right border of the cell the 
-			// function cchecks if the area that is inside the shadow is bigger than 
-			// half of the area of the cell, if it is the function retourns true.
+			// function checks if the area that over the line inside the cell is bigger 
+			// than half of the area of the cell, if it is the function retourns true.
 			if ((e.mSlope * xCol) + e.bIntercept - yRow + (e.mSlope * (xCol + 1)) + e.bIntercept - yRow + INFINITECIMAL >= 1)
 			{
 				return true;
@@ -352,29 +352,45 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 		}
 	}
 	
+	//   Next the function checks if the line is an "overline"
 	if (!e.isItUnderLine)
 	{
+		//   If the line is an "overline" the function checks if it interests the upper
+		// border of the cell.
 		if (xCol - INFINITECIMAL < (yRow - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL > (yRow - e.bIntercept) / e.mSlope)
 		{
+			//   If the line intersects the upper border then the function checks if the 
+			// line intersects the left border if it does it returns true.
 			if (yRow < (e.mSlope * xCol) + e.bIntercept && yRow + 1 > (e.mSlope * xCol) + e.bIntercept)
 			{
 				return true;
 			}
-				
+			
+			//   If the line intersects the upper border then the function checks if the 
+			// line intersects the right border if it does it returns true.
 			if (yRow < (e.mSlope * (xCol + 1)) + e.bIntercept && yRow + 1 > (e.mSlope * (xCol + 1)) + e.bIntercept)
 			{
 				return true;
 			}
 		}
 		
+		//   If the line dosen't intersect the upper border of the cell, then the
+		// function checks if the line intersects both the left and right border of the
+		// cell.
 		if (yRow - INFINITECIMAL <= (e.mSlope * xCol) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * xCol) + e.bIntercept && yRow - INFINITECIMAL <= (e.mSlope * (xCol + 1)) + e.bIntercept && yRow + 1 + INFINITECIMAL >= (e.mSlope * (xCol + 1)) + e.bIntercept)
 		{
+			//   If the line intersects both the left and right border of the cell the 
+			// function checks if the area that under the line inside the cell is bigger 
+			// than half of the area of the cell, if it is the function retourns true.
 			if ((e.mSlope * xCol) + e.bIntercept - yRow + (e.mSlope * (xCol + 1)) + e.bIntercept - yRow - INFINITECIMAL <= 1)
 			{
 				return true;
 			}
 		}
 		
+		//   If the line only intersects the upper border of the cell or it dosen't
+		// intersect both the left and the right border the function checks if the line
+		// intersects both the upper and the lower border of the cell. 
 		if (xCol - INFINITECIMAL <= (yRow - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= (yRow - e.bIntercept) / e.mSlope && xCol - INFINITECIMAL <= ((yRow + 1) - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= ((yRow + 1) - e.bIntercept) / e.mSlope)
 		{
 			if (((yRow - e.bIntercept) / e.mSlope) - xCol > (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol)
