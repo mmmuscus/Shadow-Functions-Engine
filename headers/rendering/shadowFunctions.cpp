@@ -323,8 +323,8 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 				// where the line intercepts the upper border is longer than the segment 
 				// from the point where the line intercepts the upper border of the cell
 				// to the top right corner of the cell the function calculates if the
-				// area left of the line inside the cell is more than half of the area of
-				// the call if it is the function returns true.
+				// area to the left of the line inside the cell is more than half of the
+				// area of the call if it is the function returns true.
 				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol + INFINITECIMAL >= 1)
 				{
 					return true;
@@ -342,8 +342,8 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 				// where the line intercepts the upper border is shorter than the segment 
 				// from the point where the line intercepts the upper border of the cell
 				// to the top right corner of the cell the function calculates if the
-				// area right of the line inside the cell is more than half of the area
-				// of the call if it is the function returns true.
+				// area to the right of the line inside the cell is more than half of the
+				// area of the call if it is the function returns true.
 				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol - INFINITECIMAL <= 1)
 				{
 					return true;
@@ -393,16 +393,38 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 		// intersects both the upper and the lower border of the cell. 
 		if (xCol - INFINITECIMAL <= (yRow - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= (yRow - e.bIntercept) / e.mSlope && xCol - INFINITECIMAL <= ((yRow + 1) - e.bIntercept) / e.mSlope && (xCol + 1) + INFINITECIMAL >= ((yRow + 1) - e.bIntercept) / e.mSlope)
 		{
+			//   If the function intercepts both the upper and lower border of the cell
+			// the function checks if the segment from the top left corner of the cell to
+			// the point where the line intercepts the upper border is longer than the
+			// segment from the point where the line intercepts the upper border of the
+			// cell to the top right corner of the cell.
 			if (((yRow - e.bIntercept) / e.mSlope) - xCol > (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol)
 			{
+				//   If the segment from the top left corner of the cell to the point
+				// where the line intercepts the upper border is longer than the segment 
+				// from the point where the line intercepts the upper border of the cell
+				// to the top right corner of the cell the function calculates if the
+				// area to the right of the line inside the cell is more than half of the
+				//  area of the call if it is the function returns true.
 				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol - INFINITECIMAL <= 1)
 				{
 					return true;
 				}
 			}
 			
+			//   If the function intercepts both the upper and lower border of the cell 
+			// the function checks if the segment from the top left corner of the cell to
+			// the point where the line intercepts the upper border is shorter than the
+			// segment from the point where the line intercepts the upper border of the
+			// cell to the top right corner of the cell.
 			if (((yRow - e.bIntercept) / e.mSlope) - xCol < (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol)
 			{
+				//   If the segment from the top left corner of the cell to the point
+				// where the line intercepts the upper border is shorter than the segment 
+				// from the point where the line intercepts the upper border of the cell
+				// to the top right corner of the cell the function calculates if the
+				// area to the left of the line inside the cell is more than half of the
+				// area of the call if it is the function returns true.
 				if (((yRow - e.bIntercept) / e.mSlope) - xCol + (((yRow + 1) - e.bIntercept) / e.mSlope) - xCol + INFINITECIMAL >= 1)
 				{
 					return true;
@@ -411,6 +433,7 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 		}
 	}
 
+	//   If the function didn't return true yet the function returns false;
 	return false;
 }
 
