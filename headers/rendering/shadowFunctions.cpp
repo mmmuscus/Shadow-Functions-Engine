@@ -433,34 +433,60 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 		}
 	}
 
-	//   If the function didn't return true yet the function returns false;
+	//   If the function didn't return true yet the function returns false.
 	return false;
 }
 
+//   This function returns true if the cell it is checking is "behind the
+ // wall" from the point of view of the player.
 bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int right, int left)
 {	
+	//   First the function checks if the wall its checking is one tall
+	// but not one wide, and the player is in the same row as the wall.
 	if (bottom - top == 1 && right - left != 1 && pov.y == top + 0.5)
 	{
+		//   If the wall is one tall but not one wide and the player is in
+		// the same row as the wall, if it is the function checks if the
+		// player is to the left of the wall.
 		if (pov.x < left)
 		{
+			//   If the player is to the left of the wall the function 
+			// checks if the cell we are checking is to the right of the 
+			// left cell of the wall, if it is the function returns true.
 			if (xCol > left)
 			{
 				return true;
 			}
 			
+			//   If the player is to the left of the wall the function
+			// checks if the cell we are  checking isn't in the same row
+			// as the wall, and it is in the same column as the leftmost
+			// cell of the wall or to the right of said cells, if it is the
+			// function returns true.
 			if (xCol >= left && yRow != top)
 			{
 				return true;
 			}
 		}
 		
+		//   If the wall is one tall but not one wide and the player is in
+		// the same row as the wall, if it is the function checks if the
+		// player is to the right of the wall.
 		if (pov.x > right)
 		{
+			//   If the player is to the right of the wall the function
+			// checks if the cell we are checking is to the left of the
+			// right cell of the wall, if it is the fuction returns true.
 			if (xCol < right - 1)
 			{
 				return true;
 			}
 			
+			//   If the player is to the right of the wall the function
+			// checks if the cell we are checking isn't in the same row
+			// as the wall, and it is in the same column as the rightmost
+			// cell of the wall or to the left of said cells, if it is the
+			// function returns true.
 			if (xCol <= right - 1 && yRow != top)
 			{
 				return true;
@@ -468,28 +494,49 @@ bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int r
 		}
 	}
 	
+	//   First the function checks if the wall its checking is one wide
+	// but not one tall, and the player is in the same column as the wall.
 	if (right - left == 1 && bottom - top != 1 && pov.x == left + 0.5)
 	{
+		//   If the wall is one wide but not one tall and the player is in
+		// the same column as the wall, if it is the function checks if the
+		// player is above of the wall.
 		if (pov.y < top)
 		{
+			//   If the player is above the wall the function checks if the 
+			// cell we are checking is below the top cell of the wall, if it 
+			// is the function returns true.
 			if (yRow > top)
 			{
 				return true;
 			}
-			
+			//   If the player is above the wall the function checks if the 
+			// cell we are checking isn't in the same column as the wall, and
+			// it is in the same row as the topmost cell of the wall or below
+			// said cells, if it is the function returns true.
 			if (yRow >= top && xCol != left)
 			{
 				return true;
 			}
 		}
 		
+		//   If the wall is one wide but not one tall and the player is in
+		// the same column as the wall, if it is the function checks if the
+		// player is below the wall.
 		if (pov.y > bottom)
 		{
+			//   If the player is below the wall the function checks if the
+			// cell we are checking is above the bottom cell of the wall if 
+			// it is the function returns true.
 			if (yRow < bottom - 1)
 			{
 				return true;
 			}
 			
+			//   If the player is below the wall the function checks if the 
+			// cell we are checking isn't in the same column as the wall, and
+			// it is in the same row as the bottom cell of the wall or above
+			// said cells, if it is the function returns true.
 			if (yRow <= bottom - 1 && xCol != left)
 			{
 				return true;
