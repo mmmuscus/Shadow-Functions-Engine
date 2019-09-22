@@ -769,11 +769,17 @@ bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int r
 		// 2 the function checks if the player is below the wall.
 		if (pov.y > bottom - 1)
 		{
+			//   If the player is below the wall the function checks if the cell we are 
+			// checking is above the wall and is to the right of the column of the leftomost 
+			// cell in the wall, if it is the function returns true.
 			if (yRow < bottom - 1 && xCol >= left)
 			{
 				return true;
 			}
 			
+			//   If the player is below the wall the function checks if the cell we are 
+			// checking is in the same row as the wall and is to the right of the wall, if 
+			// it is the function returns true.
 			if (yRow == top && xCol > right - 1)
 			{
 				return true;
@@ -785,26 +791,42 @@ bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int r
 	// of the wall is at least 2.
 	if (pov.x > right - 1 && right - left != 1)
 	{
+		//   If the player is to the right of the wall and the length of the wall is at least
+		// 2 the function checks if the player is above the wall.
 		if (pov.y < top)
 		{
+			//   If the player is above the wall the function checks if the cell we are
+			// checking is below the wall and is to the left of the column of the 
+			// rightmost cell in the wall, if it is the function returns true.
 			if (yRow > bottom - 1 && xCol <= right - 1)
 			{
 				return true;
 			}
 			
+			//   If the player is above the wall the function checks if the cell we are
+			// checking is in the same row as the wall and is to the left of the wall, if 
+			// it is the function returns true.
 			if (yRow == top && xCol < left)
 			{
 				return true;
 			}
 		}
 		
+		//   If the player is to the right of the wall and the length of the wall is at least
+		// 2 the function checks if the player is below the wall.
 		if (pov.y > bottom - 1)
 		{
+			//   If the player is below the wall the function checks if the cell we are
+			// checking is above the wall and is to the left of the column of the 
+			// rightmost cell in the wall, if it is the function returns true.
 			if (yRow < top && xCol <= right - 1)
 			{
 				return true;
 			}
 			
+				//   If the player is below the wall the function checks if the cell we are
+			// checking is in the same row as the wall and is to the left of the wall, if 
+			// it is the function returns true.
 			if (yRow == top && xCol < left)
 			{
 				return true;
@@ -812,36 +834,57 @@ bool isBehindWall(koordinate pov, int yRow, int xCol, int top, int bottom, int r
 		}
 	}
 	
+	//   Finally the function checks if both the height and length of the wall is exactly
+	// one.
 	if (bottom - top == 1 && right - left == 1)
 	{
+		//   If both the height and length of the wall is exactly one the function checks
+		// if both the player and the cell we are checking is left of the column of the 
+		// wall, if it is the function returns false.
 		if (pov.x < left && xCol < left)
 		{
 			return false;
 		}
 		
+		//   If both the height and length of the wall is exactly one the function checks
+		// if both the player and the cell we are checking is right of the column of the
+		// wall, if it is the function returns false.
 		if (pov.x > right && xCol > right - 1)
 		{
 			return false;
 		}
 		
+		//   If both the height and length of the wall is exactly one the function checks
+		// if both the player and the cell we are checking is above the row of the wall, if
+		// it is the function returns false.
 		if (pov.y < top && yRow < top)
 		{
 			return false;
 		}
 		
+		//   If both the height and length of the wall is exactly one the function checks
+		// if both the player and the cell we are checking is below the row of the wall, if
+		// it is the function returns false.
 		if (pov.y > bottom && yRow > bottom - 1)
 		{
 			return false;
 		}
 		
+		//   If both the height and length of the wall is exactly one the function checks
+		// if the cell we are checking is the cell of the wall, if it is the function returns
+		// false.
 		if (xCol == left && yRow == top)
 		{
 			return false;
 		}
 		
+		//   If both the height and length of the wall is exactly one and the function haven't
+		// returned false yet then the function returns true.
 		return true;
 	}
 	
+	//   If the function haven't returned true yet for the cell we are checking the function 
+	// returns false.
 	return false;
 }
 
