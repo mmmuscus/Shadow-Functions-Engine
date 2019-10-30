@@ -6,22 +6,22 @@
 //   These functions return true if the correct button was pressed.
 bool wPressed()
 {
-	return (GetKeyState('W') & 0x8000);
+	return (GetKeyState('W') & 0x8000 || GetKeyState(VK_UP) & 0x8000);
 }
 
 bool aPressed()
 {
-	return (GetKeyState('A') & 0x8000);
+	return (GetKeyState('A') & 0x8000 || GetKeyState(VK_LEFT) & 0x8000);
 }
 
 bool sPressed()
 {
-	return (GetKeyState('S') & 0x8000);
+	return (GetKeyState('S') & 0x8000 || GetKeyState(VK_DOWN) & 0x8000);
 }
 
 bool dPressed()
 {
-	return (GetKeyState('D') & 0x8000);
+	return (GetKeyState('D') & 0x8000 || GetKeyState(VK_RIGHT) & 0x8000);
 }
 
 bool ePressed()
