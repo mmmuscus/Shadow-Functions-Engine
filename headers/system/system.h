@@ -190,7 +190,7 @@ struct line
 	//   This is the point where the line intercepts the y axis.
 	double bIntercept;
 	//   This is true if the line is below any given object we want to "compare" it to.
-	bool isItUnderLine;
+	bool isItLowerLine;
 };
 
 //   This structure holds two lines at once.

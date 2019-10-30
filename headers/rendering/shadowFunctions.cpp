@@ -186,7 +186,7 @@ line getLineEquation(double aXCol, double aYRow, int bXCol, int bYRow)
 }
 
 //   This function checks if a cell is under a given line.
-bool isUnderLine(line e, int solidYRow, int solidXCol)
+bool isLowerLine(line e, int solidYRow, int solidXCol)
 {
 	//   The function checks all of the 4 corners of the cell if they are under the line,
 	// if they are the function returns true.
@@ -201,7 +201,7 @@ bool isUnderLine(line e, int solidYRow, int solidXCol)
 }
 
 //   This function checks if a cell is over a given line.
-bool isOverLine(line e, int solidYRow, int solidXCol)
+bool isUpperLine(line e, int solidYRow, int solidXCol)
 {
 	//   The function checks all of the 4 corners of the cell if they are over the line,
 	// if they are the function returns true.
@@ -220,11 +220,11 @@ bool isBetweenLines(line a, line b, int yRow, int xCol)
 {
 	//   First the function checks if the first line is an "underline" (if it is that
 	// means that the line is supposed to be under the given cell).
-	if (a.isItUnderLine)
+	if (a.isItLowerLine)
 	{
 		//   If the first line is supposed to be an "underline" the function checks if it
 		// actually goes under the given cell, if it dosen't the function returns false.
-		if (!isUnderLine(a, yRow, xCol))
+		if (!isLowerLine(a, yRow, xCol))
 		{
 			return false;
 		}
@@ -234,19 +234,19 @@ bool isBetweenLines(line a, line b, int yRow, int xCol)
 		//   If the first line isn't supposed to be an "underline" that means that it is 
 		// an "overline", thus the function checks if the line actually goes over the 
 		// given cell, if it dosen't the function returns false.
-		if (!isOverLine(a, yRow, xCol))
+		if (!isUpperLine(a, yRow, xCol))
 		{
 			return false;
 		}
 	}
 
 	//   Next the function checks if the second line is on an "underline".
-	if (b.isItUnderLine)
+	if (b.isItLowerLine)
 	{
 		//   If the second line is supposed to be an "underline" the function checks if
 		// it actually goes under the given cell, if it dosen't the function returns 
 		// false.
-		if (!isUnderLine(b, yRow, xCol))
+		if (!isLowerLine(b, yRow, xCol))
 		{
 			return false;
 		}
@@ -256,7 +256,7 @@ bool isBetweenLines(line a, line b, int yRow, int xCol)
 		//   If the second line isn't supposed to be an "underline" that means that it is 
 		// an "overline", thus the function checks if the line actually goes over the
 		// given cell, if it dosen't the function returns false.
-		if (!isOverLine(b, yRow, xCol))
+		if (!isUpperLine(b, yRow, xCol))
 		{
 			return false;
 		}
@@ -272,7 +272,7 @@ bool isBetweenLines(line a, line b, int yRow, int xCol)
 bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 {
 	//   First the function checks if the line is an "underline"
-	if (e.isItUnderLine)
+	if (e.isItLowerLine)
 	{
 		//   If the line is an "underline" the function checks if it interests the lower
 		// border of the cell.
@@ -353,7 +353,7 @@ bool isMoreThanHalfInShade(line e, int yRow, int xCol)
 	}
 	
 	//   Next the function checks if the line is an "overline"
-	if (!e.isItUnderLine)
+	if (!e.isItLowerLine)
 	{
 		//   If the line is an "overline" the function checks if it interests the upper
 		// border of the cell.
@@ -967,9 +967,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 		if (pov.x < left)
 		{
 			edg.first = getLineEquation(pov.x, pov.y, right, top);
-			edg.first.isItUnderLine = false;
+			edg.first.isItLowerLine = false;
 			edg.second = getLineEquation(pov.x, pov.y, left, bot);
-			edg.second.isItUnderLine = true;
+			edg.second.isItLowerLine = true;
 			return edg;
 		}
 		//   If the player is above the wall but not to the left of the wall the function
@@ -979,9 +979,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 		else if (pov.x > right)
 		{
 			edg.first = getLineEquation(pov.x, pov.y, left, top);
-			edg.first.isItUnderLine = false;
+			edg.first.isItLowerLine = false;
 			edg.second = getLineEquation(pov.x, pov.y, right, bot);
-			edg.second.isItUnderLine = true;
+			edg.second.isItLowerLine = true;
 			return edg;
 		}
 		else
@@ -990,9 +990,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 			// the right of the wall the function returns the lines that are cast to the 
 			// correct "edges" of the wall from this position of the player.
 			edg.first = getLineEquation(pov.x, pov.y, right, top);
-			edg.first.isItUnderLine = false;
+			edg.first.isItLowerLine = false;
 			edg.second = getLineEquation(pov.x, pov.y, left, top);
-			edg.second.isItUnderLine = false;
+			edg.second.isItLowerLine = false;
 			return edg;
 		}
 	}
@@ -1006,9 +1006,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 		if (pov.x < left)
 		{
 			edg.first = getLineEquation(pov.x, pov.y, left, top);
-			edg.first.isItUnderLine = false;
+			edg.first.isItLowerLine = false;
 			edg.second = getLineEquation(pov.x, pov.y, right, bot);
-			edg.second.isItUnderLine = true;
+			edg.second.isItLowerLine = true;
 			return edg;
 		}
 		//   If the player is below the wall but not to the left of the wall the function
@@ -1018,9 +1018,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 		else if (pov.x > right)
 		{
 			edg.first = getLineEquation(pov.x, pov.y, right, top);
-			edg.first.isItUnderLine = false;
+			edg.first.isItLowerLine = false;
 			edg.second = getLineEquation(pov.x, pov.y, left, bot);
-			edg.second.isItUnderLine = true;
+			edg.second.isItLowerLine = true;
 			return edg;
 		}
 		else
@@ -1029,9 +1029,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 			// the right of the wall the function returns the lines that are cast to the 
 			// correct "edges" of the wall from this position of the player.
 			edg.first = getLineEquation(pov.x, pov.y, right, bot);
-			edg.first.isItUnderLine = true;
+			edg.first.isItLowerLine = true;
 			edg.second = getLineEquation(pov.x, pov.y, left, bot);
-			edg.second.isItUnderLine = true;
+			edg.second.isItLowerLine = true;
 			return edg;
 		}
 	}
@@ -1044,9 +1044,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 		if (pov.x < left)
 		{
 			edg.first = getLineEquation(pov.x, pov.y, left, top);
-			edg.first.isItUnderLine = false;
+			edg.first.isItLowerLine = false;
 			edg.second = getLineEquation(pov.x, pov.y, left, bot);
-			edg.second.isItUnderLine = true;
+			edg.second.isItLowerLine = true;
 			return edg;
 		}
 		//   If the player is neither above, below or to the left of the wall the 
@@ -1056,9 +1056,9 @@ edgeLines getEdgeLines(koordinate pov, int top, int bot, int right, int left)
 		else if (pov.x > right)
 		{
 			edg.first = getLineEquation(pov.x, pov.y, right, top);
-			edg.first.isItUnderLine = false;
+			edg.first.isItLowerLine = false;
 			edg.second = getLineEquation(pov.x, pov.y, right, bot);
-			edg.second.isItUnderLine = true;
+			edg.second.isItLowerLine = true;
 			return edg;
 		}
 	}
